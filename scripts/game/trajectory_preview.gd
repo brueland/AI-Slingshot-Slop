@@ -26,7 +26,7 @@ static func compute_points(start: Vector2, velocity: Vector2, drag: float, count
 ## Clear points and append screen-space positions from compute_points.
 func update_preview(start: Vector2, velocity: Vector2, drag: float, count: int) -> void:
 	points.clear()
-	var world_points := compute_points(start, velocity, drag, count)
+	var world_points := TrajectoryPreview.compute_points(start, velocity, drag, count)
 	for p in world_points:
 		points.append(WorldView.world_to_screen(p))
 	queue_redraw()
@@ -42,4 +42,4 @@ func clear() -> void:
 func _draw() -> void:
 	for i in range(points.size()):
 		var radius := 4.0 - (3.5 * (i / maxf(1, points.size() - 1)))
-		draw_circle(points[i], radius, Color.WHITE.with_alpha(0.7))
+		draw_circle(points[i], radius, Color(1, 1, 1, 0.7))
