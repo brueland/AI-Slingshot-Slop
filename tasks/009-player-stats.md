@@ -45,6 +45,16 @@ it from the levels dictionary (id -> level). A missing id means level 0. Clamp e
 (0.25, 1.5, 6, 0.18, 0.08, 5 and 3 are the `per_level` values in `UpgradeCatalog.UPGRADES`; reading them
 from there is fine.) JSON loads numbers as floats, so convert levels with `int(...)`.
 
+Get each level with this helper. Use `clampi`, **not** `clamp`: `clamp` returns an untyped Variant, and
+`var x := clamp(...)` then fails to load with "The variable type is being inferred from a Variant value".
+
+```gdscript
+static func _level(levels: Dictionary, id: String) -> int:
+	return clampi(int(levels.get(id, 0)), 0, UpgradeCatalog.max_level(id))
+```
+
+For example: `s.max_speed = Balance.BASE_MAX_SPEED * (1.0 + 0.25 * _level(levels, "power"))`.
+
 Also add:
 ```gdscript
 func apply_to(sim: FlightSim) -> void:
