@@ -21,6 +21,21 @@ func _ready():
 	queue_redraw()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		var point: Vector2 = get_canvas_transform().affine_inverse() * event.position
+		if event.pressed:
+			if begin_drag(point):
+				get_viewport().set_input_as_handled()
+		elif dragging:
+			release()
+			get_viewport().set_input_as_handled()
+	elif event is InputEventMouseMotion and dragging:
+		var point: Vector2 = get_canvas_transform().affine_inverse() * event.position
+		update_drag(point)
+		get_viewport().set_input_as_handled()
+
+
 func begin_drag(point: Vector2) -> bool:
 	if not enabled or point.distance_to(global_position) > GRAB_RADIUS:
 		return false
