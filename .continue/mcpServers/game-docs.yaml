@@ -1,0 +1,10 @@
+name: Game docs search
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: game-docs
+    command: uv
+    args: ["run", "--quiet", "--project", "C:/Users/wesbr/Dev/selfhosted_llm/rag", "game-docs-mcp"]
+    env:
+      RAG_INDEXES: "godot-4.7-classref,godot-4.7-docs,project-slingshotaigametest"
+      LLM_RAG_DIR: "C:/llm/rag"

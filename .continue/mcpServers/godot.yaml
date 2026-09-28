@@ -1,0 +1,7 @@
+name: Godot editor
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: godot
+    command: npx
+    args: ["-y", "@coding-solo/godot-mcp"]

@@ -1,0 +1,16 @@
+{
+  "$comment": "Overnight orchestrator settings for this repo. Defaults: selfhosted_llm/orchestrator/src/overnight/config.py. chain: tasks build on each other in file order on branch ai/build.",
+  "baseBranch": "master",
+  "engine": "godot",
+  "testDir": "tests",
+  "testImage": "selfhosted-llm/godot:4.7.2",
+  "chain": true,
+  "chainBranch": "ai/build",
+  "agentHints": [
+    "GDScript: indent with tabs, never spaces (Godot rejects mixed indentation).",
+    "Use Godot 4 APIs only. Use static typing; where a type can't be inferred (an untyped value), write the type (var p: Vector2 = ...) instead of :=.",
+    "docs/DESIGN.md is the contract: keep the exact file paths, class names, signatures and numbers it and the task give.",
+    "When the task says to create a file, write its complete content; never leave it empty.",
+    "Never edit tests/, addons/, assets/ or project.godot."
+  ]
+}
