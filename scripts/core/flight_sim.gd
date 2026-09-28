@@ -3,6 +3,7 @@ extends RefCounted
 ## Deterministic projectile simulation in world units (meters, y up). See docs/DESIGN.md section 7.
 
 signal bounced(impact_speed: float)
+signal boosted
 
 var position: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
@@ -14,6 +15,15 @@ var bounce_count: int = 0
 var max_height: float = 0.0
 var stopped: bool = false
 var start_x: float = 0.0
+
+
+func boost() -> bool:
+	if stopped or boost_charges <= 0 or not is_airborne():
+		return false
+	velocity += Vector2(1.0, 1.0).normalized() * Balance.BOOST_SPEED
+	boost_charges -= 1
+	boosted.emit()
+	return true
 
 
 func launch(start: Vector2, launch_velocity: Vector2) -> void:
