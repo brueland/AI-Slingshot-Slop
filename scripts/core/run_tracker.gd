@@ -37,10 +37,25 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 		if x < previous_position.x - 10.0 or x > sim.position.x + 10.0:
 			continue
 			
-		if item["type"] == "star":
-			var star: Vector2 = Vector2(x, item["y"])
-			var closest := Geometry2D.get_closest_point_to_segment(star, previous_position, sim.position)
-			if closest.distance_to(star) <= Balance.STAR_RADIUS:
-				_used[i] = true
-				stars_collected += 1
-				star_collected.emit(i)
+		match item["type"]:
+			"star":
+				var star: Vector2 = Vector2(x, item["y"])
+				var closest := Geometry2D.get_closest_point_to_segment(star, previous_position, sim.position)
+				if closest.distance_to(star) <= Balance.STAR_RADIUS:
+					_used[i] = true
+					stars_collected += 1
+					star_collected.emit(i)
+			"spring":
+				if sim.position.y <= 0.0 and absf(sim.position.x - x) <= Balance.SPRING_HALF_WIDTH:
+					_used[i] = true
+					sim.velocity.y = maxf(sim.velocity.y, Balance.SPRING_SPEED)
+					sim.velocity.x += Balance.SPRING_PUSH
+					sim.stopped = false
+					springs_hit += 1
+					spring_hit.emit(i)
+			"mud":
+				if sim.position.y <= 0.0 and sim.position.x >= x and sim.position.x <= x + Balance.MUD_WIDTH:
+					_used[i] = true
+					sim.velocity.x *= Balance.MUD_FACTOR
+					mud_hits += 1
+					mud_hit.emit(i)
