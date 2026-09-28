@@ -52,23 +52,10 @@ static func ids_in_category(category: String) -> Array[String]:
 	return result
 
 static func cost(id: String, level: int) -> int:
-	if not is_valid(id):
+	if not is_valid(id) or level < 0 or level >= max_level(id):
 		return -1
-	if level < 0:
-		return -1
-	var max_level_value: int = max_level(id)
-	if level >= max_level_value:
-		return -1
-	
-	var def: Dictionary = get_def(id)
-	var base_cost: int = def["base_cost"]
-	var growth: float = def["growth"]
-	
-	return roundi(float(base_cost) * pow(growth, float(level)))
+	var d := get_def(id)
+	return roundi(float(d["base_cost"]) * pow(float(d["growth"]), level))
 
 static func is_maxed(id: String, level: int) -> bool:
-	if not is_valid(id):
-		return false
-	if level < 0:
-		return false
 	return level >= max_level(id)
