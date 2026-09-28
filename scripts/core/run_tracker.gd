@@ -30,15 +30,15 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 		if _used[i]:
 			continue
 		
-		var item := items[i]
-		var x := item["x"]
+		var item: Dictionary = items[i]
+		var x: float = item["x"]
 		
 		# Skip items that are far from the projectile's path
 		if x < previous_position.x - 10.0 or x > sim.position.x + 10.0:
 			continue
 			
 		if item["type"] == "star":
-			var star := Vector2(x, item["y"])
+			var star: Vector2 = Vector2(x, item["y"])
 			var closest := Geometry2D.get_closest_point_to_segment(star, previous_position, sim.position)
 			if closest.distance_to(star) <= Balance.STAR_RADIUS:
 				_used[i] = true
