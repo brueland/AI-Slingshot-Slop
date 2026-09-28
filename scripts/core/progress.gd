@@ -42,6 +42,39 @@ func stats() -> PlayerStats:
 	return PlayerStats.from_levels(levels)
 
 
+func to_dict() -> Dictionary:
+	return {
+		"version": 1,
+		"coins": coins,
+		"levels": levels.duplicate(),
+		"best_distance": best_distance,
+		"total_runs": total_runs,
+		"goal_reached": goal_reached,
+	}
+
+
+static func from_dict(data: Dictionary) -> Progress:
+	var p := Progress.new()
+	p.coins = maxi(0, int(data.get("coins", 0)))
+	
+	# Handle levels safely
+	var levels_data = data.get("levels")
+	if typeof(levels_data) == TYPE_DICTIONARY:
+		p.levels = {}
+		for key in levels_data:
+			var key_str: String = str(key)
+			if UpgradeCatalog.is_valid(key_str):
+				var level: int = clampi(int(levels_data[key]), 0, UpgradeCatalog.max_level(key_str))
+				if level > 0:
+					p.levels[key_str] = level
+	
+	p.best_distance = maxf(0.0, float(data.get("best_distance", 0.0)))
+	p.total_runs = maxi(0, int(data.get("total_runs", 0)))
+	p.goal_reached = bool(data.get("goal_reached", false))
+	
+	return p
+
+
 func record_run(distance: float, coins_earned: int) -> Array:
 	var reached := Milestones.newly_reached(best_distance, distance)
 	add_coins(coins_earned)
