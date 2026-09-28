@@ -7,7 +7,10 @@ files: [scripts/core/upgrade_catalog.gd]
 
 # Upgrade costs
 
-Add two static functions to `scripts/core/upgrade_catalog.gd` (keep everything that is there).
+Make sure `scripts/core/upgrade_catalog.gd` has these two static functions, exactly once each.
+**The file may already contain `cost` and/or `is_maxed`** (an earlier task added them). In that case do not
+add them again: GDScript refuses a script that declares a function twice. Replace the existing body with the
+one below instead, and delete any second copy.
 
 ```gdscript
 static func cost(id: String, level: int) -> int:
