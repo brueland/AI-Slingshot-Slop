@@ -45,6 +45,16 @@ func _touch_ground() -> void:
 		velocity.y = 0.0
 
 
+func _slide(dt: float) -> void:
+	position.y = 0.0
+	velocity.y = 0.0
+	velocity.x = move_toward(velocity.x, 0.0, Balance.SLIDE_FRICTION * dt)
+	position.x += velocity.x * dt
+	if absf(velocity.x) <= Balance.STOP_SPEED:
+		velocity = Vector2.ZERO
+		stopped = true
+
+
 func step(dt: float) -> void:
 	if stopped:
 		return
@@ -55,3 +65,13 @@ func step(dt: float) -> void:
 		max_height = maxf(max_height, position.y)
 		if position.y <= 0.0:
 			_touch_ground()
+	else:
+		_slide(dt)
+
+
+func simulate(dt: float, max_steps: int) -> int:
+	var steps := 0
+	while not stopped and steps < max_steps:
+		step(dt)
+		steps += 1
+	return steps
