@@ -40,3 +40,15 @@ func buy(id: String) -> bool:
 
 func stats() -> PlayerStats:
 	return PlayerStats.from_levels(levels)
+
+
+func record_run(distance: float, coins_earned: int) -> Array:
+	var reached := Milestones.newly_reached(best_distance, distance)
+	add_coins(coins_earned)
+	for m in reached:
+		add_coins(int(m["reward"]))
+	total_runs += 1
+	best_distance = maxf(best_distance, distance)
+	if distance >= Balance.GOAL_DISTANCE:
+		goal_reached = true
+	return reached
