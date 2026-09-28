@@ -49,7 +49,7 @@ Engine: **Godot 4.7.2**, GDScript 2.0. Never write Godot 3.x syntax.
 - No autoloads, no plugins, no editing `project.godot`, `addons/` or `assets/`.
 - Never call `get_tree().paused`, `get_tree().quit()` in code paths that tests reach, `print()` for debugging,
   or `push_error()` for expected situations (the test runner fails on any printed engine error).
-- Keep every script under 300 lines. Split helpers into new files instead of growing one script.
+- Keep every script under 300 lines (main.gd under 450). Split helpers into new files instead of growing one script.
 - Tests live in `tests/` and are read-only. They load scripts by path (`load("res://scripts/...")`).
 
 <!-- BEGIN always-on-instructions (managed by selfhosted_llm; edits inside this block are overwritten) -->
