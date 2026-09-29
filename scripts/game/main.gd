@@ -13,9 +13,40 @@ var session: RunSession
 var last_result: Dictionary = {}
 var is_paused: bool = false
 
+# World nodes
+var world_view: WorldView
+var course_view: CourseView
+var slingshot: Slingshot
+var trajectory: TrajectoryPreview
+var projectile_view: ProjectileView
+var camera: CameraRig
+
 
 func _ready() -> void:
 	progress = Progress.new()
+	
+	# Create world nodes
+	world_view = WorldView.new()
+	add_child(world_view)
+	
+	course_view = CourseView.new()
+	add_child(course_view)
+	
+	slingshot = Slingshot.new()
+	add_child(slingshot)
+	
+	trajectory = TrajectoryPreview.new()
+	add_child(trajectory)
+	
+	projectile_view = ProjectileView.new()
+	add_child(projectile_view)
+	
+	camera = CameraRig.new()
+	add_child(camera)
+	
+	# Connect signals
+	slingshot.launched.connect(launch_with_pull)
+	camera.make_current()
 
 
 func _physics_process(delta: float) -> void:
@@ -41,6 +72,19 @@ func start_game() -> void:
 
 func _begin_aim() -> void:
 	session = RunSession.new(progress.stats(), progress.total_runs + 1)
+	
+	# Set up views for the new session
+	course_view.build(session.course)
+	session.tracker.star_collected.connect(course_view.mark_collected)
+	var stats := session.stats
+	slingshot.position = WorldView.world_to_screen(Vector2(0.0, stats.launch_height))
+	slingshot.frame_height_px = stats.launch_height * Balance.PIXELS_PER_METER
+	slingshot.enabled = true
+	projectile_view.show_at(session.sim.position)
+	projectile_view.rotation = 0.0
+	camera.snap_to(projectile_view.position)
+	trajectory.clear()
+	
 	change_state(State.AIM)
 
 
@@ -49,15 +93,24 @@ func launch_with_pull(pull: Vector2) -> bool:
 		return false
 	session.launch_from_pull(pull)
 	change_state(State.FLIGHT)
+	slingshot.enabled = false
+	slingshot.cancel_drag()
+	trajectory.clear()
 	return true
 
 
 func advance(dt: float) -> void:
-	if is_paused or state != State.FLIGHT:
+	if is_paused:
 		return
-	session.step(dt)
-	if session.is_finished():
-		_finish_run()
+	
+	if state == State.AIM:
+		_update_aim()
+	elif state == State.FLIGHT:
+		session.step(dt)
+		projectile_view.sync_from(session.sim)
+		camera.follow(projectile_view.position, dt)
+		if session.is_finished():
+			_finish_run()
 
 
 func request_boost() -> bool:
@@ -82,3 +135,16 @@ func _finish_run() -> void:
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
 	change_state(State.RESULTS)
+
+
+func _update_aim() -> void:
+	if not slingshot.dragging:
+		trajectory.clear()
+		return
+	
+	var stats := session.stats
+	var v := LaunchMath.velocity_from_pull(slingshot.pull, Balance.MAX_PULL_PX, stats.max_speed)
+	trajectory.update_preview(Vector2(0.0, stats.launch_height), v, stats.drag, stats.guide_points)
+	
+	# Move projectile into the pouch
+	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
