@@ -8,6 +8,8 @@ const HIGH_SKY_COLOR := Color(0.45, 0.5, 0.85)
 const HIGH_ALTITUDE_M: float = 150.0
 
 var layers: Array[Parallax2D] = []
+var stars_layer: Parallax2D
+var star_field: StarField
 
 func _ready() -> void:
 	z_index = -10
@@ -43,8 +45,19 @@ func _ready() -> void:
 	
 	add_child(cloud_layer)
 	layers.append(cloud_layer)
+	
+	# Night stars: a separate layer (not in `layers`), almost fixed to the screen
+	stars_layer = Parallax2D.new()
+	stars_layer.scroll_scale = Vector2(0.05, 0.02)
+	stars_layer.repeat_size = Vector2(1800, 0)
+	stars_layer.repeat_times = 3
+	star_field = StarField.new()
+	stars_layer.add_child(star_field)
+	add_child(stars_layer)
 
 ## Tints the whole sky toward deep blue as the projectile climbs (full tint at HIGH_ALTITUDE_M).
 func set_altitude(height_m: float) -> void:
 	var t := clampf(height_m / HIGH_ALTITUDE_M, 0.0, 1.0)
 	modulate = Color.WHITE.lerp(HIGH_SKY_COLOR, t)
+	if star_field != null:
+		star_field.set_height(height_m)
