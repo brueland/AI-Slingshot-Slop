@@ -153,6 +153,10 @@ func _begin_aim() -> void:
 	# Set up views for the new session
 	course_view.build(session.course)
 	session.tracker.star_collected.connect(course_view.mark_collected)
+	session.tracker.star_collected.connect(_on_star_collected)
+	session.tracker.spring_hit.connect(_on_spring_hit)
+	session.sim.bounced.connect(_on_bounced)
+	session.sim.boosted.connect(_on_boosted)
 	var stats := session.stats
 	slingshot.position = WorldView.world_to_screen(Vector2(0.0, stats.launch_height))
 	slingshot.frame_height_px = stats.launch_height * Balance.PIXELS_PER_METER
@@ -169,6 +173,7 @@ func launch_with_pull(pull: Vector2) -> bool:
 	if state != State.AIM or pull.length() < Balance.MIN_PULL_PX:
 		return false
 	session.launch_from_pull(pull)
+	audio.play_sfx("launch")
 	change_state(State.FLIGHT)
 	slingshot.enabled = false
 	slingshot.cancel_drag()
@@ -203,6 +208,7 @@ func continue_to_shop() -> void:
 func buy_upgrade(id: String) -> bool:
 	var success := state == State.SHOP and progress.buy(id)
 	if success:
+		audio.play_sfx("buy")
 		shop_panel.refresh(progress)
 		save_progress()
 	return success
@@ -218,6 +224,8 @@ func _finish_run() -> void:
 	var had_goal := progress.goal_reached
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
+	if not last_result["milestones"].is_empty():
+		audio.play_sfx("milestone")
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
 	
@@ -230,6 +238,22 @@ func _finish_run() -> void:
 
 func _on_state_changed(_new_state: int) -> void:
 	_update_ui()
+
+
+func _on_star_collected(_index: int) -> void:
+	audio.play_sfx("star")
+
+
+func _on_spring_hit(_index: int) -> void:
+	audio.play_sfx("spring")
+
+
+func _on_bounced(_impact_speed: float) -> void:
+	audio.play_sfx("bounce")
+
+
+func _on_boosted() -> void:
+	audio.play_sfx("boost")
 
 
 func _update_ui() -> void:
