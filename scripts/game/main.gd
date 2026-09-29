@@ -31,6 +31,7 @@ var ui_theme: Theme
 # World nodes
 var background: SkyBackground
 var world_view: WorldView
+var scenery: Scenery
 var course_view: CourseView
 var slingshot: Slingshot
 var trajectory: TrajectoryPreview
@@ -59,6 +60,10 @@ func _ready() -> void:
 	# Create world nodes
 	world_view = WorldView.new()
 	add_child(world_view)
+	
+	scenery = Scenery.new()
+	add_child(scenery)
+	scenery.build(Scenery.SEED, Balance.COURSE_LENGTH)
 	
 	course_view = CourseView.new()
 	add_child(course_view)
