@@ -30,7 +30,7 @@ var camera: CameraRig
 
 
 func _ready() -> void:
-	progress = Progress.new()
+	progress = SaveSystem.load_progress(save_path)
 	
 	# Create world nodes
 	world_view = WorldView.new()
@@ -110,6 +110,10 @@ func change_state(new_state: int) -> void:
 	emit_signal("state_changed", new_state)
 
 
+func save_progress() -> void:
+	SaveSystem.save_progress(progress, save_path)
+
+
 func state_name() -> String:
 	return State.keys()[state]
 
@@ -177,6 +181,7 @@ func buy_upgrade(id: String) -> bool:
 	var success := state == State.SHOP and progress.buy(id)
 	if success:
 		shop_panel.refresh(progress)
+		save_progress()
 	return success
 
 
@@ -189,6 +194,7 @@ func _finish_run() -> void:
 	var previous_best := progress.best_distance
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
+	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
 	change_state(State.RESULTS)
 
