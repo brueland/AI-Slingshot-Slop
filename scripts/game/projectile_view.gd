@@ -8,11 +8,20 @@ const TEXTURES: Array[String] = [
 	"res://assets/sprites/projectile_3.png",
 ]
 
+const WOBBLE_SECONDS: float = 0.4
+
 var tier: int = 0
+var base_scale: Vector2 = Vector2.ONE
+var wobble_strength: float = 0.0
+var wobble_left: float = 0.0
 
 
 func _ready() -> void:
 	set_tier(tier)
+
+
+func _process(delta: float) -> void:
+	advance_wobble(delta)
 
 
 func set_tier(new_tier: int) -> void:
@@ -20,6 +29,7 @@ func set_tier(new_tier: int) -> void:
 	texture = load(TEXTURES[tier])
 	# Scale the sprite so it is 2 * Balance.PROJECTILE_RADIUS meters wide on screen
 	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER) / texture.get_width()
+	base_scale = scale
 
 
 func show_at(world_pos: Vector2) -> void:
@@ -31,3 +41,20 @@ func sync_from(sim: FlightSim) -> void:
 	show_at(sim.position)
 	# Roll the projectile based on its x position
 	rotation = sim.position.x / Balance.PROJECTILE_RADIUS
+
+
+## Jelly wobble after a bounce: the alien squashes and stretches for WOBBLE_SECONDS, then is round again.
+func wobble(strength: float) -> void:
+	wobble_strength = clampf(strength, 0.0, 0.5)
+	wobble_left = WOBBLE_SECONDS
+
+
+func advance_wobble(delta: float) -> void:
+	if wobble_left <= 0.0:
+		return
+	wobble_left = maxf(wobble_left - delta, 0.0)
+	var t := 1.0 - wobble_left / WOBBLE_SECONDS
+	var w := wobble_strength * (1.0 - t) * cos(t * TAU * 2.0)
+	scale = base_scale * Vector2(1.0 + w, 1.0 - w)
+	if wobble_left <= 0.0:
+		scale = base_scale

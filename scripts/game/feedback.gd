@@ -55,6 +55,7 @@ func _on_bounced(impact_speed: float) -> void:
 	if impact_speed >= 8.0:
 		camera.shake(4.0, 0.2)
 	effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
+	projectile_view.wobble(clampf(impact_speed / 25.0, 0.08, 0.35))
 
 
 func _on_boosted() -> void:
