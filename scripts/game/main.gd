@@ -20,6 +20,7 @@ var results_panel: ResultsPanel
 var shop_panel: ShopPanel
 var title_panel: TitlePanel
 var pause_label: Label
+var victory_panel: VictoryPanel
 
 # World nodes
 var world_view: WorldView
@@ -70,6 +71,9 @@ func _build_ui() -> void:
 	results_panel = ResultsPanel.new()
 	ui_layer.add_child(results_panel)
 	
+	victory_panel = VictoryPanel.new()
+	ui_layer.add_child(victory_panel)
+	
 	shop_panel = ShopPanel.new()
 	ui_layer.add_child(shop_panel)
 	
@@ -87,6 +91,7 @@ func _build_ui() -> void:
 	ui_layer.add_child(pause_label)
 	
 	results_panel.continue_pressed.connect(continue_to_shop)
+	victory_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)
 	shop_panel.launch_requested.connect(leave_shop)
 	title_panel.play_pressed.connect(start_game)
@@ -179,7 +184,7 @@ func request_boost() -> bool:
 
 
 func continue_to_shop() -> void:
-	if state == State.RESULTS:
+	if state == State.RESULTS or state == State.VICTORY:
 		change_state(State.SHOP)
 
 
@@ -198,11 +203,17 @@ func leave_shop() -> void:
 
 func _finish_run() -> void:
 	var previous_best := progress.best_distance
+	var had_goal := progress.goal_reached
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
-	change_state(State.RESULTS)
+	
+	# Go to VICTORY state if this is the first time reaching the goal
+	if progress.goal_reached and not had_goal:
+		change_state(State.VICTORY)
+	else:
+		change_state(State.RESULTS)
 
 
 func _on_state_changed(_new_state: int) -> void:
@@ -222,6 +233,11 @@ func _update_ui() -> void:
 		results_panel.show_result(last_result, bool(last_result.get("new_best", false)))
 	else:
 		results_panel.hide()
+	
+	if state == State.VICTORY:
+		victory_panel.show_victory(progress.total_runs)
+	else:
+		victory_panel.hide()
 	
 	shop_panel.visible = state == State.SHOP
 	if shop_panel.visible:
