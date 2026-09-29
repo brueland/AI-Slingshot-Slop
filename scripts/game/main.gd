@@ -46,6 +46,9 @@ func _ready() -> void:
 	audio = AudioManager.new()
 	add_child(audio)
 	
+	# Apply saved settings
+	apply_settings()
+	
 	# Create world nodes
 	world_view = WorldView.new()
 	add_child(world_view)
@@ -316,7 +319,13 @@ func go_to_title() -> void:
 func reset_progress() -> void:
 	progress = Progress.new()
 	save_progress()
+	apply_settings()
 	_update_ui()
+
+
+func apply_settings() -> void:
+	audio.set_music_volume(float(progress.settings.get("music_volume", 0.8)))
+	audio.set_sfx_volume(float(progress.settings.get("sfx_volume", 0.8)))
 
 
 func toggle_pause() -> void:

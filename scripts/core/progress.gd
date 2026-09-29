@@ -7,6 +7,7 @@ var levels: Dictionary = {}          # upgrade id -> level (missing = 0)
 var best_distance: float = 0.0
 var total_runs: int = 0
 var goal_reached: bool = false
+var settings: Dictionary = {"music_volume": 0.8, "sfx_volume": 0.8}
 
 
 func level_of(id: String) -> int:
@@ -50,6 +51,7 @@ func to_dict() -> Dictionary:
 		"best_distance": best_distance,
 		"total_runs": total_runs,
 		"goal_reached": goal_reached,
+		"settings": settings.duplicate(),
 	}
 
 
@@ -71,6 +73,14 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.best_distance = maxf(0.0, float(data.get("best_distance", 0.0)))
 	p.total_runs = maxi(0, int(data.get("total_runs", 0)))
 	p.goal_reached = bool(data.get("goal_reached", false))
+	
+	# Handle settings safely
+	var settings_data = data.get("settings")
+	if typeof(settings_data) == TYPE_DICTIONARY:
+		for key in ["music_volume", "sfx_volume"]:
+			if settings_data.has(key):
+				var value = float(settings_data[key])
+				p.settings[key] = clampf(value, 0.0, 1.0)
 	
 	return p
 

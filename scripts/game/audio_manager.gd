@@ -27,6 +27,9 @@ var last_sfx: String = ""
 var sfx_played: int = 0
 var _next_voice: int = 0
 
+var music_volume: float = 0.8
+var sfx_volume: float = 0.8
+
 
 func _ready() -> void:
 	music_player = AudioStreamPlayer.new()
@@ -50,6 +53,23 @@ func play_music(id: String) -> void:
 	music_player.stream = stream
 	music_player.play()
 	current_music = id
+
+
+static func volume_to_db(volume: float) -> float:
+	if volume <= 0.001:
+		return -80.0
+	return linear_to_db(volume)
+
+
+func set_music_volume(volume: float) -> void:
+	music_volume = clampf(volume, 0.0, 1.0)
+	music_player.volume_db = volume_to_db(music_volume)
+
+
+func set_sfx_volume(volume: float) -> void:
+	sfx_volume = clampf(volume, 0.0, 1.0)
+	for player in sfx_players:
+		player.volume_db = volume_to_db(sfx_volume)
 
 
 func stop_music() -> void:
