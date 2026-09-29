@@ -177,6 +177,7 @@ func _begin_aim() -> void:
 	
 	# Set up views for the new session
 	course_view.build(session.course)
+	course_view.set_best_marker(progress.best_distance)
 	session.tracker.star_collected.connect(course_view.mark_collected)
 	session.tracker.star_collected.connect(_on_star_collected)
 	session.tracker.spring_hit.connect(_on_spring_hit)

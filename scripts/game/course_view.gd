@@ -12,6 +12,8 @@ const GOAL_FLAG_TEXTURE: String = "res://assets/sprites/goal_flag.png"
 
 var sprites: Array[Sprite2D] = []
 var flags: Array[Sprite2D] = []
+var best_marker: Sprite2D
+var best_label: Label
 
 
 func _ready():
@@ -26,6 +28,19 @@ func _ready():
 		# If this is the goal milestone (1000m), use the goal flag texture
 		if milestone["distance"] >= Balance.GOAL_DISTANCE:
 			flag.texture = load(GOAL_FLAG_TEXTURE)
+		
+	best_marker = Sprite2D.new()
+	best_marker.texture = load(FLAG_TEXTURE)
+	best_marker.modulate = Color(1.0, 0.85, 0.3)
+	best_marker.offset = Vector2(0, -35)
+	best_marker.hide()
+	add_child(best_marker)
+	best_label = Label.new()
+	best_label.position = Vector2(-40, -110)
+	best_label.add_theme_font_size_override("font_size", 18)
+	best_label.add_theme_constant_override("outline_size", 4)
+	best_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
+	best_marker.add_child(best_label)
 
 
 func build(items: Array) -> void:
@@ -59,6 +74,15 @@ func mark_collected(index: int) -> void:
 
 func item_count() -> int:
 	return sprites.size()
+
+
+func set_best_marker(distance: float) -> void:
+	if distance <= 0.0:
+		best_marker.hide()
+		return
+	best_marker.position = WorldView.world_to_screen(Vector2(distance, 0.0))
+	best_label.text = "Best: %d m" % floori(distance)
+	best_marker.show()
 
 
 func clear() -> void:
