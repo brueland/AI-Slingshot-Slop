@@ -7,7 +7,7 @@ Slingshot Skies uses these third-party assets. Thank you!
   Licensed for personal and commercial use with credit to ElvGames. https://elvgames.itch.io/terms
 
 ## Art (CC0, from OpenGameArt.org)
-- **Kenney** (www.kenney.nl), "Physics Assets": aliens, wood post, dirt, background.
+- **Kenney** (www.kenney.nl), "Physics Assets": aliens, wood post, dirt, bush, rock, cactus, background.
   https://opengameart.org/content/physics-assets
 - **Kenney** (www.kenney.nl), "Platformer Art Deluxe": star, springboard, flags, cloud, grass.
   https://opengameart.org/content/platformer-art-deluxe

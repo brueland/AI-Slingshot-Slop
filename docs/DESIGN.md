@@ -238,12 +238,13 @@ The per-task files (tasks/*.md) give each node's exact API.
 | assets/sprites/post.png | slingshot posts |
 | assets/sprites/flag.png, goal_flag.png | milestone flags, 1000 m goal flag |
 | assets/sprites/cloud.png, assets/backgrounds/sky.png | background |
+| assets/sprites/bush.png, rock.png, cactus.png | ground scenery (decoration) |
 | assets/audio/music/menu.ogg, flight.ogg, victory.ogg | music |
 | assets/audio/sfx/launch.mp3, bounce.mp3, star.mp3, spring.mp3, boost.mp3, buy.mp3, milestone.mp3, click.wav | sound effects |
 
 ## 11. Build plan
 
-50 tasks in 5 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+60 tasks in 6 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -253,3 +254,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 3 Playable scene | 021–030, 030c | Main scene state machine, world, slingshot, projectile, preview, camera, course sprites |
 | 4 Game loop UI | 031–040, 040c | HUD, results, shop, save/load, title, victory, pause, background |
 | 5 Audio and polish | 041–050, 050c | Music, sound effects, volume options, camera shake, popups, upgrade visuals, credits |
+| 6 Graphics polish | 051–060, 060c | UI theme, solid ground, scenery, projectile trail and shadow, particles, sky tint, slingshot with power meter |
