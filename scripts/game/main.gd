@@ -289,17 +289,21 @@ func _on_state_changed(_new_state: int) -> void:
 	_update_ui()
 
 
-func _on_star_collected(_index: int) -> void:
+func _on_star_collected(index: int) -> void:
 	audio.play_sfx("star")
+	if index >= 0 and index < course_view.sprites.size():
+		effects.spawn_sparkle(course_view.sprites[index].position)
 	var popup := FloatingText.new()
 	popup.setup("+%d" % session.stats.star_value, Color(1.0, 0.85, 0.2))
 	popup.position = projectile_view.position + Vector2(-12.0, -40.0)
 	popups.add_child(popup)
 
 
-func _on_spring_hit(_index: int) -> void:
+func _on_spring_hit(index: int) -> void:
 	audio.play_sfx("spring")
 	camera.shake(10.0, 0.35)
+	if index >= 0 and index < course_view.sprites.size():
+		effects.spawn_burst(course_view.sprites[index].position)
 
 
 func _on_bounced(impact_speed: float) -> void:
