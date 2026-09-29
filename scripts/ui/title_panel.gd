@@ -6,6 +6,7 @@ signal play_pressed
 signal reset_pressed
 signal options_pressed
 signal credits_pressed
+signal stats_pressed
 
 var title_label: Label
 var best_label: Label
@@ -13,6 +14,7 @@ var play_button: Button
 var reset_button: Button
 var options_button: Button
 var credits_button: Button
+var stats_button: Button
 var box: VBoxContainer
 
 func _ready():
@@ -36,6 +38,11 @@ func _ready():
 	play_button.text = "Play"
 	play_button.connect("pressed", Callable(self, "_on_play_pressed"))
 	box.add_child(play_button)
+	
+	stats_button = Button.new()
+	stats_button.text = "Stats"
+	stats_button.connect("pressed", Callable(self, "_on_stats_pressed"))
+	box.add_child(stats_button)
 	
 	options_button = Button.new()
 	options_button.text = "Options"
@@ -62,6 +69,9 @@ func _on_options_pressed():
 
 func _on_credits_pressed():
 	emit_signal("credits_pressed")
+
+func _on_stats_pressed():
+	emit_signal("stats_pressed")
 
 func _on_reset_pressed():
 	emit_signal("reset_pressed")

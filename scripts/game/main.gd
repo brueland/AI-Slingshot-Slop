@@ -27,6 +27,7 @@ var pause_label: Label
 var victory_panel: VictoryPanel
 var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
+var stats_panel: StatsPanel
 var ui_theme: Theme
 
 # World nodes
@@ -121,6 +122,7 @@ func _build_ui() -> void:
 	pause_label = ui_layer.pause_label
 	options_panel = ui_layer.options_panel
 	credits_panel = ui_layer.credits_panel
+	stats_panel = ui_layer.stats_panel
 	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
@@ -130,6 +132,8 @@ func _build_ui() -> void:
 	title_panel.reset_pressed.connect(reset_progress)
 	title_panel.options_pressed.connect(open_options)
 	title_panel.credits_pressed.connect(credits_panel.show)
+	title_panel.stats_pressed.connect(func(): stats_panel.show_stats(progress))
+	stats_panel.closed.connect(stats_panel.hide)
 	credits_panel.closed.connect(credits_panel.hide)
 	options_panel.volume_changed.connect(_on_volume_changed)
 	options_panel.closed.connect(options_panel.hide)
