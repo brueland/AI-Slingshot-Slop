@@ -32,6 +32,7 @@ var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
 var stats_panel: StatsPanel
 var toast: Toast
+var wardrobe_panel: WardrobePanel
 var ui_theme: Theme
 
 # World nodes
@@ -114,6 +115,9 @@ func _ready() -> void:
 	
 	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
 	
+	# Set the initial hat
+	projectile_view.set_hat(progress.hat)
+	
 	# Connect signals
 	slingshot.launched.connect(launch_with_pull)
 	camera.make_current()
@@ -143,6 +147,9 @@ func _build_ui() -> void:
 	title_panel.rogue_pressed.connect(start_rogue)
 	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
 	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
+	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(progress))
+	wardrobe_panel.hat_chosen.connect(choose_hat)
+	wardrobe_panel.closed.connect(wardrobe_panel.hide)
 	title_panel.reset_pressed.connect(reset_progress)
 	title_panel.options_pressed.connect(open_options)
 	title_panel.credits_pressed.connect(credits_panel.show)
@@ -368,6 +375,7 @@ func go_to_title() -> void:
 
 func reset_progress() -> void:
 	progress = Progress.new()
+	projectile_view.set_hat(progress.hat)
 	save_progress()
 	apply_settings()
 	_update_ui()
@@ -377,6 +385,16 @@ func open_options() -> void:
 	options_panel.set_values(float(progress.settings.get("music_volume", 0.8)),
 		float(progress.settings.get("sfx_volume", 0.8)))
 	options_panel.show()
+
+
+func choose_hat(id: String) -> bool:
+	if not Hats.is_unlocked(id, progress):
+		return false
+	progress.hat = id
+	projectile_view.set_hat(id)
+	save_progress()
+	wardrobe_panel.show_hats(progress)
+	return true
 
 
 func _on_volume_changed(kind: String, value: float) -> void:
