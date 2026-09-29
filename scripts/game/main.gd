@@ -24,6 +24,7 @@ var shop_panel: ShopPanel
 var title_panel: TitlePanel
 var pause_label: Label
 var victory_panel: VictoryPanel
+var options_panel: OptionsPanel
 
 # World nodes
 var background: SkyBackground
