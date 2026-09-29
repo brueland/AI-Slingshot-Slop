@@ -13,6 +13,7 @@ var lifetime: Dictionary = {"distance": 0.0, "stars": 0, "bounces": 0, "best_hei
 var achievements: Array[String] = []
 var recent_distances: Array[float] = []
 var hat: String = "none"
+var best_path: Array = []
 
 const RECENT_RUNS: int = 10
 
@@ -64,6 +65,7 @@ func to_dict() -> Dictionary:
 		"achievements": achievements.duplicate(),
 		"recent_distances": recent_distances.duplicate(),
 		"hat": hat,
+		"best_path": best_path.duplicate(true),
 	}
 
 
@@ -129,6 +131,13 @@ static func from_dict(data: Dictionary) -> Progress:
 	var hat_id := str(data.get("hat", "none"))
 	if not Hats.get_def(hat_id).is_empty():
 		p.hat = hat_id
+	
+	# Handle best_path safely
+	var path_data = data.get("best_path")
+	if typeof(path_data) == TYPE_ARRAY:
+		for item in path_data:
+			if typeof(item) == TYPE_ARRAY and item.size() == 2:
+				p.best_path.append([float(item[0]), float(item[1])])
 	
 	return p
 

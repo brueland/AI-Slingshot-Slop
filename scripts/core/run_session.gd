@@ -9,6 +9,8 @@ var balloons: Balloons
 var course: Array = []
 var launched: bool = false
 var elapsed: float = 0.0
+var path: PackedVector2Array = PackedVector2Array()
+var _steps: int = 0
 
 
 func _init(player_stats: PlayerStats, course_seed: int) -> void:
@@ -26,6 +28,8 @@ func launch_from_pull(pull: Vector2) -> Vector2:
 	sim.launch(Vector2(0.0, stats.launch_height), v)
 	launched = true
 	elapsed = 0.0
+	path = PackedVector2Array([sim.position])
+	_steps = 0
 	return v
 
 
@@ -42,6 +46,10 @@ func step(dt: float) -> void:
 	if elapsed >= Balance.MAX_RUN_SECONDS:
 		sim.velocity = Vector2.ZERO
 		sim.stopped = true
+	else:
+		_steps += 1
+		if _steps % 6 == 0 or sim.stopped:
+			path.append(sim.position)
 
 
 func boost() -> bool:

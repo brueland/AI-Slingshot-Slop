@@ -43,6 +43,7 @@ var critters: Critters
 var course_view: CourseView
 var slingshot: Slingshot
 var trajectory: TrajectoryPreview
+var ghost: GhostPath
 var projectile_view: ProjectileView
 var camera: CameraRig
 var popups: Node2D
@@ -78,6 +79,8 @@ func _ready() -> void:
 	add_child(slingshot)
 	trajectory = TrajectoryPreview.new()
 	add_child(trajectory)
+	ghost = GhostPath.new()
+	add_child(ghost)
 	trail = Trail.new()
 	add_child(trail)
 	shadow = GroundShadow.new()
@@ -202,6 +205,7 @@ func _begin_aim() -> void:
 	# Set up views for the new session
 	course_view.build(session.course)
 	balloon_view.build(session.balloons)
+	ghost.set_points(GhostPath.unpack(progress.best_path) if mode == "classic" else PackedVector2Array())
 	course_view.set_best_marker(progress.best_distance)
 	feedback.watch(session)
 	var stats := session.stats
@@ -308,6 +312,8 @@ func _finish_run() -> void:
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
 	progress.record_lifetime(last_result)
+	if last_result["distance"] > previous_best:
+		progress.best_path = GhostPath.pack(session.path)
 	if not last_result["milestones"].is_empty():
 		audio.play_sfx("milestone")
 	last_result["achievements"] = Achievements.unlock(last_result, progress)
