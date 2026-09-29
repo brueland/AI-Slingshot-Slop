@@ -54,77 +54,45 @@ var feedback: Feedback
 
 func _ready() -> void:
 	progress = SaveSystem.load_progress(save_path)
-	
-	# Create background first (it must be the first child)
-	background = SkyBackground.new()
+	background = SkyBackground.new()  # must be the first child
 	add_child(background)
-	
-	# Create audio after background
 	audio = AudioManager.new()
 	add_child(audio)
-	
-	# Apply saved settings
 	apply_settings()
-	
-	# Create fader before UI
 	fader = Fader.new()
 	add_child(fader)
-	
-	# Build UI first so we can access panels
-	_build_ui()
-	
-	# Create world nodes
 	world_view = WorldView.new()
 	add_child(world_view)
-	
 	scenery = Scenery.new()
 	add_child(scenery)
 	scenery.build(Scenery.SEED, Balance.COURSE_LENGTH)
-	
 	critters = Critters.new()
 	add_child(critters)
 	critters.build(Critters.SEED, Balance.COURSE_LENGTH)
-	
 	course_view = CourseView.new()
 	add_child(course_view)
-	
 	slingshot = Slingshot.new()
 	add_child(slingshot)
-	
 	trajectory = TrajectoryPreview.new()
 	add_child(trajectory)
-	
 	trail = Trail.new()
 	add_child(trail)
-	
-	# Create and add shadow node
 	shadow = GroundShadow.new()
 	add_child(shadow)
-	
 	projectile_view = ProjectileView.new()
 	add_child(projectile_view)
-	
 	camera = CameraRig.new()
 	add_child(camera)
-	
-	# Create popups node for floating text
 	popups = Node2D.new()
 	add_child(popups)
-	
-	# Create effects node
 	effects = Effects.new()
 	add_child(effects)
-	
 	feedback = Feedback.new()
 	add_child(feedback)
-	
+	_build_ui()
 	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
-	
-	# Set the initial hat
-	projectile_view.set_hat(progress.hat)
 	feedback.critters = critters
-	
-	# Connect signals - now that wardrobe_panel is properly initialized
+	projectile_view.set_hat(progress.hat)
 	slingshot.launched.connect(launch_with_pull)
 	camera.make_current()
 
