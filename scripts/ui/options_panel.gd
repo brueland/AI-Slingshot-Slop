@@ -8,6 +8,7 @@ signal closed
 var music_slider: HSlider
 var sfx_slider: HSlider
 var close_button: Button
+var _setting_values: bool = false
 
 func _ready():
 	set_anchors_preset(Control.PRESET_CENTER)
@@ -64,14 +65,20 @@ func _ready():
 	hide()
 
 func _on_music_value_changed(value: float) -> void:
+	if _setting_values:
+		return
 	emit_signal("volume_changed", "music", value)
 
 func _on_sfx_value_changed(value: float) -> void:
+	if _setting_values:
+		return
 	emit_signal("volume_changed", "sfx", value)
 
 func _on_close_pressed() -> void:
 	emit_signal("closed")
 
 func set_values(music: float, sfx: float) -> void:
+	_setting_values = true
 	music_slider.value = music
 	sfx_slider.value = sfx
+	_setting_values = false
