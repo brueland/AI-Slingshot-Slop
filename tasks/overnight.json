@@ -16,6 +16,7 @@
     "If a function, variable or signal the task asks for already exists in the file, edit it in place; never declare it a second time (GDScript rejects duplicates).",
     "docs/DESIGN.md is the contract: keep the exact file paths, class names, signatures and numbers it and the task give.",
     "When the task says to create a file, write its complete content; never leave it empty.",
+    "The file name of every edit is the exact path from the task (e.g. scripts/game/projectile_decor.gd: lowercase, with underscores, in its folder), never the class name (not ProjectileDecor.gd).",
     "Never edit tests/, addons/, assets/ or project.godot."
   ]
 }

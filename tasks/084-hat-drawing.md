@@ -11,7 +11,9 @@ read: [scripts/core/hats.gd]
 The hat is drawn by a small node on top of the alien. It is `top_level`, so it does not roll with the sprite
 (the hat stays upright); ProjectileView moves it to the alien every frame.
 
-**1. Create `scripts/game/projectile_decor.gd` with exactly this code:**
+**1. Create the file `scripts/game/projectile_decor.gd` with exactly this code.** Use that exact path as the
+edit's file name (lowercase with an underscore, inside scripts/game/). Do **not** create `ProjectileDecor.gd`:
+Godot finds the class by its `class_name`, not by the file name.
 ```gdscript
 class_name ProjectileDecor
 extends Node2D
