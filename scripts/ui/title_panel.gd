@@ -4,11 +4,13 @@ extends PanelContainer
 
 signal play_pressed
 signal reset_pressed
+signal options_pressed
 
 var title_label: Label
 var best_label: Label
 var play_button: Button
 var reset_button: Button
+var options_button: Button
 var box: VBoxContainer
 
 func _ready():
@@ -33,6 +35,11 @@ func _ready():
 	play_button.connect("pressed", Callable(self, "_on_play_pressed"))
 	box.add_child(play_button)
 	
+	options_button = Button.new()
+	options_button.text = "Options"
+	options_button.connect("pressed", Callable(self, "_on_options_pressed"))
+	box.add_child(options_button)
+	
 	reset_button = Button.new()
 	reset_button.text = "Reset progress"
 	reset_button.connect("pressed", Callable(self, "_on_reset_pressed"))
@@ -42,6 +49,9 @@ func _ready():
 
 func _on_play_pressed():
 	emit_signal("play_pressed")
+
+func _on_options_pressed():
+	emit_signal("options_pressed")
 
 func _on_reset_pressed():
 	emit_signal("reset_pressed")

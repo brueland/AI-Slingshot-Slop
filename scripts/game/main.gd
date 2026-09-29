@@ -105,12 +105,19 @@ func _build_ui() -> void:
 	pause_label.hide()
 	ui_layer.add_child(pause_label)
 	
+	# Create options panel
+	options_panel = OptionsPanel.new()
+	ui_layer.add_child(options_panel)
+	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)
 	shop_panel.launch_requested.connect(leave_shop)
 	title_panel.play_pressed.connect(start_game)
 	title_panel.reset_pressed.connect(reset_progress)
+	title_panel.options_pressed.connect(open_options)
+	options_panel.volume_changed.connect(_on_volume_changed)
+	options_panel.closed.connect(options_panel.hide)
 	
 	state_changed.connect(_on_state_changed)
 	_update_ui()
@@ -321,6 +328,18 @@ func reset_progress() -> void:
 	save_progress()
 	apply_settings()
 	_update_ui()
+
+
+func open_options() -> void:
+	options_panel.set_values(float(progress.settings.get("music_volume", 0.8)),
+		float(progress.settings.get("sfx_volume", 0.8)))
+	options_panel.show()
+
+
+func _on_volume_changed(kind: String, value: float) -> void:
+	progress.settings[kind + "_volume"] = value
+	apply_settings()
+	save_progress()
 
 
 func apply_settings() -> void:
