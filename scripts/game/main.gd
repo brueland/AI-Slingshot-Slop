@@ -69,6 +69,9 @@ func _ready() -> void:
 	fader = Fader.new()
 	add_child(fader)
 	
+	# Build UI first so we can access panels
+	_build_ui()
+	
 	# Create world nodes
 	world_view = WorldView.new()
 	add_child(world_view)
@@ -118,7 +121,7 @@ func _ready() -> void:
 	# Set the initial hat
 	projectile_view.set_hat(progress.hat)
 	
-	# Connect signals
+	# Connect signals - now that wardrobe_panel is properly initialized
 	slingshot.launched.connect(launch_with_pull)
 	camera.make_current()
 
@@ -138,6 +141,7 @@ func _build_ui() -> void:
 	credits_panel = ui_layer.credits_panel
 	stats_panel = ui_layer.stats_panel
 	toast = ui_layer.toast
+	wardrobe_panel = ui_layer.wardrobe_panel
 	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
