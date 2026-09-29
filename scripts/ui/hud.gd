@@ -110,3 +110,10 @@ func update_progress(best: float, coins: int) -> void:
 		goal_label.text = "All milestones reached!"
 	else:
 		goal_label.text = "Next: %s at %d m" % [next["name"], int(next["distance"])]
+
+
+## Roguelike: the right column shows the round, lives and the current goal instead of best/coins/next.
+func show_rogue(goal_text: String, round_number: int, lives: int) -> void:
+	best_label.text = "Round %d" % round_number
+	coins_label.text = "Lives: %d" % lives
+	goal_label.text = "Goal: %s" % goal_text
