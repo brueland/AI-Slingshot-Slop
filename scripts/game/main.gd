@@ -38,6 +38,7 @@ var projectile_view: ProjectileView
 var camera: CameraRig
 var popups: Node2D
 var trail: Trail
+var shadow: GroundShadow
 
 
 func _ready() -> void:
@@ -69,6 +70,10 @@ func _ready() -> void:
 	
 	trail = Trail.new()
 	add_child(trail)
+	
+	# Create and add shadow node
+	shadow = GroundShadow.new()
+	add_child(shadow)
 	
 	projectile_view = ProjectileView.new()
 	add_child(projectile_view)
@@ -201,6 +206,7 @@ func _begin_aim() -> void:
 	camera.snap_to(projectile_view.position)
 	trajectory.clear()
 	trail.clear_trail()
+	shadow.update_from(session.sim.position)
 	
 	change_state(State.AIM)
 
@@ -227,6 +233,7 @@ func advance(dt: float) -> void:
 		session.step(dt)
 		projectile_view.sync_from(session.sim)
 		trail.add_trail_point(projectile_view.position)
+		shadow.update_from(session.sim.position)
 		camera.follow(projectile_view.position, dt)
 		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_charges)
 		if session.is_finished():
