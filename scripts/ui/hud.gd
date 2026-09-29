@@ -2,6 +2,9 @@ class_name Hud
 extends Control
 ## Flight readouts (top left) and progress (top right). Never blocks the mouse.
 
+const HINT_AIM: String = "Drag the alien back, aim, and let go!"
+const HINT_BOOST: String = "Press Space in the air to boost!"
+
 var distance_label: Label
 var height_label: Label
 var stars_label: Label
@@ -9,6 +12,7 @@ var boosts_label: Label
 var best_label: Label
 var coins_label: Label
 var goal_label: Label
+var hint_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -65,9 +69,32 @@ func _ready() -> void:
 	goal_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_label.add_theme_font_size_override("font_size", 22)
 	
+	# Hint label at bottom center
+	hint_label = Label.new()
+	hint_label.add_theme_font_size_override("font_size", 26)
+	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint_label.anchor_left = 0.5
+	hint_label.anchor_right = 0.5
+	hint_label.anchor_top = 1.0
+	hint_label.anchor_bottom = 1.0
+	hint_label.offset_left = -320
+	hint_label.offset_right = 320
+	hint_label.offset_top = -90
+	hint_label.offset_bottom = -50
+	hint_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hint_label.hide()
+	add_child(hint_label)
+	
 	# Initialize with default values
 	update_flight(0.0, 0.0, 0, 0)
 	update_progress(0.0, 0)
+
+func show_hint(text: String) -> void:
+	hint_label.text = text
+	hint_label.show()
+
+func hide_hint() -> void:
+	hint_label.hide()
 
 func update_flight(distance: float, height: float, stars: int, boosts: int) -> void:
 	distance_label.text = "Distance: %d m" % floori(maxf(distance, 0.0))

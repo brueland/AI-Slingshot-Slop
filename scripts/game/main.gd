@@ -195,6 +195,12 @@ func _begin_aim() -> void:
 	shadow.update_from(session.sim.position)
 	background.set_altitude(0.0)
 	
+	# Show hint for first run or when boosts are available
+	if progress.total_runs == 0:
+		hud.show_hint(Hud.HINT_AIM)
+	else:
+		hud.hide_hint()
+	
 	change_state(State.AIM)
 
 
@@ -207,6 +213,13 @@ func launch_with_pull(pull: Vector2) -> bool:
 	slingshot.enabled = false
 	slingshot.cancel_drag()
 	trajectory.clear()
+	
+	# Show boost hint if boosts are available
+	if session.sim.boost_charges > 0:
+		hud.show_hint(Hud.HINT_BOOST)
+	else:
+		hud.hide_hint()
+	
 	return true
 
 
@@ -301,6 +314,7 @@ func _on_bounced(impact_speed: float) -> void:
 
 func _on_boosted() -> void:
 	audio.play_sfx("boost")
+	hud.hide_hint()
 
 
 func _update_ui() -> void:
