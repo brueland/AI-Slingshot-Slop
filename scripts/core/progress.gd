@@ -7,6 +7,7 @@ var levels: Dictionary = {}          # upgrade id -> level (missing = 0)
 var best_distance: float = 0.0
 var total_runs: int = 0
 var goal_reached: bool = false
+var best_rogue_round: int = 0
 var settings: Dictionary = {"music_volume": 0.8, "sfx_volume": 0.8}
 var lifetime: Dictionary = {"distance": 0.0, "stars": 0, "bounces": 0, "best_height": 0.0}
 var achievements: Array[String] = []
@@ -56,6 +57,7 @@ func to_dict() -> Dictionary:
 		"best_distance": best_distance,
 		"total_runs": total_runs,
 		"goal_reached": goal_reached,
+		"best_rogue_round": best_rogue_round,
 		"settings": settings.duplicate(),
 		"lifetime": lifetime.duplicate(),
 		"achievements": achievements.duplicate(),
@@ -81,6 +83,7 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.best_distance = maxf(0.0, float(data.get("best_distance", 0.0)))
 	p.total_runs = maxi(0, int(data.get("total_runs", 0)))
 	p.goal_reached = bool(data.get("goal_reached", false))
+	p.best_rogue_round = maxi(0, int(data.get("best_rogue_round", 0)))
 	
 	# Handle settings safely
 	var settings_data = data.get("settings")
