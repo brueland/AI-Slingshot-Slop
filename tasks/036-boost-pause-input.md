@@ -11,7 +11,7 @@ read: [scripts/game/slingshot.gd]
 Edit `scripts/game/main.gd` (keep everything that works).
 
 1. A `pause_label: Label` on `ui_layer` (create it in `_build_ui()`): text `"Paused - press Esc to resume"`,
-   font size 32, centered (`PRESET_CENTER`, grow both ways), hidden at start.
+   font size 32: `add_theme_font_size_override("font_size", 32)`, centered (`PRESET_CENTER`, grow both ways), hidden at start.
 2. Keyboard input. The `boost` action (Space) already exists in project.godot; `ui_cancel` is Godot's built-in
    Esc action:
    ```gdscript

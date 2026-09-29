@@ -20,7 +20,7 @@ var message_label: Label
 var continue_button: Button
 ```
 `_ready()`: centered like the other panels (`custom_minimum_size = Vector2(480, 0)`), a VBoxContainer with
-`message_label` (font size 32) and `continue_button` text `"Keep flying"` (pressed -> emit `continue_pressed`);
+`message_label` (font size 32: `add_theme_font_size_override("font_size", 32)`) and `continue_button` text `"Keep flying"` (pressed -> emit `continue_pressed`);
 then `hide()`.
 
 `func show_victory(runs: int) -> void`:

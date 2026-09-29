@@ -31,7 +31,7 @@ static func credits_text() -> String:
 	return FALLBACK
 ```
 `_ready()`: centered (`custom_minimum_size = Vector2(640, 0)`), a VBoxContainer with a "Credits" title (font
-size 32), `text_label` with `text = credits_text()`, `autowrap_mode = TextServer.AUTOWRAP_WORD_SMART`,
+size 32: `add_theme_font_size_override("font_size", 32)`), `text_label` with `text = credits_text()`, `autowrap_mode = TextServer.AUTOWRAP_WORD_SMART`,
 `custom_minimum_size = Vector2(600, 0)`, and `close_button` ("Close", pressed -> emit `closed`). End with `hide()`.
 
 **2. `scripts/ui/title_panel.gd`:** `signal credits_pressed`, `var credits_button: Button`: a "Credits" button

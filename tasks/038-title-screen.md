@@ -24,7 +24,7 @@ var reset_button: Button
 var box: VBoxContainer
 ```
 `_ready()`: center it (`PRESET_CENTER`, grow both ways, `custom_minimum_size = Vector2(420, 0)`), add `box`
-with: `title_label` text `"Slingshot Skies"` (font size 48), `best_label`, `play_button` text `"Play"`
+with: `title_label` text `"Slingshot Skies"` (font size 48: `add_theme_font_size_override("font_size", 48)`), `best_label`, `play_button` text `"Play"`
 (pressed -> emit `play_pressed`), `reset_button` text `"Reset progress"` (pressed -> emit `reset_pressed`).
 Then `show_progress(0.0, 0)`. Keep `box` as a var; later tasks add buttons to it.
 
