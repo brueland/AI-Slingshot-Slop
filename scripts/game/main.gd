@@ -28,6 +28,7 @@ var victory_panel: VictoryPanel
 var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
 var stats_panel: StatsPanel
+var toast: Toast
 var ui_theme: Theme
 
 # World nodes
@@ -123,6 +124,7 @@ func _build_ui() -> void:
 	options_panel = ui_layer.options_panel
 	credits_panel = ui_layer.credits_panel
 	stats_panel = ui_layer.stats_panel
+	toast = ui_layer.toast
 	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
@@ -278,6 +280,8 @@ func _finish_run() -> void:
 	if not last_result["milestones"].is_empty():
 		audio.play_sfx("milestone")
 	last_result["achievements"] = Achievements.unlock(last_result, progress)
+	for a in last_result["achievements"]:
+		toast.enqueue("Achievement unlocked: %s" % a["name"], a["description"])
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
 	

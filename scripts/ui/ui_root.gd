@@ -12,6 +12,7 @@ var pause_label: Label
 var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
 var stats_panel: StatsPanel
+var toast: Toast
 
 
 func _ready() -> void:
@@ -39,6 +40,8 @@ func _ready() -> void:
 	add_child(credits_panel)
 	stats_panel = StatsPanel.new()
 	add_child(stats_panel)
+	toast = Toast.new()
+	add_child(toast)
 	ui_theme = UiTheme.build()
 	for child in get_children():
 		if child is Control:
