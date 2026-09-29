@@ -4,14 +4,14 @@ extends PanelContainer
 
 signal closed
 
-@onready var runs_label: Label = $VBoxContainer/RunsLabel
-@onready var distance_label: Label = $VBoxContainer/DistanceLabel
-@onready var best_label: Label = $VBoxContainer/BestLabel
-@onready var height_label: Label = $VBoxContainer/HeightLabel
-@onready var stars_label: Label = $VBoxContainer/StarsLabel
-@onready var bounces_label: Label = $VBoxContainer/BouncesLabel
-@onready var chart: DistanceChart = $VBoxContainer/Chart
-@onready var close_button: Button = $VBoxContainer/CloseButton
+var runs_label: Label
+var distance_label: Label
+var best_label: Label
+var height_label: Label
+var stars_label: Label
+var bounces_label: Label
+var chart: DistanceChart
+var close_button: Button
 
 
 func _ready() -> void:
@@ -29,20 +29,45 @@ func _ready() -> void:
 	title_label.add_theme_font_size_override("font_size", 32)
 	vbox.add_child(title_label)
 	
+	runs_label = Label.new()
+	runs_label.name = "RunsLabel"
 	vbox.add_child(runs_label)
+	
+	distance_label = Label.new()
+	distance_label.name = "DistanceLabel"
 	vbox.add_child(distance_label)
+	
+	best_label = Label.new()
+	best_label.name = "BestLabel"
 	vbox.add_child(best_label)
+	
+	height_label = Label.new()
+	height_label.name = "HeightLabel"
 	vbox.add_child(height_label)
+	
+	stars_label = Label.new()
+	stars_label.name = "StarsLabel"
 	vbox.add_child(stars_label)
+	
+	bounces_label = Label.new()
+	bounces_label.name = "BouncesLabel"
 	vbox.add_child(bounces_label)
 	
 	var chart_label := Label.new()
 	chart_label.text = "Last 10 runs"
 	vbox.add_child(chart_label)
 	
+	chart = DistanceChart.new()
+	chart.name = "Chart"
 	vbox.add_child(chart)
 	
+	close_button = Button.new()
+	close_button.name = "CloseButton"
+	close_button.text = "Close"
 	vbox.add_child(close_button)
+	
+	# Connect the close button signal
+	close_button.pressed.connect(func(): emit_signal("closed"))
 	
 	hide()
 
