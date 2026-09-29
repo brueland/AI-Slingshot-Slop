@@ -37,6 +37,7 @@ var trajectory: TrajectoryPreview
 var projectile_view: ProjectileView
 var camera: CameraRig
 var popups: Node2D
+var trail: Trail
 
 
 func _ready() -> void:
@@ -65,6 +66,9 @@ func _ready() -> void:
 	
 	trajectory = TrajectoryPreview.new()
 	add_child(trajectory)
+	
+	trail = Trail.new()
+	add_child(trail)
 	
 	projectile_view = ProjectileView.new()
 	add_child(projectile_view)
@@ -196,6 +200,7 @@ func _begin_aim() -> void:
 	projectile_view.rotation = 0.0
 	camera.snap_to(projectile_view.position)
 	trajectory.clear()
+	trail.clear_trail()
 	
 	change_state(State.AIM)
 
@@ -221,6 +226,7 @@ func advance(dt: float) -> void:
 	elif state == State.FLIGHT:
 		session.step(dt)
 		projectile_view.sync_from(session.sim)
+		trail.add_trail_point(projectile_view.position)
 		camera.follow(projectile_view.position, dt)
 		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_charges)
 		if session.is_finished():
