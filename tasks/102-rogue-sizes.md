@@ -53,7 +53,10 @@ static func apply(stats: PlayerStats, id: String) -> PlayerStats:
 ```
 
 **2. `scripts/core/rogue_run.gd`** (keep everything else; small SEARCH/REPLACE edits):
-- **Declare** `var size_id: String = "normal"` after `var rerolls: int = 1`.
+- **Declare the variable** at the top of the class, on the line right after `var rerolls: int = 1`:
+  ```gdscript
+  var size_id: String = "normal"
+  ```
 - In `start()`, right after `rerolls = 1`: `size_id = "normal"`
 - `stats()` becomes:
   ```gdscript
