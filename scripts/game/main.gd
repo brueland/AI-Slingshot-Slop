@@ -113,9 +113,6 @@ func _ready() -> void:
 	feedback = Feedback.new()
 	add_child(feedback)
 	
-	# Build UI
-	_build_ui()
-	
 	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
 	
 	# Set the initial hat
@@ -143,6 +140,7 @@ func _build_ui() -> void:
 	toast = ui_layer.toast
 	wardrobe_panel = ui_layer.wardrobe_panel
 	
+	# Connect signals after all UI components are initialized
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)

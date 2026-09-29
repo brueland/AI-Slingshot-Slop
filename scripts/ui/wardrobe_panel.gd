@@ -39,6 +39,8 @@ func show_hats(progress: Progress) -> void:
 	for entry in Hats.LIST:
 		var id: String = entry["id"]
 		var button: Button = hat_buttons[id]
+		if button == null:
+			continue
 		var open := Hats.is_unlocked(id, progress)
 		button.disabled = not open
 		if not open:
