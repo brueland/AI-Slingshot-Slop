@@ -25,6 +25,7 @@ var title_panel: TitlePanel
 var pause_label: Label
 var victory_panel: VictoryPanel
 var options_panel: OptionsPanel
+var credits_panel: CreditsPanel
 
 # World nodes
 var background: SkyBackground
@@ -115,6 +116,10 @@ func _build_ui() -> void:
 	options_panel = OptionsPanel.new()
 	ui_layer.add_child(options_panel)
 	
+	# Create credits panel
+	credits_panel = CreditsPanel.new()
+	ui_layer.add_child(credits_panel)
+	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)
@@ -122,6 +127,8 @@ func _build_ui() -> void:
 	title_panel.play_pressed.connect(start_game)
 	title_panel.reset_pressed.connect(reset_progress)
 	title_panel.options_pressed.connect(open_options)
+	title_panel.credits_pressed.connect(credits_panel.show)
+	credits_panel.closed.connect(credits_panel.hide)
 	options_panel.volume_changed.connect(_on_volume_changed)
 	options_panel.closed.connect(options_panel.hide)
 	
