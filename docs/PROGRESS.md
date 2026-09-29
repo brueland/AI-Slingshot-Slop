@@ -7,4 +7,5 @@ Milestone 2: complete (progression: coins, milestones, saving, course, tracker, 
 Milestone 3: complete (playable scene: state machine, world, slingshot, preview, camera, course sprites)
 Milestone 4: complete (game loop UI: HUD, results, shop, save/load, title, victory, pause, background)
 Milestone 5: complete (audio and polish: music, sound effects, volume options, shake, popups, upgrade visuals, credits)
+Milestone 6: complete (graphics polish: UI theme, solid ground, scenery, trail, shadow, particles, sky tint, slingshot)
 
