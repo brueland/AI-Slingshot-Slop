@@ -132,6 +132,8 @@ func _build_ui() -> void:
 	title_panel.daily_pressed.connect(start_daily)
 	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
 	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
+	ui_layer.pause_menu.resume_pressed.connect(toggle_pause)
+	ui_layer.pause_menu.quit_pressed.connect(go_to_title)
 	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(progress))
 	wardrobe_panel.hat_chosen.connect(choose_hat)
@@ -387,6 +389,7 @@ func go_to_title() -> void:
 	daily_key = ""
 	is_paused = false
 	pause_label.hide()
+	ui_layer.pause_menu.hide()
 	slingshot.cancel_drag()
 	change_state(State.TITLE)
 	_update_ui()
@@ -432,6 +435,7 @@ func toggle_pause() -> void:
 		return
 	is_paused = not is_paused
 	pause_label.visible = is_paused
+	ui_layer.pause_menu.visible = is_paused
 	slingshot.enabled = state == State.AIM and not is_paused
 	if is_paused:
 		slingshot.cancel_drag()

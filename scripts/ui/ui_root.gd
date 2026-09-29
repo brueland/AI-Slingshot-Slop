@@ -14,6 +14,7 @@ var credits_panel: CreditsPanel
 var stats_panel: StatsPanel
 var toast: Toast
 var wardrobe_panel: WardrobePanel
+var pause_menu: PauseMenu
 var rogue_panel: RoguePanel
 var rogue_over_panel: RogueOverPanel
 
@@ -51,6 +52,8 @@ func _ready() -> void:
 	add_child(rogue_over_panel)
 	wardrobe_panel = WardrobePanel.new()
 	add_child(wardrobe_panel)
+	pause_menu = PauseMenu.new()
+	add_child(pause_menu)
 	ui_theme = UiTheme.build()
 	for child in get_children():
 		if child is Control:
