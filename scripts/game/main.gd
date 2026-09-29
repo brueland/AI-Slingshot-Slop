@@ -173,6 +173,25 @@ func _finish_run() -> void:
 	change_state(State.RESULTS)
 
 
+func _on_state_changed(_new_state: int) -> void:
+	_update_ui()
+
+
+func _update_ui() -> void:
+	hud.visible = state == State.AIM or state == State.FLIGHT
+	if hud.visible:
+		hud.update_progress(progress.best_distance, progress.coins)
+	
+	if state == State.RESULTS:
+		results_panel.show_result(last_result, bool(last_result.get("new_best", false)))
+	else:
+		results_panel.hide()
+	
+	shop_panel.visible = state == State.SHOP
+	if shop_panel.visible:
+		shop_panel.refresh(progress)
+
+
 func _update_aim() -> void:
 	if not slingshot.dragging:
 		trajectory.clear()
