@@ -11,7 +11,7 @@ const UPGRADES: Dictionary = {
 	"height": {"name": "Tall Frame", "category": "launcher", "max_level": 5, "base_cost": 60, "growth": 1.7,
 		"per_level": 1.5, "description": "+1.5m launch height per level"},
 	"guide": {"name": "Aim Guide", "category": "launcher", "max_level": 5, "base_cost": 25, "growth": 1.5,
-		"per_level": 6, "description": "+6 guide points per level"},
+		"per_level": 6, "description": "+6 trajectory preview dots per level; also shows your last aim"},
 	"aero": {"name": "Aerodynamics", "category": "projectile", "max_level": 5, "base_cost": 120, "growth": 1.8,
 		"per_level": 0.18, "description": "-18% drag per level"},
 	"bounce": {"name": "Bouncy Shell", "category": "projectile", "max_level": 5, "base_cost": 100, "growth": 1.8,
