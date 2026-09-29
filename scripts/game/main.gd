@@ -18,6 +18,7 @@ var ui_layer: CanvasLayer
 var hud: Hud
 var results_panel: ResultsPanel
 var shop_panel: ShopPanel
+var pause_label: Label
 
 # World nodes
 var world_view: WorldView
@@ -71,6 +72,16 @@ func _build_ui() -> void:
 	shop_panel = ShopPanel.new()
 	ui_layer.add_child(shop_panel)
 	
+	# Create pause label
+	pause_label = Label.new()
+	pause_label.text = "Paused - press Esc to resume"
+	pause_label.add_theme_font_size_override("font_size", 32)
+	pause_label.set_anchors_preset(Control.PRESET_CENTER)
+	pause_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	pause_label.grow_vertical = Control.GROW_DIRECTION_BOTH
+	pause_label.hide()
+	ui_layer.add_child(pause_label)
+	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)
 	shop_panel.launch_requested.connect(leave_shop)
@@ -81,6 +92,15 @@ func _build_ui() -> void:
 
 func _physics_process(delta: float) -> void:
 	advance(delta)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("boost"):
+		if request_boost():
+			get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_cancel"):
+		toggle_pause()
+		get_viewport().set_input_as_handled()
 
 
 func change_state(new_state: int) -> void:
