@@ -223,3 +223,13 @@ func _update_aim() -> void:
 	
 	# Move projectile into the pouch
 	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
+
+
+func toggle_pause() -> void:
+	if state != State.AIM and state != State.FLIGHT:
+		return
+	is_paused = not is_paused
+	pause_label.visible = is_paused
+	slingshot.enabled = state == State.AIM and not is_paused
+	if is_paused:
+		slingshot.cancel_drag()
