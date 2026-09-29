@@ -18,6 +18,7 @@ var ui_layer: CanvasLayer
 var hud: Hud
 var results_panel: ResultsPanel
 var shop_panel: ShopPanel
+var title_panel: TitlePanel
 var pause_label: Label
 
 # World nodes
@@ -72,6 +73,9 @@ func _build_ui() -> void:
 	shop_panel = ShopPanel.new()
 	ui_layer.add_child(shop_panel)
 	
+	title_panel = TitlePanel.new()
+	ui_layer.add_child(title_panel)
+	
 	# Create pause label
 	pause_label = Label.new()
 	pause_label.text = "Paused - press Esc to resume"
@@ -85,6 +89,8 @@ func _build_ui() -> void:
 	results_panel.continue_pressed.connect(continue_to_shop)
 	shop_panel.purchase_requested.connect(buy_upgrade)
 	shop_panel.launch_requested.connect(leave_shop)
+	title_panel.play_pressed.connect(start_game)
+	title_panel.reset_pressed.connect(reset_progress)
 	
 	state_changed.connect(_on_state_changed)
 	_update_ui()
@@ -208,6 +214,10 @@ func _update_ui() -> void:
 	if hud.visible:
 		hud.update_progress(progress.best_distance, progress.coins)
 	
+	title_panel.visible = state == State.TITLE
+	if title_panel.visible:
+		title_panel.show_progress(progress.best_distance, progress.total_runs)
+	
 	if state == State.RESULTS:
 		results_panel.show_result(last_result, bool(last_result.get("new_best", false)))
 	else:
@@ -229,6 +239,20 @@ func _update_aim() -> void:
 	
 	# Move projectile into the pouch
 	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
+
+
+func go_to_title() -> void:
+	is_paused = false
+	pause_label.hide()
+	slingshot.cancel_drag()
+	change_state(State.TITLE)
+	_update_ui()
+
+
+func reset_progress() -> void:
+	progress = Progress.new()
+	save_progress()
+	_update_ui()
 
 
 func toggle_pause() -> void:
