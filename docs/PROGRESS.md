@@ -9,4 +9,5 @@ Milestone 4: complete (game loop UI: HUD, results, shop, save/load, title, victo
 Milestone 5: complete (audio and polish: music, sound effects, volume options, shake, popups, upgrade visuals, credits)
 Milestone 6: complete (graphics polish: UI theme, solid ground, scenery, trail, shadow, particles, sky tint, slingshot)
 Milestone 7: complete (player experience: UI root, fades, hints, best flag, boost flame, stats, achievements, toasts)
+Milestone 8: complete (roguelike mode: goals, perks, lives, perk and run-over screens, last-aim line)
 
