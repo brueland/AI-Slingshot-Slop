@@ -13,6 +13,9 @@ var session: RunSession
 var last_result: Dictionary = {}
 var is_paused: bool = false
 
+# Audio
+var audio: AudioManager
+
 # UI nodes
 var ui_layer: CanvasLayer
 var hud: Hud
@@ -34,6 +37,10 @@ var camera: CameraRig
 
 func _ready() -> void:
 	progress = SaveSystem.load_progress(save_path)
+	
+	# Create audio first
+	audio = AudioManager.new()
+	add_child(audio)
 	
 	# Create background first (it must be the first child)
 	background = SkyBackground.new()
@@ -247,6 +254,8 @@ func _update_ui() -> void:
 	shop_panel.visible = state == State.SHOP
 	if shop_panel.visible:
 		shop_panel.refresh(progress)
+	
+	_update_music()
 
 
 func _update_aim() -> void:
@@ -260,6 +269,16 @@ func _update_aim() -> void:
 	
 	# Move projectile into the pouch
 	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
+
+
+func _update_music() -> void:
+	match state:
+		State.AIM, State.FLIGHT:
+			audio.play_music("flight")
+		State.VICTORY:
+			audio.play_music("victory")
+		_:
+			audio.play_music("menu")
 
 
 func go_to_title() -> void:
