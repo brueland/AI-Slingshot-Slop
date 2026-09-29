@@ -13,11 +13,6 @@ func _ready():
 	custom_minimum_size = Vector2(520, 0)
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	size_flags_vertical = SIZE_EXPAND_FILL
-	anchor_right = 0.5
-	anchor_left = 0.5
-	anchor_top = 0.5
-	anchor_bottom = 0.5
-	position_offset = Vector2(-260, -150)
 	
 	# Create the list container
 	list = VBoxContainer.new()
