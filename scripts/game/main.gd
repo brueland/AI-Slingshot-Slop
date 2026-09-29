@@ -12,6 +12,9 @@ var progress: Progress
 var session: RunSession
 var last_result: Dictionary = {}
 var is_paused: bool = false
+var mode: String = "classic"        # "classic" or "rogue"
+var rogue: RogueRun
+var rogue_outcome: Dictionary = {}
 
 # Audio
 var audio: AudioManager
@@ -184,8 +187,27 @@ func start_game() -> void:
 	_begin_aim()
 
 
+func start_rogue(run_seed: int = 0) -> void:
+	if state != State.TITLE:
+		return
+	mode = "rogue"
+	rogue = RogueRun.new()
+	rogue.start(run_seed if run_seed > 0 else randi_range(1, 99999))
+	_begin_aim()
+
+
+func choose_rogue_perk(id: String) -> bool:
+	if mode != "rogue" or state != State.RESULTS or not rogue.choose_perk(id):
+		return false
+	_begin_aim()
+	return true
+
+
 func _begin_aim() -> void:
-	session = RunSession.new(progress.stats(), progress.total_runs + 1)
+	if mode == "rogue":
+		session = RunSession.new(rogue.stats(), rogue.shot_seed())
+	else:
+		session = RunSession.new(progress.stats(), progress.total_runs + 1)
 	
 	# Set up views for the new session
 	course_view.build(session.course)
@@ -196,7 +218,7 @@ func _begin_aim() -> void:
 	slingshot.apply_stats(stats, progress.level_of("power"))
 	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
 	slingshot.enabled = true
-	slingshot.show_last_aim = progress.level_of("guide") >= 1
+	slingshot.show_last_aim = rogue.has_perk("steady") if mode == "rogue" else progress.level_of("guide") >= 1
 	projectile_view.show_at(session.sim.position)
 	projectile_view.rotation = 0.0
 	camera.snap_to(projectile_view.position)
@@ -275,6 +297,15 @@ func leave_shop() -> void:
 
 
 func _finish_run() -> void:
+	if mode == "rogue":
+		last_result = session.result()
+		rogue_outcome = rogue.finish_shot(last_result)
+		if rogue.is_over():
+			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
+			save_progress()
+		change_state(State.RESULTS)
+		return
+	
 	var previous_best := progress.best_distance
 	var had_goal := progress.goal_reached
 	last_result = session.result()
@@ -312,7 +343,7 @@ func _update_ui() -> void:
 	if title_panel.visible:
 		title_panel.show_progress(progress.best_distance, progress.total_runs)
 	
-	if state == State.RESULTS:
+	if state == State.RESULTS and mode == "classic":
 		results_panel.show_result(last_result, bool(last_result.get("new_best", false)))
 	else:
 		results_panel.hide()
@@ -353,6 +384,7 @@ func _update_music() -> void:
 
 
 func go_to_title() -> void:
+	mode = "classic"
 	is_paused = false
 	pause_label.hide()
 	slingshot.cancel_drag()
