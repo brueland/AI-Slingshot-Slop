@@ -3,12 +3,14 @@ extends PanelContainer
 ## Roguelike: after each shot, shows whether the goal was met, the next goal, and three perks to choose from.
 
 signal perk_chosen(id: String)
+signal reroll_pressed
 
 var title_label: Label
 var goal_label: Label
 var round_label: Label
 var perk_buttons: Array[Button] = []
 var perk_ids: Array[String] = []
+var reroll_button: Button
 
 
 func _ready() -> void:
@@ -35,6 +37,10 @@ func _ready() -> void:
 		button.pressed.connect(func(): _on_pick(i))
 		box.add_child(button)
 		perk_buttons.append(button)
+	
+	reroll_button = Button.new()
+	reroll_button.pressed.connect(func(): reroll_pressed.emit())
+	box.add_child(reroll_button)
 	hide()
 
 
@@ -55,6 +61,9 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 		else:
 			button.hide()
 	show()
+	
+	reroll_button.text = "Reroll perks (%d left)" % run.rerolls
+	reroll_button.disabled = run.rerolls <= 0
 
 
 func _on_pick(index: int) -> void:

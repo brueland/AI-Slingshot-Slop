@@ -13,6 +13,7 @@ var shots: int = 0
 var perks: Array[String] = []
 var goal: Dictionary = {}
 var offer: Array[String] = []
+var rerolls: int = 1
 
 
 func start(new_seed: int) -> void:
@@ -21,6 +22,7 @@ func start(new_seed: int) -> void:
 	lives = START_LIVES
 	rounds_cleared = 0
 	shots = 0
+	rerolls = 1
 	perks.clear()
 	offer.clear()
 	goal = RogueGoals.make_goal(1, run_seed)
@@ -51,6 +53,8 @@ func finish_shot(result: Dictionary) -> Dictionary:
 	if met:
 		rounds_cleared += 1
 		round_number += 1
+		if rounds_cleared % 5 == 0:
+			rerolls += 1
 		goal = RogueGoals.make_goal(round_number, run_seed)
 	else:
 		lives -= 1
@@ -58,6 +62,19 @@ func finish_shot(result: Dictionary) -> Dictionary:
 	if not is_over():
 		offer = RoguePerks.offer(run_seed * 100 + shots, perks)
 	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate()}
+
+
+## Swaps the offer for a different one. One reroll per run, plus one for every 5 rounds cleared.
+func reroll() -> bool:
+	if is_over() or rerolls <= 0 or offer.is_empty():
+		return false
+	rerolls -= 1
+	var old := offer.duplicate()
+	for k in 10:
+		offer = RoguePerks.offer(run_seed * 100 + shots + 7777 * (k + 1), perks)
+		if offer != old:
+			break
+	return true
 
 
 func choose_perk(id: String) -> bool:

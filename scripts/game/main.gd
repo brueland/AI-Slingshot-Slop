@@ -131,6 +131,7 @@ func _build_ui() -> void:
 	title_panel.rogue_pressed.connect(start_rogue)
 	title_panel.daily_pressed.connect(start_daily)
 	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
+	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
 	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(progress))
 	wardrobe_panel.hat_chosen.connect(choose_hat)
@@ -205,6 +206,13 @@ func choose_rogue_perk(id: String) -> bool:
 	if mode != "rogue" or state != State.RESULTS or not rogue.choose_perk(id):
 		return false
 	_begin_aim()
+	return true
+
+
+func reroll_perks() -> bool:
+	if mode != "rogue" or state != State.RESULTS or not rogue.reroll():
+		return false
+	_update_ui()
 	return true
 
 
