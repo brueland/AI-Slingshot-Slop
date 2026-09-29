@@ -8,6 +8,10 @@ var best_distance: float = 0.0
 var total_runs: int = 0
 var goal_reached: bool = false
 var settings: Dictionary = {"music_volume": 0.8, "sfx_volume": 0.8}
+var lifetime: Dictionary = {"distance": 0.0, "stars": 0, "bounces": 0, "best_height": 0.0}
+var recent_distances: Array[float] = []
+
+const RECENT_RUNS: int = 10
 
 
 func level_of(id: String) -> int:
@@ -52,6 +56,8 @@ func to_dict() -> Dictionary:
 		"total_runs": total_runs,
 		"goal_reached": goal_reached,
 		"settings": settings.duplicate(),
+		"lifetime": lifetime.duplicate(),
+		"recent_distances": recent_distances.duplicate(),
 	}
 
 
@@ -82,6 +88,22 @@ static func from_dict(data: Dictionary) -> Progress:
 				var value = float(settings_data[key])
 				p.settings[key] = clampf(value, 0.0, 1.0)
 	
+	# Handle lifetime stats safely
+	var lifetime_data = data.get("lifetime")
+	if typeof(lifetime_data) == TYPE_DICTIONARY:
+		p.lifetime["distance"] = maxf(0.0, float(lifetime_data.get("distance", 0.0)))
+		p.lifetime["stars"] = maxi(0, int(lifetime_data.get("stars", 0)))
+		p.lifetime["bounces"] = maxi(0, int(lifetime_data.get("bounces", 0)))
+		p.lifetime["best_height"] = maxf(0.0, float(lifetime_data.get("best_height", 0.0)))
+	
+	# Handle recent distances safely
+	var recent_distances_data = data.get("recent_distances")
+	if typeof(recent_distances_data) == TYPE_ARRAY:
+		for value in recent_distances_data:
+			p.recent_distances.append(float(value))
+		while p.recent_distances.size() > RECENT_RUNS:
+			p.recent_distances.pop_front()
+	
 	return p
 
 
@@ -95,3 +117,13 @@ func record_run(distance: float, coins_earned: int) -> Array:
 	if distance >= Balance.GOAL_DISTANCE:
 		goal_reached = true
 	return reached
+
+
+func record_lifetime(result: Dictionary) -> void:
+	lifetime["distance"] = float(lifetime["distance"]) + maxf(0.0, float(result.get("distance", 0.0)))
+	lifetime["stars"] = int(lifetime["stars"]) + int(result.get("stars", 0))
+	lifetime["bounces"] = int(lifetime["bounces"]) + int(result.get("bounces", 0))
+	lifetime["best_height"] = maxf(float(lifetime["best_height"]), float(result.get("max_height", 0.0)))
+	recent_distances.append(float(result.get("distance", 0.0)))
+	while recent_distances.size() > RECENT_RUNS:
+		recent_distances.pop_front()

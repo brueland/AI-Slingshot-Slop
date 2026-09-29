@@ -270,6 +270,7 @@ func _finish_run() -> void:
 	var had_goal := progress.goal_reached
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
+	progress.record_lifetime(last_result)
 	if not last_result["milestones"].is_empty():
 		audio.play_sfx("milestone")
 	save_progress()
