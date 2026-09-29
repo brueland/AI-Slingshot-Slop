@@ -4,6 +4,7 @@ extends Control
 
 const HINT_AIM: String = "Drag the alien back, aim, and let go!"
 const HINT_BOOST: String = "Press Space in the air to boost!"
+const HINT_REPEAT: String = "Press R to repeat your last shot"
 
 var distance_label: Label
 var height_label: Label

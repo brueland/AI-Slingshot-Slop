@@ -216,6 +216,8 @@ func _begin_aim() -> void:
 	# Show hint for first run or when boosts are available
 	if progress.total_runs == 0:
 		hud.show_hint(Hud.HINT_AIM)
+	elif slingshot.show_last_aim and slingshot.last_pull != Vector2.ZERO:
+		hud.show_hint(Hud.HINT_REPEAT)
 	else:
 		hud.hide_hint()
 	

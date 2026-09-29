@@ -52,6 +52,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		var point: Vector2 = get_canvas_transform().affine_inverse() * event.position
 		update_drag(point)
 		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_R:
+		if repeat_last_shot():
+			get_viewport().set_input_as_handled()
 
 
 func begin_drag(point: Vector2) -> bool:
@@ -90,6 +93,14 @@ func cancel_drag() -> void:
 	dragging = false
 	pull = Vector2.ZERO
 	queue_redraw()
+
+
+## Launches again with the remembered pull (the R key), only while the last-aim line is shown.
+func repeat_last_shot() -> bool:
+	if not enabled or dragging or not show_last_aim or last_pull == Vector2.ZERO:
+		return false
+	launched.emit(last_pull)
+	return true
 
 
 func pouch_position() -> Vector2:
