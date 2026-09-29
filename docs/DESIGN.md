@@ -283,5 +283,5 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 7 Player experience | 061–070, 070c | UiRoot refactor, screen fades, first-time hints, best-distance flag, boost flame, lifetime stats and stats screen, achievements with pop-ups |
 | 8 Roguelike | 071–080, 080c | Feedback refactor, last-aim line (Aim Guide upgrade), roguelike goals, perks, runs with lives, perk and run-over screens, title button |
 | 9 Whimsy | 081–090, 090c | UiRoot.refresh refactor, jelly wobble, hats with a Wardrobe, alien moods, sheep that hop, confetti, alien quips |
-| 10 Features | 091–100, 100c | Compact main._ready, R repeats the last shot, party balloons, best-run ghost, daily run, perk rerolls, pause menu, title mascot, night stars |
+| 10 Features | 091–100 (096 in two parts: 096, 096b), 100c | Compact main._ready, R repeats the last shot, party balloons, best-run ghost, daily run, perk rerolls, pause menu, title mascot, night stars |
 | 11 Roguelike sizes | 101–104, 105c | Star pickup settings, Small/Normal/Big alien sizes, size drawn on screen, size choice on the perk panel |

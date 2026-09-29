@@ -11,7 +11,10 @@ The roguelike alien can be small, normal or big (task 102). ProjectileView draws
 classic shots are always size 1. Use small SEARCH/REPLACE edits.
 
 **1. `scripts/game/projectile_view.gd`** (keep everything else):
-- **Declare** `var size_scale: float = 1.0` after `var decor: ProjectileDecor`.
+- **Declare the variable** at the top of the class, on the line right after `var decor: ProjectileDecor`:
+  ```gdscript
+  var size_scale: float = 1.0
+  ```
 - In `set_tier()`, multiply the scale by the size: the `scale = ...` line becomes
   ```gdscript
   	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER) / texture.get_width() * size_scale

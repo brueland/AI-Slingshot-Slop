@@ -12,7 +12,10 @@ In the roguelike the player may swap the three offered perks for three others: o
 every 5 rounds cleared.
 
 **1. `scripts/core/rogue_run.gd`** (keep everything else):
-- **Declare** `var rerolls: int = 1` after `var offer: Array[String] = []`.
+- **Declare the variable** at the top of the class, on the line right after `var offer: Array[String] = []`:
+  ```gdscript
+  var rerolls: int = 1
+  ```
 - In `start()`, right after `shots = 0`: `rerolls = 1`
 - In `finish_shot()`, inside `if met:`, right after `round_number += 1`:
   ```gdscript
@@ -35,8 +38,11 @@ every 5 rounds cleared.
   ```
 
 **2. `scripts/ui/rogue_panel.gd`** (keep everything else):
-- Add `signal reroll_pressed` after `signal perk_chosen(id: String)`, and **declare** `var reroll_button: Button`
-  after `var perk_ids: Array[String] = []`.
+- Add `signal reroll_pressed` after `signal perk_chosen(id: String)`.
+- **Declare the variable** at the top of the class, on the line right after `var perk_ids: Array[String] = []`:
+  ```gdscript
+  var reroll_button: Button
+  ```
 - In `_ready()`, right after the loop that creates the three perk buttons (before `hide()`):
   ```gdscript
   	reroll_button = Button.new()

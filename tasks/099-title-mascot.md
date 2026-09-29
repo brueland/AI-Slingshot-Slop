@@ -60,7 +60,10 @@ func _draw() -> void:
 ```
 
 **2. `scripts/ui/title_panel.gd`** (keep everything else):
-- **Declare** `var mascot: TitleMascot` after `var box: VBoxContainer`.
+- **Declare the variable** at the top of the class, on the line right after `var box: VBoxContainer`:
+  ```gdscript
+  var mascot: TitleMascot
+  ```
 - In `_ready()`, right after `add_child(box)` (so the mascot is the first child of the box, above the game name):
   ```gdscript
   	mascot = TitleMascot.new()
