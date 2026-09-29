@@ -55,9 +55,15 @@ static func unlock(result: Dictionary, progress: Progress) -> Array:
 	return unlocked
 ```
 
-**2. `scripts/core/progress.gd`** (keep everything): `var achievements: Array[String] = []`; `to_dict()` also
-returns `"achievements": achievements.duplicate()`; `from_dict()`: if `data.get("achievements")` is an Array,
-append each value as `str(value)` only if it is an id in `Achievements.LIST` and not already in the list.
+**2. `scripts/core/progress.gd`** (keep everything):
+- **Declare the variable** at the top of the class, next to `var recent_distances` (without this line the script
+  fails with `Identifier "achievements" not declared in the current scope`):
+  ```gdscript
+  var achievements: Array[String] = []
+  ```
+- `to_dict()` also returns `"achievements": achievements.duplicate()`.
+- `from_dict()`: if `data.get("achievements")` is an Array, append each value as `str(value)` to `p.achievements`
+  only if it is an id in `Achievements.LIST` and not already in the list.
 
 **3. `scripts/game/main.gd`:** in `_finish_run()`, after `progress.record_lifetime(last_result)` (before saving):
 `last_result["achievements"] = Achievements.unlock(last_result, progress)`.
