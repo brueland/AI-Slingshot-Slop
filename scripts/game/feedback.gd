@@ -10,6 +10,8 @@ var course_view: CourseView
 var projectile_view: ProjectileView
 var popups: Node2D
 var hud: Hud
+var critters: Critters
+var sim: FlightSim
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 
@@ -27,6 +29,7 @@ func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_cou
 
 func watch(session: RunSession) -> void:
 	star_value = session.stats.star_value
+	sim = session.sim
 	bounces_seen = 0
 	projectile_view.set_mood("")
 	session.tracker.star_collected.connect(course_view.mark_collected)
@@ -63,6 +66,13 @@ func _on_bounced(impact_speed: float) -> void:
 	bounces_seen += 1
 	if bounces_seen >= 3:
 		projectile_view.set_mood("dizzy", 2.0)
+	if critters != null and sim != null:
+		var sheep := critters.react(sim.position.x)
+		if sheep >= 0:
+			var baa := FloatingText.new()
+			baa.setup("Baa!", Color.WHITE)
+			baa.position = critters.sheep_position(sheep) + Vector2(-16.0, -48.0)
+			popups.add_child(baa)
 
 
 func _on_boosted() -> void:

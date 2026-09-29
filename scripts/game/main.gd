@@ -39,6 +39,7 @@ var ui_theme: Theme
 var background: SkyBackground
 var world_view: WorldView
 var scenery: Scenery
+var critters: Critters
 var course_view: CourseView
 var slingshot: Slingshot
 var trajectory: TrajectoryPreview
@@ -80,6 +81,10 @@ func _ready() -> void:
 	add_child(scenery)
 	scenery.build(Scenery.SEED, Balance.COURSE_LENGTH)
 	
+	critters = Critters.new()
+	add_child(critters)
+	critters.build(Critters.SEED, Balance.COURSE_LENGTH)
+	
 	course_view = CourseView.new()
 	add_child(course_view)
 	
@@ -117,6 +122,7 @@ func _ready() -> void:
 	
 	# Set the initial hat
 	projectile_view.set_hat(progress.hat)
+	feedback.critters = critters
 	
 	# Connect signals - now that wardrobe_panel is properly initialized
 	slingshot.launched.connect(launch_with_pull)
