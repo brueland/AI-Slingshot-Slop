@@ -36,6 +36,11 @@ lives; the best number of rounds cleared is saved. It reuses the AIM, FLIGHT and
 change physics), wobbles like jelly on bounces, shows moods (dizzy stars, a surprised "!", sleepy "z"s), sheep
 hop and say "Baa!" when it lands next to them, great moments throw confetti, and the results screen quotes it.
 
+**Features** (milestone 10): party balloons float above the course (flying into one lifts the alien), the best
+classic run is drawn as a faint ghost line, R repeats the last shot once the last-aim line is unlocked, a **Daily
+Run** gives everyone the same roguelike seed each day, perk offers can be rerolled, Esc opens a pause menu, the
+title shows the alien in its hat, and stars come out high in the sky.
+
 **Last-aim line:** a dashed line through the slingshot showing the previous launch's pull, so a good shot can be
 repeated. Classic: unlocked by Aim Guide level 1+. Roguelike: unlocked by the Steady Hand perk.
 
@@ -259,7 +264,7 @@ The per-task files (tasks/*.md) give each node's exact API.
 
 ## 11. Build plan
 
-90 tasks in 9 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+100 tasks in 10 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -273,3 +278,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 7 Player experience | 061–070, 070c | UiRoot refactor, screen fades, first-time hints, best-distance flag, boost flame, lifetime stats and stats screen, achievements with pop-ups |
 | 8 Roguelike | 071–080, 080c | Feedback refactor, last-aim line (Aim Guide upgrade), roguelike goals, perks, runs with lives, perk and run-over screens, title button |
 | 9 Whimsy | 081–090, 090c | UiRoot.refresh refactor, jelly wobble, hats with a Wardrobe, alien moods, sheep that hop, confetti, alien quips |
+| 10 Features | 091–100, 100c | Compact main._ready, R repeats the last shot, party balloons, best-run ghost, daily run, perk rerolls, pause menu, title mascot, night stars |
