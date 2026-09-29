@@ -10,4 +10,5 @@ Milestone 5: complete (audio and polish: music, sound effects, volume options, s
 Milestone 6: complete (graphics polish: UI theme, solid ground, scenery, trail, shadow, particles, sky tint, slingshot)
 Milestone 7: complete (player experience: UI root, fades, hints, best flag, boost flame, stats, achievements, toasts)
 Milestone 8: complete (roguelike mode: goals, perks, lives, perk and run-over screens, last-aim line)
+Milestone 9: complete (whimsy: hats and wardrobe, jelly wobble, moods, sheep, confetti, quips)
 
