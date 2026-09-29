@@ -17,7 +17,7 @@ var is_paused: bool = false
 var audio: AudioManager
 
 # UI nodes
-var ui_layer: CanvasLayer
+var ui_layer: UiRoot
 var hud: Hud
 var results_panel: ResultsPanel
 var shop_panel: ShopPanel
@@ -104,41 +104,18 @@ func _ready() -> void:
 
 
 func _build_ui() -> void:
-	ui_layer = CanvasLayer.new()
+	ui_layer = UiRoot.new()
 	add_child(ui_layer)
 	
-	hud = Hud.new()
-	ui_layer.add_child(hud)
-	
-	results_panel = ResultsPanel.new()
-	ui_layer.add_child(results_panel)
-	
-	victory_panel = VictoryPanel.new()
-	ui_layer.add_child(victory_panel)
-	
-	shop_panel = ShopPanel.new()
-	ui_layer.add_child(shop_panel)
-	
-	title_panel = TitlePanel.new()
-	ui_layer.add_child(title_panel)
-	
-	# Create pause label
-	pause_label = Label.new()
-	pause_label.text = "Paused - press Esc to resume"
-	pause_label.add_theme_font_size_override("font_size", 32)
-	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	pause_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	pause_label.grow_vertical = Control.GROW_DIRECTION_BOTH
-	pause_label.hide()
-	ui_layer.add_child(pause_label)
-	
-	# Create options panel
-	options_panel = OptionsPanel.new()
-	ui_layer.add_child(options_panel)
-	
-	# Create credits panel
-	credits_panel = CreditsPanel.new()
-	ui_layer.add_child(credits_panel)
+	ui_theme = ui_layer.ui_theme
+	hud = ui_layer.hud
+	results_panel = ui_layer.results_panel
+	victory_panel = ui_layer.victory_panel
+	shop_panel = ui_layer.shop_panel
+	title_panel = ui_layer.title_panel
+	pause_label = ui_layer.pause_label
+	options_panel = ui_layer.options_panel
+	credits_panel = ui_layer.credits_panel
 	
 	results_panel.continue_pressed.connect(continue_to_shop)
 	victory_panel.continue_pressed.connect(continue_to_shop)
@@ -151,12 +128,6 @@ func _build_ui() -> void:
 	credits_panel.closed.connect(credits_panel.hide)
 	options_panel.volume_changed.connect(_on_volume_changed)
 	options_panel.closed.connect(options_panel.hide)
-	
-	# Apply UI theme to all controls
-	ui_theme = UiTheme.build()
-	for child in ui_layer.get_children():
-		if child is Control:
-			child.theme = ui_theme
 	
 	state_changed.connect(_on_state_changed)
 	_update_ui()
