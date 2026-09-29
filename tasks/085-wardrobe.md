@@ -8,7 +8,7 @@ read: [scripts/core/hats.gd, scripts/game/projectile_view.gd]
 
 # Wardrobe screen
 
-**1. Create `scripts/ui/wardrobe_panel.gd` with exactly this code:**
+**1. Create the file `scripts/ui/wardrobe_panel.gd` with exactly this code** (use that exact path as the edit's file name):
 ```gdscript
 class_name WardrobePanel
 extends PanelContainer
