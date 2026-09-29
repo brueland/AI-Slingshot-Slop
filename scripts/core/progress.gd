@@ -12,6 +12,7 @@ var settings: Dictionary = {"music_volume": 0.8, "sfx_volume": 0.8}
 var lifetime: Dictionary = {"distance": 0.0, "stars": 0, "bounces": 0, "best_height": 0.0}
 var achievements: Array[String] = []
 var recent_distances: Array[float] = []
+var hat: String = "none"
 
 const RECENT_RUNS: int = 10
 
@@ -62,6 +63,7 @@ func to_dict() -> Dictionary:
 		"lifetime": lifetime.duplicate(),
 		"achievements": achievements.duplicate(),
 		"recent_distances": recent_distances.duplicate(),
+		"hat": hat,
 	}
 
 
@@ -122,6 +124,11 @@ static func from_dict(data: Dictionary) -> Progress:
 			p.recent_distances.append(float(value))
 		while p.recent_distances.size() > RECENT_RUNS:
 			p.recent_distances.pop_front()
+	
+	# Handle hat safely
+	var hat_id := str(data.get("hat", "none"))
+	if not Hats.get_def(hat_id).is_empty():
+		p.hat = hat_id
 	
 	return p
 
