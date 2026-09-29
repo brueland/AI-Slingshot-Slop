@@ -43,40 +43,82 @@ and in `_ready()` right before `back_button = Button.new()`:
 	rogue_over_panel.daily_label.text = "Daily run %s - best today: %d rounds" % [daily_key, int(progress.daily_best.get(daily_key, 0))]
 ```
 
-**4. `scripts/game/main.gd`**: six small edits. `start_rogue()`, `_finish_run()`, `_build_ui()` and `go_to_title()`
-already exist: **add lines inside them, never declare them again** (a second `func start_rogue` is a parse error).
-The only new function is `start_daily()`.
-- Declare the variable on the line right after `var rogue_outcome: Dictionary = {}`:
-  ```gdscript
-  var daily_key: String = ""
-  ```
-- Inside the existing `start_rogue()`, add one line right after `mode = "rogue"`:
-  ```gdscript
-  	daily_key = ""
-  ```
-- Add this new function right before the existing `func choose_rogue_perk(`:
-  ```gdscript
-  ## Today's roguelike run (or the run of `date`): the same seed for everyone on that day.
-  func start_daily(date: Dictionary = {}) -> void:
-  	if state != State.TITLE:
-  		return
-  	var day := date if not date.is_empty() else Daily.today()
-  	start_rogue(Daily.seed_for(day))
-  	daily_key = Daily.key_for(day)
-  ```
-- Inside the existing `_finish_run()`, inside `if rogue.is_over():`, right after the `progress.best_rogue_round = ...` line:
-  ```gdscript
-  			if daily_key != "":
-  				Daily.record(progress.daily_best, daily_key, rogue.rounds_cleared)
-  ```
-- Inside the existing `_build_ui()`, right after `title_panel.rogue_pressed.connect(start_rogue)`:
-  ```gdscript
-  	title_panel.daily_pressed.connect(start_daily)
-  ```
-- Inside the existing `go_to_title()`, right after `mode = "classic"`:
-  ```gdscript
-  	daily_key = ""
-  ```
+**4. `scripts/game/main.gd`**: exactly these six SEARCH/REPLACE edits. Each REPLACE keeps the SEARCH lines and
+adds the new lines; do not change or remove anything else (no other variable or function is touched, and
+`choose_rogue_perk()` must stay).
+
+Edit 1 - SEARCH:
+```gdscript
+var rogue_outcome: Dictionary = {}
+```
+REPLACE:
+```gdscript
+var rogue_outcome: Dictionary = {}
+var daily_key: String = ""
+```
+
+Edit 2 - SEARCH:
+```gdscript
+	mode = "rogue"
+	rogue = RogueRun.new()
+```
+REPLACE:
+```gdscript
+	mode = "rogue"
+	daily_key = ""
+	rogue = RogueRun.new()
+```
+
+Edit 3 - SEARCH:
+```gdscript
+func choose_rogue_perk(id: String) -> bool:
+```
+REPLACE:
+```gdscript
+## Today's roguelike run (or the run of `date`): the same seed for everyone on that day.
+func start_daily(date: Dictionary = {}) -> void:
+	if state != State.TITLE:
+		return
+	var day := date if not date.is_empty() else Daily.today()
+	start_rogue(Daily.seed_for(day))
+	daily_key = Daily.key_for(day)
+
+
+func choose_rogue_perk(id: String) -> bool:
+```
+
+Edit 4 - SEARCH:
+```gdscript
+			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
+```
+REPLACE:
+```gdscript
+			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
+			if daily_key != "":
+				Daily.record(progress.daily_best, daily_key, rogue.rounds_cleared)
+```
+
+Edit 5 - SEARCH:
+```gdscript
+	title_panel.rogue_pressed.connect(start_rogue)
+```
+REPLACE:
+```gdscript
+	title_panel.rogue_pressed.connect(start_rogue)
+	title_panel.daily_pressed.connect(start_daily)
+```
+
+Edit 6 - SEARCH:
+```gdscript
+func go_to_title() -> void:
+	mode = "classic"
+```
+REPLACE:
+```gdscript
+func go_to_title() -> void:
+	mode = "classic"
+	daily_key = ""
+```
 
 ## Acceptance criteria
 - The title's "Daily Run" button plays today's run; `start_daily(date)` plays that date's run.

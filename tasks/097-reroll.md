@@ -55,17 +55,34 @@ every 5 rounds cleared.
   	reroll_button.disabled = run.rerolls <= 0
   ```
 
-**3. `scripts/game/main.gd`** (only these edits):
-- In `_build_ui()`, right after `ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)`:
-  `ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)`
-- Add this function right before `_begin_aim()`:
-  ```gdscript
-  func reroll_perks() -> bool:
-  	if mode != "rogue" or state != State.RESULTS or not rogue.reroll():
-  		return false
-  	_update_ui()
-  	return true
-  ```
+**3. `scripts/game/main.gd`**: exactly these two SEARCH/REPLACE edits. Each REPLACE keeps the SEARCH lines and
+adds the new ones; nothing else in main.gd changes (`_begin_aim()` must stay).
+
+Edit 1 - SEARCH:
+```gdscript
+	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
+```
+REPLACE:
+```gdscript
+	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
+	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
+```
+
+Edit 2 - SEARCH:
+```gdscript
+func _begin_aim() -> void:
+```
+REPLACE:
+```gdscript
+func reroll_perks() -> bool:
+	if mode != "rogue" or state != State.RESULTS or not rogue.reroll():
+		return false
+	_update_ui()
+	return true
+
+
+func _begin_aim() -> void:
+```
 
 ## Acceptance criteria
 - A run starts with 1 reroll and earns 1 more each time the rounds cleared reach a multiple of 5.
