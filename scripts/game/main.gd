@@ -38,13 +38,13 @@ var camera: CameraRig
 func _ready() -> void:
 	progress = SaveSystem.load_progress(save_path)
 	
-	# Create audio first
-	audio = AudioManager.new()
-	add_child(audio)
-	
 	# Create background first (it must be the first child)
 	background = SkyBackground.new()
 	add_child(background)
+	
+	# Create audio after background
+	audio = AudioManager.new()
+	add_child(audio)
 	
 	# Create world nodes
 	world_view = WorldView.new()
