@@ -15,6 +15,7 @@ var is_paused: bool = false
 var mode: String = "classic"        # "classic" or "rogue"
 var rogue: RogueRun
 var rogue_outcome: Dictionary = {}
+var daily_key: String = ""
 
 # Audio
 var audio: AudioManager
@@ -128,6 +129,7 @@ func _build_ui() -> void:
 	shop_panel.launch_requested.connect(leave_shop)
 	title_panel.play_pressed.connect(start_game)
 	title_panel.rogue_pressed.connect(start_rogue)
+	title_panel.daily_pressed.connect(start_daily)
 	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
 	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(progress))
@@ -184,9 +186,19 @@ func start_rogue(run_seed: int = 0) -> void:
 	if state != State.TITLE:
 		return
 	mode = "rogue"
+	daily_key = ""
 	rogue = RogueRun.new()
 	rogue.start(run_seed if run_seed > 0 else randi_range(1, 99999))
 	_begin_aim()
+
+
+## Today's roguelike run (or the run of `date`): the same seed for everyone on that day.
+func start_daily(date: Dictionary = {}) -> void:
+	if state != State.TITLE:
+		return
+	var day := date if not date.is_empty() else Daily.today()
+	start_rogue(Daily.seed_for(day))
+	daily_key = Daily.key_for(day)
 
 
 func choose_rogue_perk(id: String) -> bool:
@@ -301,6 +313,8 @@ func _finish_run() -> void:
 		feedback.celebrate({"goal_met": rogue_outcome["met"]})
 		if rogue.is_over():
 			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
+			if daily_key != "":
+				Daily.record(progress.daily_best, daily_key, rogue.rounds_cleared)
 			save_progress()
 		for id in Hats.newly_unlocked(hats_before, progress):
 			toast.enqueue("New hat: %s" % Hats.get_def(id)["name"], "Try it on in the Wardrobe")
@@ -362,6 +376,7 @@ func _update_aim() -> void:
 
 func go_to_title() -> void:
 	mode = "classic"
+	daily_key = ""
 	is_paused = false
 	pause_label.hide()
 	slingshot.cancel_drag()

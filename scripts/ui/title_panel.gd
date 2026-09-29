@@ -8,6 +8,7 @@ signal options_pressed
 signal credits_pressed
 signal stats_pressed
 signal rogue_pressed
+signal daily_pressed
 signal wardrobe_pressed
 
 var title_label: Label
@@ -18,6 +19,7 @@ var options_button: Button
 var credits_button: Button
 var stats_button: Button
 var rogue_button: Button
+var daily_button: Button
 var wardrobe_button: Button
 var box: VBoxContainer
 
@@ -47,6 +49,11 @@ func _ready():
 	rogue_button.text = "Roguelike"
 	rogue_button.pressed.connect(func(): rogue_pressed.emit())
 	box.add_child(rogue_button)
+	
+	daily_button = Button.new()
+	daily_button.text = "Daily Run"
+	daily_button.pressed.connect(func(): daily_pressed.emit())
+	box.add_child(daily_button)
 	
 	wardrobe_button = Button.new()
 	wardrobe_button.text = "Wardrobe"

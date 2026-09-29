@@ -83,6 +83,9 @@ func refresh(main: Node) -> void:
 	if shop_panel.visible:
 		shop_panel.refresh(progress)
 	show_rogue_screens(state == "RESULTS" and rogue_mode, main.rogue, main.rogue_outcome, progress.best_rogue_round)
+	var daily_key: String = main.daily_key
+	rogue_over_panel.daily_label.visible = daily_key != ""
+	rogue_over_panel.daily_label.text = "Daily run %s - best today: %d rounds" % [daily_key, int(progress.daily_best.get(daily_key, 0))]
 
 
 func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_rounds: int) -> void:

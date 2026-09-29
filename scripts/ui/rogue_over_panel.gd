@@ -7,6 +7,7 @@ signal back_pressed
 var title_label: Label
 var rounds_label: Label
 var best_label: Label
+var daily_label: Label
 var perks_label: Label
 var back_button: Button
 
@@ -30,6 +31,10 @@ func _ready() -> void:
 	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	perks_label.custom_minimum_size = Vector2(440, 0)
 	box.add_child(perks_label)
+	daily_label = Label.new()
+	daily_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4))
+	daily_label.hide()
+	box.add_child(daily_label)
 	back_button = Button.new()
 	back_button.text = "Back to title"
 	box.add_child(back_button)
