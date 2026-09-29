@@ -5,6 +5,7 @@ extends PanelContainer
 signal continue_pressed
 
 var title_label: Label
+var quip_label: Label
 var distance_label: Label
 var stars_label: Label
 var bounces_label: Label
@@ -26,6 +27,10 @@ func _ready():
 	
 	title_label = Label.new()
 	vbox.add_child(title_label)
+	
+	quip_label = Label.new()
+	quip_label.add_theme_color_override("font_color", Color(0.75, 1.0, 0.85))
+	vbox.add_child(quip_label)
 	
 	distance_label = Label.new()
 	vbox.add_child(distance_label)
@@ -66,6 +71,9 @@ func _on_continue_pressed():
 
 func show_result(result: Dictionary, is_new_best: bool) -> void:
 	title_label.text = "New best!" if is_new_best else "Run complete"
+	var said := result.duplicate()
+	said["new_best"] = is_new_best
+	quip_label.text = "\"%s\"" % Quips.pick(said)
 	distance_label.text = "Distance: %d m" % result["distance_points"]
 	stars_label.text = "Stars: %d (+%d)" % [result["stars"], result["star_points"]]
 	bounces_label.text = "Bounces: %d (+%d)" % [result["bounces"], result["bounce_points"]]
