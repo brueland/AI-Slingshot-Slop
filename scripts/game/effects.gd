@@ -61,6 +61,27 @@ func spawn_flame(at: Vector2) -> CPUParticles2D:
 	return p
 
 
+## Party confetti: many small squares in bright colors that burst up and flutter down.
+func spawn_confetti(at: Vector2) -> CPUParticles2D:
+	var p := _make(at, 60, 1.1)
+	p.direction = Vector2(0, -1)
+	p.spread = 70.0
+	p.initial_velocity_min = 180.0
+	p.initial_velocity_max = 340.0
+	p.gravity = Vector2(0, 420)
+	p.angular_velocity_min = -360.0
+	p.angular_velocity_max = 360.0
+	p.scale_amount_min = 3.0
+	p.scale_amount_max = 5.0
+	var colors := Gradient.new()
+	colors.set_color(0, Color(1.0, 0.3, 0.4))
+	colors.set_color(1, Color(0.3, 0.6, 1.0))
+	colors.add_point(0.33, Color(1.0, 0.85, 0.2))
+	colors.add_point(0.66, Color(0.4, 0.9, 0.4))
+	p.color_initial_ramp = colors
+	return p
+
+
 func _make(at: Vector2, amount: int, lifetime: float) -> CPUParticles2D:
 	var p := CPUParticles2D.new()
 	p.position = at

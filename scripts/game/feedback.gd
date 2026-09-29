@@ -39,6 +39,27 @@ func watch(session: RunSession) -> void:
 	session.sim.boosted.connect(_on_boosted)
 
 
+## Confetti and a big popup for great moments: a new best, a milestone, or a roguelike goal met.
+## Returns the popup text ("" when there is nothing to celebrate).
+func celebrate(result: Dictionary) -> String:
+	var milestones: Array = result.get("milestones", [])
+	var text := ""
+	if bool(result.get("new_best", false)):
+		text = "NEW BEST!"
+	elif not milestones.is_empty():
+		text = "Milestone!"
+	elif bool(result.get("goal_met", false)):
+		text = "Goal!"
+	if text == "":
+		return ""
+	effects.spawn_confetti(projectile_view.position + Vector2(0, -20))
+	var popup := FloatingText.new()
+	popup.setup(text, Color(1.0, 0.55, 0.9))
+	popup.position = projectile_view.position + Vector2(-50.0, -80.0)
+	popups.add_child(popup)
+	return text
+
+
 func _on_star_collected(index: int) -> void:
 	audio.play_sfx("star")
 	projectile_view.set_mood("wow", 0.8)

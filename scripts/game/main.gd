@@ -319,6 +319,7 @@ func _finish_run() -> void:
 	if mode == "rogue":
 		last_result = session.result()
 		rogue_outcome = rogue.finish_shot(last_result)
+		feedback.celebrate({"goal_met": rogue_outcome["met"]})
 		if rogue.is_over():
 			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
 			save_progress()
@@ -340,6 +341,8 @@ func _finish_run() -> void:
 	last_result["new_hats"] = Hats.newly_unlocked(hats_before, progress)
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
+	
+	feedback.celebrate(last_result)
 	
 	# Go to VICTORY state if this is the first time reaching the goal
 	if progress.goal_reached and not had_goal:
