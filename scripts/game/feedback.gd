@@ -12,6 +12,7 @@ var popups: Node2D
 var hud: Hud
 var critters: Critters
 var sim: FlightSim
+var balloon_view: BalloonView
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 
@@ -37,6 +38,7 @@ func watch(session: RunSession) -> void:
 	session.tracker.spring_hit.connect(_on_spring_hit)
 	session.sim.bounced.connect(_on_bounced)
 	session.sim.boosted.connect(_on_boosted)
+	session.balloons.popped.connect(_on_balloon_popped)
 
 
 ## Confetti and a big popup for great moments: a new best, a milestone, or a roguelike goal met.
@@ -101,3 +103,15 @@ func _on_boosted() -> void:
 	effects.spawn_flame(projectile_view.position)
 	camera.shake(3.0, 0.15)
 	hud.hide_hint()
+
+
+func _on_balloon_popped(index: int) -> void:
+	audio.play_sfx("spring")
+	projectile_view.set_mood("wow", 0.8)
+	if balloon_view != null:
+		effects.spawn_confetti(balloon_view.screen_position(index))
+		balloon_view.pop(index)
+	var pop := FloatingText.new()
+	pop.setup("Pop!", Color(1.0, 0.6, 0.85))
+	pop.position = projectile_view.position + Vector2(-16.0, -44.0)
+	popups.add_child(pop)

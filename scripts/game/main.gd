@@ -50,6 +50,7 @@ var trail: Trail
 var shadow: GroundShadow
 var effects: Effects
 var feedback: Feedback
+var balloon_view: BalloonView
 
 
 func _ready() -> void:
@@ -71,6 +72,8 @@ func _ready() -> void:
 	critters.build(Critters.SEED, Balance.COURSE_LENGTH)
 	course_view = CourseView.new()
 	add_child(course_view)
+	balloon_view = BalloonView.new()
+	add_child(balloon_view)
 	slingshot = Slingshot.new()
 	add_child(slingshot)
 	trajectory = TrajectoryPreview.new()
@@ -92,6 +95,7 @@ func _ready() -> void:
 	_build_ui()
 	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
 	feedback.critters = critters
+	feedback.balloon_view = balloon_view
 	projectile_view.set_hat(progress.hat)
 	slingshot.launched.connect(launch_with_pull)
 	camera.make_current()
@@ -197,6 +201,7 @@ func _begin_aim() -> void:
 	
 	# Set up views for the new session
 	course_view.build(session.course)
+	balloon_view.build(session.balloons)
 	course_view.set_best_marker(progress.best_distance)
 	feedback.watch(session)
 	var stats := session.stats
