@@ -32,8 +32,16 @@ classic shots are always size 1. Use small SEARCH/REPLACE edits.
   	decor.scale = Vector2.ONE * size_scale
   ```
 
-**2. `scripts/game/main.gd`:** in `_begin_aim()`, right after the `projectile_view.set_tier(...)` line:
+**2. `scripts/game/main.gd`**: exactly these SEARCH/REPLACE edits. Each REPLACE keeps the SEARCH lines and adds the new ones; nothing else in
+main.gd changes.
+
+Edit 1 - SEARCH:
 ```gdscript
+	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
+```
+REPLACE:
+```gdscript
+	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
 	projectile_view.set_size(stats.size_scale)
 ```
 

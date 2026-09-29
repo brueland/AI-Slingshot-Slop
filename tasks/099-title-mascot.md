@@ -78,8 +78,20 @@ func _draw() -> void:
 **3. `scripts/ui/ui_root.gd`:** in `refresh()`, inside `if title_panel.visible:`, right after the
 `title_panel.show_progress(...)` line: `title_panel.set_mascot_hat(progress.hat)`
 
-**4. `scripts/game/main.gd`:** in `choose_hat()`, right after `projectile_view.set_hat(id)`:
-`title_panel.set_mascot_hat(id)`
+**4. `scripts/game/main.gd`**: exactly these SEARCH/REPLACE edits. Each REPLACE keeps the SEARCH lines and adds the new ones; nothing else in
+main.gd changes.
+
+Edit 1 - SEARCH:
+```gdscript
+	projectile_view.set_hat(id)
+	save_progress()
+```
+REPLACE:
+```gdscript
+	projectile_view.set_hat(id)
+	title_panel.set_mascot_hat(id)
+	save_progress()
+```
 
 ## Acceptance criteria
 - The title panel's box starts with a TitleMascot that bobs (at most 6 px) with its hat following it.
