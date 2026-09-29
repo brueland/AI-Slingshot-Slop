@@ -315,6 +315,8 @@ func _on_bounced(impact_speed: float) -> void:
 
 func _on_boosted() -> void:
 	audio.play_sfx("boost")
+	effects.spawn_flame(projectile_view.position)
+	camera.shake(3.0, 0.15)
 	hud.hide_hint()
 
 

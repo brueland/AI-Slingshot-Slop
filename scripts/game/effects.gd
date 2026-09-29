@@ -47,6 +47,20 @@ func spawn_burst(at: Vector2) -> CPUParticles2D:
 	return p
 
 
+func spawn_flame(at: Vector2) -> CPUParticles2D:
+	var p := _make(at, 20, 0.4)
+	p.texture = load(PUFF_TEXTURE)
+	p.scale_amount_min = 0.05
+	p.scale_amount_max = 0.1
+	p.direction = Vector2(-1, 1).normalized()
+	p.spread = 25.0
+	p.initial_velocity_min = 120.0
+	p.initial_velocity_max = 220.0
+	p.gravity = Vector2.ZERO
+	p.color = Color(1.0, 0.55, 0.1)
+	return p
+
+
 func _make(at: Vector2, amount: int, lifetime: float) -> CPUParticles2D:
 	var p := CPUParticles2D.new()
 	p.position = at
