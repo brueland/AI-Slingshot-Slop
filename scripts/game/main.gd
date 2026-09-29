@@ -44,6 +44,7 @@ var popups: Node2D
 var trail: Trail
 var shadow: GroundShadow
 var effects: Effects
+var feedback: Feedback
 
 
 func _ready() -> void:
@@ -102,8 +103,13 @@ func _ready() -> void:
 	effects = Effects.new()
 	add_child(effects)
 	
+	feedback = Feedback.new()
+	add_child(feedback)
+	
 	# Build UI
 	_build_ui()
+	
+	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
 	
 	# Connect signals
 	slingshot.launched.connect(launch_with_pull)
@@ -184,11 +190,7 @@ func _begin_aim() -> void:
 	# Set up views for the new session
 	course_view.build(session.course)
 	course_view.set_best_marker(progress.best_distance)
-	session.tracker.star_collected.connect(course_view.mark_collected)
-	session.tracker.star_collected.connect(_on_star_collected)
-	session.tracker.spring_hit.connect(_on_spring_hit)
-	session.sim.bounced.connect(_on_bounced)
-	session.sim.boosted.connect(_on_boosted)
+	feedback.watch(session)
 	var stats := session.stats
 	slingshot.position = WorldView.world_to_screen(Vector2(0.0, stats.launch_height))
 	slingshot.apply_stats(stats, progress.level_of("power"))
@@ -298,36 +300,6 @@ func _on_state_changed(new_state: int) -> void:
 	_update_ui()
 
 
-func _on_star_collected(index: int) -> void:
-	audio.play_sfx("star")
-	if index >= 0 and index < course_view.sprites.size():
-		effects.spawn_sparkle(course_view.sprites[index].position)
-	var popup := FloatingText.new()
-	popup.setup("+%d" % session.stats.star_value, Color(1.0, 0.85, 0.2))
-	popup.position = projectile_view.position + Vector2(-12.0, -40.0)
-	popups.add_child(popup)
-
-
-func _on_spring_hit(index: int) -> void:
-	audio.play_sfx("spring")
-	camera.shake(10.0, 0.35)
-	if index >= 0 and index < course_view.sprites.size():
-		effects.spawn_burst(course_view.sprites[index].position)
-
-
-func _on_bounced(impact_speed: float) -> void:
-	audio.play_sfx("bounce")
-	if impact_speed >= 8.0:
-		camera.shake(4.0, 0.2)
-	
-	effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
-
-
-func _on_boosted() -> void:
-	audio.play_sfx("boost")
-	effects.spawn_flame(projectile_view.position)
-	camera.shake(3.0, 0.15)
-	hud.hide_hint()
 
 
 func _update_ui() -> void:
