@@ -6,6 +6,7 @@ extends Node2D
 signal launched(pull: Vector2)
 
 const GRAB_RADIUS: float = 48.0
+const BAND_COLORS: Array[Color] = [Color(0.35, 0.2, 0.1), Color(0.8, 0.2, 0.2), Color(1.0, 0.8, 0.2)]
 
 var max_pull: float = Balance.MAX_PULL_PX
 var pull: Vector2 = Vector2.ZERO
@@ -18,6 +19,12 @@ var post_texture: Texture2D
 
 func _ready():
 	post_texture = load("res://assets/sprites/post.png")
+	queue_redraw()
+
+
+func apply_stats(stats: PlayerStats, power_level: int) -> void:
+	frame_height_px = stats.launch_height * Balance.PIXELS_PER_METER
+	band_color = BAND_COLORS[clampi(floori(power_level / 4.0), 0, BAND_COLORS.size() - 1)]
 	queue_redraw()
 
 

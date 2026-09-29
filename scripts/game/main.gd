@@ -175,7 +175,8 @@ func _begin_aim() -> void:
 	session.sim.boosted.connect(_on_boosted)
 	var stats := session.stats
 	slingshot.position = WorldView.world_to_screen(Vector2(0.0, stats.launch_height))
-	slingshot.frame_height_px = stats.launch_height * Balance.PIXELS_PER_METER
+	slingshot.apply_stats(stats, progress.level_of("power"))
+	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
 	slingshot.enabled = true
 	projectile_view.show_at(session.sim.position)
 	projectile_view.rotation = 0.0
