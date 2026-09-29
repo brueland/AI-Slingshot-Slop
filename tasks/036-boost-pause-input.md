@@ -10,8 +10,19 @@ read: [scripts/game/slingshot.gd]
 
 Edit `scripts/game/main.gd` (keep everything that works).
 
-1. A `pause_label: Label` on `ui_layer` (create it in `_build_ui()`): text `"Paused - press Esc to resume"`,
-   font size 32: `add_theme_font_size_override("font_size", 32)`, centered (`PRESET_CENTER`, grow both ways), hidden at start.
+1. A `pause_label: Label` on `ui_layer`, created at the end of `_build_ui()` with exactly this code. main.gd
+   is a Node2D, so Control constants need the `Control.` prefix (`Control.PRESET_CENTER`, never a bare
+   `PRESET_CENTER` or `SIZE_EXPAND_FILL`):
+   ```gdscript
+   pause_label = Label.new()
+   pause_label.text = "Paused - press Esc to resume"
+   pause_label.add_theme_font_size_override("font_size", 32)
+   pause_label.set_anchors_preset(Control.PRESET_CENTER)
+   pause_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
+   pause_label.grow_vertical = Control.GROW_DIRECTION_BOTH
+   pause_label.hide()
+   ui_layer.add_child(pause_label)
+   ```
 2. Keyboard input. The `boost` action (Space) already exists in project.godot; `ui_cancel` is Godot's built-in
    Esc action:
    ```gdscript
