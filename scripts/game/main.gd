@@ -39,6 +39,7 @@ var camera: CameraRig
 var popups: Node2D
 var trail: Trail
 var shadow: GroundShadow
+var effects: Effects
 
 
 func _ready() -> void:
@@ -84,6 +85,10 @@ func _ready() -> void:
 	# Create popups node for floating text
 	popups = Node2D.new()
 	add_child(popups)
+	
+	# Create effects node
+	effects = Effects.new()
+	add_child(effects)
 	
 	# Build UI
 	_build_ui()
@@ -301,6 +306,8 @@ func _on_bounced(impact_speed: float) -> void:
 	audio.play_sfx("bounce")
 	if impact_speed >= 8.0:
 		camera.shake(4.0, 0.2)
+	
+	effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
 
 
 func _on_boosted() -> void:
