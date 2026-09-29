@@ -309,12 +309,15 @@ func leave_shop() -> void:
 
 
 func _finish_run() -> void:
+	var hats_before := Hats.unlocked(progress)
 	if mode == "rogue":
 		last_result = session.result()
 		rogue_outcome = rogue.finish_shot(last_result)
 		if rogue.is_over():
 			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
 			save_progress()
+		for id in Hats.newly_unlocked(hats_before, progress):
+			toast.enqueue("New hat: %s" % Hats.get_def(id)["name"], "Try it on in the Wardrobe")
 		change_state(State.RESULTS)
 		return
 	
@@ -328,6 +331,7 @@ func _finish_run() -> void:
 	last_result["achievements"] = Achievements.unlock(last_result, progress)
 	for a in last_result["achievements"]:
 		toast.enqueue("Achievement unlocked: %s" % a["name"], a["description"])
+	last_result["new_hats"] = Hats.newly_unlocked(hats_before, progress)
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
 	

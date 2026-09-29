@@ -12,6 +12,7 @@ var multiplier_label: Label
 var total_label: Label
 var coins_label: Label
 var milestones_label: Label
+var hats_label: Label
 var continue_button: Button
 
 func _ready():
@@ -48,6 +49,11 @@ func _ready():
 	milestones_label.visible = false
 	vbox.add_child(milestones_label)
 	
+	hats_label = Label.new()
+	hats_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.4))
+	hats_label.visible = false
+	vbox.add_child(hats_label)
+	
 	continue_button = Button.new()
 	continue_button.text = "Continue"
 	continue_button.connect("pressed", Callable(self, "_on_continue_pressed"))
@@ -76,5 +82,12 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 	else:
 		milestones_label.text = ""
 		milestones_label.visible = false
+	
+	var new_hats: Array = result.get("new_hats", [])
+	var names := PackedStringArray()
+	for id in new_hats:
+		names.append(str(Hats.get_def(str(id)).get("name", id)))
+	hats_label.text = "New hat: %s! Try it on in the Wardrobe" % ", ".join(names)
+	hats_label.visible = not new_hats.is_empty()
 	
 	show()
