@@ -14,6 +14,7 @@ var achievements: Array[String] = []
 var recent_distances: Array[float] = []
 var hat: String = "none"
 var best_path: Array = []
+var daily_best: Dictionary = {}
 
 const RECENT_RUNS: int = 10
 
@@ -66,6 +67,7 @@ func to_dict() -> Dictionary:
 		"recent_distances": recent_distances.duplicate(),
 		"hat": hat,
 		"best_path": best_path.duplicate(true),
+		"daily_best": daily_best.duplicate(),
 	}
 
 
@@ -131,6 +133,12 @@ static func from_dict(data: Dictionary) -> Progress:
 	var hat_id := str(data.get("hat", "none"))
 	if not Hats.get_def(hat_id).is_empty():
 		p.hat = hat_id
+	
+	# Handle daily best safely
+	var daily_data = data.get("daily_best")
+	if typeof(daily_data) == TYPE_DICTIONARY:
+		for key in daily_data:
+			Daily.record(p.daily_best, str(key), maxi(0, int(daily_data[key])))
 	
 	# Handle best_path safely
 	var path_data = data.get("best_path")
