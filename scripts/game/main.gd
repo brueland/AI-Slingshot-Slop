@@ -26,6 +26,7 @@ var pause_label: Label
 var victory_panel: VictoryPanel
 var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
+var ui_theme: Theme
 
 # World nodes
 var background: SkyBackground
@@ -131,6 +132,12 @@ func _build_ui() -> void:
 	credits_panel.closed.connect(credits_panel.hide)
 	options_panel.volume_changed.connect(_on_volume_changed)
 	options_panel.closed.connect(options_panel.hide)
+	
+	# Apply UI theme to all controls
+	ui_theme = UiTheme.build()
+	for child in ui_layer.get_children():
+		if child is Control:
+			child.theme = ui_theme
 	
 	state_changed.connect(_on_state_changed)
 	_update_ui()
