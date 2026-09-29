@@ -54,6 +54,34 @@ func _ready() -> void:
 			child.theme = ui_theme
 
 
+## Shows the screens that belong to main's current state and mode. `main` is the node running scripts/game/main.gd.
+func refresh(main: Node) -> void:
+	var state: String = main.state_name()
+	var rogue_mode: bool = main.mode == "rogue"
+	var progress: Progress = main.progress
+	hud.visible = state == "AIM" or state == "FLIGHT"
+	if hud.visible and rogue_mode:
+		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
+	elif hud.visible:
+		hud.update_progress(progress.best_distance, progress.coins)
+	title_panel.visible = state == "TITLE"
+	if title_panel.visible:
+		title_panel.show_progress(progress.best_distance, progress.total_runs)
+	var result: Dictionary = main.last_result
+	if state == "RESULTS" and not rogue_mode:
+		results_panel.show_result(result, bool(result.get("new_best", false)))
+	else:
+		results_panel.hide()
+	if state == "VICTORY":
+		victory_panel.show_victory(progress.total_runs)
+	else:
+		victory_panel.hide()
+	shop_panel.visible = state == "SHOP"
+	if shop_panel.visible:
+		shop_panel.refresh(progress)
+	show_rogue_screens(state == "RESULTS" and rogue_mode, main.rogue, main.rogue_outcome, progress.best_rogue_round)
+
+
 func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_rounds: int) -> void:
 	rogue_panel.hide()
 	rogue_over_panel.hide()

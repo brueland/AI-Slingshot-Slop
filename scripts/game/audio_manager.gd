@@ -44,6 +44,15 @@ func _ready() -> void:
 		sfx_players.append(player)
 
 
+static func music_for_state(state_name: String) -> String:
+	match state_name:
+		"AIM", "FLIGHT":
+			return "flight"
+		"VICTORY":
+			return "victory"
+	return "menu"
+
+
 func play_music(id: String) -> void:
 	if id == current_music or not MUSIC.has(id):
 		return

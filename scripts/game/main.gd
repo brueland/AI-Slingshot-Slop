@@ -338,33 +338,8 @@ func _on_state_changed(new_state: int) -> void:
 
 
 func _update_ui() -> void:
-	hud.visible = state == State.AIM or state == State.FLIGHT
-	if hud.visible and mode == "rogue":
-		hud.show_rogue(rogue.goal["text"], rogue.round_number, rogue.lives)
-	elif hud.visible:
-		hud.update_progress(progress.best_distance, progress.coins)
-	
-	title_panel.visible = state == State.TITLE
-	if title_panel.visible:
-		title_panel.show_progress(progress.best_distance, progress.total_runs)
-	
-	if state == State.RESULTS and mode == "classic":
-		results_panel.show_result(last_result, bool(last_result.get("new_best", false)))
-	else:
-		results_panel.hide()
-	
-	if state == State.VICTORY:
-		victory_panel.show_victory(progress.total_runs)
-	else:
-		victory_panel.hide()
-	
-	shop_panel.visible = state == State.SHOP
-	if shop_panel.visible:
-		shop_panel.refresh(progress)
-	
-	ui_layer.show_rogue_screens(state == State.RESULTS and mode == "rogue", rogue, rogue_outcome, progress.best_rogue_round)
-	
-	_update_music()
+	ui_layer.refresh(self)
+	audio.play_music(AudioManager.music_for_state(state_name()))
 
 
 func _update_aim() -> void:
@@ -380,14 +355,6 @@ func _update_aim() -> void:
 	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
 
 
-func _update_music() -> void:
-	match state:
-		State.AIM, State.FLIGHT:
-			audio.play_music("flight")
-		State.VICTORY:
-			audio.play_music("victory")
-		_:
-			audio.play_music("menu")
 
 
 func go_to_title() -> void:
