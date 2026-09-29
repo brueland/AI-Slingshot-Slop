@@ -13,6 +13,10 @@ var options_panel: OptionsPanel
 var credits_panel: CreditsPanel
 var stats_panel: StatsPanel
 var toast: Toast
+var rogue_panel: RoguePanel
+var rogue_over_panel: RogueOverPanel
+var rogue_panel: RoguePanel
+var rogue_over_panel: RogueOverPanel
 
 
 func _ready() -> void:
@@ -42,6 +46,10 @@ func _ready() -> void:
 	add_child(stats_panel)
 	toast = Toast.new()
 	add_child(toast)
+	rogue_panel = RoguePanel.new()
+	add_child(rogue_panel)
+	rogue_over_panel = RogueOverPanel.new()
+	add_child(rogue_over_panel)
 	ui_theme = UiTheme.build()
 	for child in get_children():
 		if child is Control:

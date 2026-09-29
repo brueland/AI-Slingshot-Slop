@@ -7,6 +7,8 @@ signal reset_pressed
 signal options_pressed
 signal credits_pressed
 signal stats_pressed
+signal rogue_pressed
+signal rogue_pressed
 
 var title_label: Label
 var best_label: Label
@@ -15,6 +17,7 @@ var reset_button: Button
 var options_button: Button
 var credits_button: Button
 var stats_button: Button
+var rogue_button: Button
 var box: VBoxContainer
 
 func _ready():
@@ -38,6 +41,11 @@ func _ready():
 	play_button.text = "Play"
 	play_button.connect("pressed", Callable(self, "_on_play_pressed"))
 	box.add_child(play_button)
+	
+	rogue_button = Button.new()
+	rogue_button.text = "Roguelike"
+	rogue_button.pressed.connect(func(): rogue_pressed.emit())
+	box.add_child(rogue_button)
 	
 	stats_button = Button.new()
 	stats_button.text = "Stats"

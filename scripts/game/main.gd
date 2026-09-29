@@ -140,6 +140,9 @@ func _build_ui() -> void:
 	shop_panel.purchase_requested.connect(buy_upgrade)
 	shop_panel.launch_requested.connect(leave_shop)
 	title_panel.play_pressed.connect(start_game)
+	title_panel.rogue_pressed.connect(start_rogue)
+	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
+	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
 	title_panel.reset_pressed.connect(reset_progress)
 	title_panel.options_pressed.connect(open_options)
 	title_panel.credits_pressed.connect(credits_panel.show)
@@ -336,7 +339,9 @@ func _on_state_changed(new_state: int) -> void:
 
 func _update_ui() -> void:
 	hud.visible = state == State.AIM or state == State.FLIGHT
-	if hud.visible:
+	if hud.visible and mode == "rogue":
+		hud.show_rogue(rogue.goal["text"], rogue.round_number, rogue.lives)
+	elif hud.visible:
 		hud.update_progress(progress.best_distance, progress.coins)
 	
 	title_panel.visible = state == State.TITLE
@@ -356,6 +361,8 @@ func _update_ui() -> void:
 	shop_panel.visible = state == State.SHOP
 	if shop_panel.visible:
 		shop_panel.refresh(progress)
+	
+	ui_layer.show_rogue_screens(state == State.RESULTS and mode == "rogue", rogue, rogue_outcome, progress.best_rogue_round)
 	
 	_update_music()
 
