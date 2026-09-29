@@ -8,7 +8,6 @@ signal options_pressed
 signal credits_pressed
 signal stats_pressed
 signal rogue_pressed
-signal rogue_pressed
 
 var title_label: Label
 var best_label: Label

@@ -15,8 +15,6 @@ var stats_panel: StatsPanel
 var toast: Toast
 var rogue_panel: RoguePanel
 var rogue_over_panel: RogueOverPanel
-var rogue_panel: RoguePanel
-var rogue_over_panel: RogueOverPanel
 
 
 func _ready() -> void:
