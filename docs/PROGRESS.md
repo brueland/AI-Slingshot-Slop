@@ -6,4 +6,5 @@ Milestone 1: complete (core simulation: balance, launch math, flight sim, upgrad
 Milestone 2: complete (progression: coins, milestones, saving, course, tracker, run session)
 Milestone 3: complete (playable scene: state machine, world, slingshot, preview, camera, course sprites)
 Milestone 4: complete (game loop UI: HUD, results, shop, save/load, title, victory, pause, background)
+Milestone 5: complete (audio and polish: music, sound effects, volume options, shake, popups, upgrade visuals, credits)
 
