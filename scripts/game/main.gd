@@ -257,10 +257,13 @@ func _on_star_collected(_index: int) -> void:
 
 func _on_spring_hit(_index: int) -> void:
 	audio.play_sfx("spring")
+	camera.shake(10.0, 0.35)
 
 
-func _on_bounced(_impact_speed: float) -> void:
+func _on_bounced(impact_speed: float) -> void:
 	audio.play_sfx("bounce")
+	if impact_speed >= 8.0:
+		camera.shake(4.0, 0.2)
 
 
 func _on_boosted() -> void:
