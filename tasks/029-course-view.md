@@ -31,7 +31,9 @@ var flags: Array[Sprite2D] = []
   `WorldView.world_to_screen(Vector2(distance, 0))` with `offset = Vector2(0, -35)` (stands on the ground).
   The 1000 m goal (`distance >= Balance.GOAL_DISTANCE`) uses `GOAL_FLAG_TEXTURE`, the others `FLAG_TEXTURE`.
   Append each to `flags`.
-- `func build(items: Array) -> void`: call `clear()`, then for each item (index `i`) create a `Sprite2D` named
+- `func build(items: Array) -> void`: call `clear()`, then for each item (index `i`, read it with a typed
+  declaration: `var item: Dictionary = items[i]`, **not** `var item := items[i]`, which Godot refuses because
+  `items` is an untyped Array) create a `Sprite2D` named
   `"Item%d" % i` with `load(TEXTURES[type])`, add it as a child and append it to `sprites`. Positions (world -> screen
   with `WorldView.world_to_screen`):
   - star: at `(x, y)`, scale 0.5
