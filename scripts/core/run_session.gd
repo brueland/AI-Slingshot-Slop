@@ -5,6 +5,7 @@ extends RefCounted
 var stats: PlayerStats
 var sim: FlightSim
 var tracker: RunTracker
+var balloons: Balloons
 var course: Array = []
 var launched: bool = false
 var elapsed: float = 0.0
@@ -17,6 +18,7 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	sim.position = Vector2(0.0, stats.launch_height)
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
 	tracker = RunTracker.new(course)
+	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
 
 
 func launch_from_pull(pull: Vector2) -> Vector2:
@@ -34,6 +36,7 @@ func step(dt: float) -> void:
 	var previous := sim.position
 	sim.step(dt)
 	tracker.after_step(sim, previous)
+	balloons.after_step(sim, previous)
 	elapsed += dt
 	
 	if elapsed >= Balance.MAX_RUN_SECONDS:
@@ -55,4 +58,5 @@ func result() -> Dictionary:
 	r["stars"] = tracker.stars_collected
 	r["bounces"] = sim.bounce_count
 	r["max_height"] = sim.max_height
+	r["balloons"] = balloons.popped_count
 	return r
