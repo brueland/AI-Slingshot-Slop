@@ -52,3 +52,12 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Control:
 			child.theme = ui_theme
+
+
+func show_rogue_screens(show_perk: bool, run: RogueRun, outcome: Dictionary, best_rounds: int) -> void:
+	if show_perk:
+		rogue_panel.show_outcome(outcome, run)
+		rogue_over_panel.hide()
+	else:
+		rogue_panel.hide()
+		rogue_over_panel.show_over(run, best_rounds)
