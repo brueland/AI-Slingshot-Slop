@@ -217,6 +217,7 @@ func _begin_aim() -> void:
 	trajectory.clear()
 	trail.clear_trail()
 	shadow.update_from(session.sim.position)
+	background.set_altitude(0.0)
 	
 	change_state(State.AIM)
 
@@ -246,6 +247,7 @@ func advance(dt: float) -> void:
 		shadow.update_from(session.sim.position)
 		camera.follow(projectile_view.position, dt)
 		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_charges)
+		background.set_altitude(session.sim.position.y)
 		if session.is_finished():
 			_finish_run()
 

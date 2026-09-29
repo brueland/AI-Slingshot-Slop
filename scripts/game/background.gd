@@ -4,6 +4,8 @@ extends Node2D
 
 const SKY_TEXTURE: String = "res://assets/backgrounds/sky.png"
 const CLOUD_TEXTURE: String = "res://assets/sprites/cloud.png"
+const HIGH_SKY_COLOR := Color(0.45, 0.5, 0.85)
+const HIGH_ALTITUDE_M: float = 150.0
 
 var layers: Array[Parallax2D] = []
 
@@ -31,6 +33,7 @@ func _ready() -> void:
 	cloud_layer.scroll_scale = Vector2(0.3, 0.2)
 	cloud_layer.repeat_size = Vector2(1600, 0)
 	cloud_layer.repeat_times = 3
+	cloud_layer.autoscroll = Vector2(-12, 0)
 	
 	for i in range(4):
 		var cloud_sprite = Sprite2D.new()
@@ -40,3 +43,8 @@ func _ready() -> void:
 	
 	add_child(cloud_layer)
 	layers.append(cloud_layer)
+
+## Tints the whole sky toward deep blue as the projectile climbs (full tint at HIGH_ALTITUDE_M).
+func set_altitude(height_m: float) -> void:
+	var t := clampf(height_m / HIGH_ALTITUDE_M, 0.0, 1.0)
+	modulate = Color.WHITE.lerp(HIGH_SKY_COLOR, t)
