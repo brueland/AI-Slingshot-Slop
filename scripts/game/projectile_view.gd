@@ -14,6 +14,12 @@ var tier: int = 0
 var base_scale: Vector2 = Vector2.ONE
 var wobble_strength: float = 0.0
 var wobble_left: float = 0.0
+var decor: ProjectileDecor
+
+
+func _init() -> void:
+	decor = ProjectileDecor.new()
+	add_child(decor)
 
 
 func _ready() -> void:
@@ -22,6 +28,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	advance_wobble(delta)
+	_sync_decor()
 
 
 func set_tier(new_tier: int) -> void:
@@ -35,6 +42,7 @@ func set_tier(new_tier: int) -> void:
 func show_at(world_pos: Vector2) -> void:
 	# The sprite's center is one radius above the given point
 	position = WorldView.world_to_screen(world_pos + Vector2(0.0, Balance.PROJECTILE_RADIUS))
+	_sync_decor()
 
 
 func sync_from(sim: FlightSim) -> void:
@@ -58,3 +66,14 @@ func advance_wobble(delta: float) -> void:
 	scale = base_scale * Vector2(1.0 + w, 1.0 - w)
 	if wobble_left <= 0.0:
 		scale = base_scale
+
+
+func set_hat(id: String) -> void:
+	decor.set_hat(id)
+
+
+## The decor is top_level (it does not roll), so it is moved to the alien by hand.
+func _sync_decor() -> void:
+	if is_inside_tree():
+		decor.position = global_position
+		decor.visible = is_visible_in_tree()
