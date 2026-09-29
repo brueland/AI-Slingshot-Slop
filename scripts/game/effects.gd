@@ -3,6 +3,7 @@ extends Node2D
 ## One-shot particle effects (CPUParticles2D) that free themselves when they finish.
 
 const PUFF_TEXTURE: String = "res://assets/sprites/cloud.png"
+const STAR_TEXTURE: String = "res://assets/sprites/star.png"
 
 
 func spawn_dust(at: Vector2, strength: float) -> CPUParticles2D:
