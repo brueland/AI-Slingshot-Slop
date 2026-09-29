@@ -44,6 +44,10 @@ Engine: **Godot 4.7.2**, GDScript 2.0. Never write Godot 3.x syntax.
 - Build child nodes **in code in `_ready()`**. The only scene is `scenes/main.tscn` (one `Node2D` root with
   `scripts/game/main.gd`). Do not create other `.tscn` files.
 - Refer to numbers through `Balance` constants, never duplicate literals.
+- Center a UI panel with `set_anchors_and_offsets_preset(Control.PRESET_CENTER)` plus
+  `grow_horizontal`/`grow_vertical = Control.GROW_DIRECTION_BOTH`; full-screen layers use
+  `set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)`. Plain `set_anchors_preset()` keeps the old
+  top-left position and puts the panel off screen (tests/regression/test_ui_on_screen.gd checks this).
 - World units are meters with y pointing **up**; screen units are pixels with y pointing **down**
   (`WorldView.world_to_screen`).
 - No autoloads, no plugins, no editing `project.godot`, `addons/` or `assets/`.
