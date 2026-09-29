@@ -11,6 +11,7 @@ var projectile_view: ProjectileView
 var popups: Node2D
 var hud: Hud
 var star_value: int = Balance.BASE_STAR_VALUE
+var bounces_seen: int = 0
 
 
 func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_course_view: CourseView,
@@ -26,6 +27,8 @@ func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_cou
 
 func watch(session: RunSession) -> void:
 	star_value = session.stats.star_value
+	bounces_seen = 0
+	projectile_view.set_mood("")
 	session.tracker.star_collected.connect(course_view.mark_collected)
 	session.tracker.star_collected.connect(_on_star_collected)
 	session.tracker.spring_hit.connect(_on_spring_hit)
@@ -35,6 +38,7 @@ func watch(session: RunSession) -> void:
 
 func _on_star_collected(index: int) -> void:
 	audio.play_sfx("star")
+	projectile_view.set_mood("wow", 0.8)
 	if index >= 0 and index < course_view.sprites.size():
 		effects.spawn_sparkle(course_view.sprites[index].position)
 	var popup := FloatingText.new()
@@ -56,6 +60,9 @@ func _on_bounced(impact_speed: float) -> void:
 		camera.shake(4.0, 0.2)
 	effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
 	projectile_view.wobble(clampf(impact_speed / 25.0, 0.08, 0.35))
+	bounces_seen += 1
+	if bounces_seen >= 3:
+		projectile_view.set_mood("dizzy", 2.0)
 
 
 func _on_boosted() -> void:

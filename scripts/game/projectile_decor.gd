@@ -4,9 +4,12 @@ extends Node2D
 ## Coordinates are screen pixels around the alien's center; the alien is 24 px wide (head top at y = -12).
 
 const HAT_Y: float = -10.0
+const MOODS: Array[String] = ["", "dizzy", "wow", "sleepy"]
 
 var hat: String = "none"
 var spin: float = 0.0
+var mood: String = ""
+var mood_left: float = 0.0
 
 
 func _ready() -> void:
@@ -14,13 +17,30 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	advance(delta)
+
+
+func advance(delta: float) -> void:
 	spin = fmod(spin + delta * 18.0, TAU)
-	if hat == "propeller":
+	if mood_left > 0.0:
+		mood_left = maxf(mood_left - delta, 0.0)
+		if mood_left <= 0.0:
+			mood = ""
+	if hat == "propeller" or mood != "":
 		queue_redraw()
 
 
 func set_hat(id: String) -> void:
 	hat = id if not Hats.get_def(id).is_empty() else "none"
+	queue_redraw()
+
+
+## Shows a mood for `seconds` (0 = until changed). Unknown moods are ignored.
+func set_mood(id: String, seconds: float = 0.0) -> void:
+	if not MOODS.has(id):
+		return
+	mood = id
+	mood_left = seconds
 	queue_redraw()
 
 
@@ -33,7 +53,7 @@ static func dome(center: Vector2, radius: float) -> PackedVector2Array:
 	return points
 
 
-func _draw() -> void:
+func _draw_hat() -> void:
 	var y := HAT_Y
 	match hat:
 		"party":
@@ -64,3 +84,23 @@ func _draw() -> void:
 			draw_circle(Vector2(0, y - 3), 1.8, Color(0.9, 0.15, 0.2))
 			draw_circle(Vector2(-5, y - 2), 1.3, Color(0.2, 0.4, 0.95))
 			draw_circle(Vector2(5, y - 2), 1.3, Color(0.2, 0.4, 0.95))
+
+
+func _draw() -> void:
+	_draw_hat()
+	_draw_mood()
+
+
+func _draw_mood() -> void:
+	match mood:
+		"dizzy":
+			for k in 3:
+				var a := spin * 0.4 + k * TAU / 3.0
+				draw_circle(Vector2(cos(a) * 12.0, -24.0 + sin(a) * 3.0), 2.2, Color(1.0, 0.9, 0.2))
+		"wow":
+			draw_rect(Rect2(13, -32, 3, 9), Color(0.95, 0.2, 0.2))
+			draw_circle(Vector2(14.5, -19), 1.8, Color(0.95, 0.2, 0.2))
+		"sleepy":
+			var bob := sin(spin * 0.2) * 2.0
+			draw_string(ThemeDB.fallback_font, Vector2(12, -14 + bob), "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(1, 1, 1, 0.9))
+			draw_string(ThemeDB.fallback_font, Vector2(18, -24 - bob), "Z", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1, 1, 1, 0.9))

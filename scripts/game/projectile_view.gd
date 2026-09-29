@@ -49,6 +49,8 @@ func sync_from(sim: FlightSim) -> void:
 	show_at(sim.position)
 	# Roll the projectile based on its x position
 	rotation = sim.position.x / Balance.PROJECTILE_RADIUS
+	if sim.stopped:
+		set_mood("sleepy")
 
 
 ## Jelly wobble after a bounce: the alien squashes and stretches for WOBBLE_SECONDS, then is round again.
@@ -70,6 +72,10 @@ func advance_wobble(delta: float) -> void:
 
 func set_hat(id: String) -> void:
 	decor.set_hat(id)
+
+
+func set_mood(id: String, seconds: float = 0.0) -> void:
+	decor.set_mood(id, seconds)
 
 
 ## The decor is top_level (it does not roll), so it is moved to the alien by hand.
