@@ -13,6 +13,12 @@ var session: RunSession
 var last_result: Dictionary = {}
 var is_paused: bool = false
 
+# UI nodes
+var ui_layer: CanvasLayer
+var hud: Hud
+var results_panel: ResultsPanel
+var shop_panel: ShopPanel
+
 # World nodes
 var world_view: WorldView
 var course_view: CourseView
@@ -44,9 +50,33 @@ func _ready() -> void:
 	camera = CameraRig.new()
 	add_child(camera)
 	
+	# Build UI
+	_build_ui()
+	
 	# Connect signals
 	slingshot.launched.connect(launch_with_pull)
 	camera.make_current()
+
+
+func _build_ui() -> void:
+	ui_layer = CanvasLayer.new()
+	add_child(ui_layer)
+	
+	hud = Hud.new()
+	ui_layer.add_child(hud)
+	
+	results_panel = ResultsPanel.new()
+	ui_layer.add_child(results_panel)
+	
+	shop_panel = ShopPanel.new()
+	ui_layer.add_child(shop_panel)
+	
+	results_panel.continue_pressed.connect(continue_to_shop)
+	shop_panel.purchase_requested.connect(buy_upgrade)
+	shop_panel.launch_requested.connect(leave_shop)
+	
+	state_changed.connect(_on_state_changed)
+	_update_ui()
 
 
 func _physics_process(delta: float) -> void:
@@ -109,6 +139,7 @@ func advance(dt: float) -> void:
 		session.step(dt)
 		projectile_view.sync_from(session.sim)
 		camera.follow(projectile_view.position, dt)
+		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_charges)
 		if session.is_finished():
 			_finish_run()
 
@@ -123,7 +154,10 @@ func continue_to_shop() -> void:
 
 
 func buy_upgrade(id: String) -> bool:
-	return state == State.SHOP and progress.buy(id)
+	var success := state == State.SHOP and progress.buy(id)
+	if success:
+		shop_panel.refresh(progress)
+	return success
 
 
 func leave_shop() -> void:
@@ -132,8 +166,10 @@ func leave_shop() -> void:
 
 
 func _finish_run() -> void:
+	var previous_best := progress.best_distance
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
+	last_result["new_best"] = last_result["distance"] > previous_best
 	change_state(State.RESULTS)
 
 
