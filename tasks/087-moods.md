@@ -10,6 +10,9 @@ files: [scripts/game/projectile_decor.gd, scripts/game/projectile_view.gd, scrip
 Little effects above the alien: a surprised red "!" on a star, three dizzy stars circling after the third bounce
 of a run, and sleepy "z"s once it stops.
 
+Edit the three files with several **small** SEARCH/REPLACE blocks (one per bullet below), each SEARCH holding
+only the few existing lines around that change. Do not rewrite whole files. main.gd does not change.
+
 **1. `scripts/game/projectile_decor.gd`** (keep the hat drawing exactly as it is):
 - Add `const MOODS: Array[String] = ["", "dizzy", "wow", "sleepy"]` after `const HAT_Y`.
 - **Declare the variables** after `var spin: float = 0.0`:

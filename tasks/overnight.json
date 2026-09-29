@@ -17,6 +17,7 @@
     "docs/DESIGN.md is the contract: keep the exact file paths, class names, signatures and numbers it and the task give.",
     "When the task says to create a file, write its complete content; never leave it empty.",
     "The file name of every edit is the exact path from the task (e.g. scripts/game/projectile_decor.gd: lowercase, with underscores, in its folder), never the class name (not ProjectileDecor.gd).",
+    "Make small SEARCH/REPLACE edits: each SEARCH holds only the few existing lines around one change, copied exactly (tabs included). Never put a whole file in a SEARCH block.",
     "Never edit tests/, addons/, assets/ or project.godot."
   ]
 }
