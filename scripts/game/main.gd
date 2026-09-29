@@ -23,6 +23,7 @@ var pause_label: Label
 var victory_panel: VictoryPanel
 
 # World nodes
+var background: SkyBackground
 var world_view: WorldView
 var course_view: CourseView
 var slingshot: Slingshot
@@ -33,6 +34,10 @@ var camera: CameraRig
 
 func _ready() -> void:
 	progress = SaveSystem.load_progress(save_path)
+	
+	# Create background first (it must be the first child)
+	background = SkyBackground.new()
+	add_child(background)
 	
 	# Create world nodes
 	world_view = WorldView.new()
