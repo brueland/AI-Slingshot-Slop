@@ -11,6 +11,7 @@
     "Use Godot 4 APIs only. Use static typing; where a type can't be inferred (an untyped value), write the type (var p: Vector2 = ...) instead of :=.",
     "Use the typed math helpers clampi/clampf, mini/maxi, minf/maxf, absf/absi, floori/roundi. Never the untyped clamp/min/max/abs: they return a Variant, and `var x := clamp(...)` fails with 'The variable type is being inferred from a Variant value'.",
     "Values read from an untyped Array or Dictionary are Variants: declare their type (var item: Dictionary = items[i], var x: float = item[\"x\"]) instead of using :=.",
+    "Font size of a Label or Button: node.add_theme_font_size_override(\"font_size\", 24). There is no font_size property.",
     "If a function, variable or signal the task asks for already exists in the file, edit it in place; never declare it a second time (GDScript rejects duplicates).",
     "docs/DESIGN.md is the contract: keep the exact file paths, class names, signatures and numbers it and the task give.",
     "When the task says to create a file, write its complete content; never leave it empty.",

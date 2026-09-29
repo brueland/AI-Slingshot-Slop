@@ -21,7 +21,7 @@ var sfx_slider: HSlider
 var close_button: Button
 ```
 `_ready()`: centered like the other panels (`custom_minimum_size = Vector2(420, 0)`); a VBoxContainer with a
-"Options" title (font size 32), a "Music" label + `music_slider`, a "Sound effects" label + `sfx_slider`, and
+"Options" title (font size 32: `add_theme_font_size_override("font_size", 32)`), a "Music" label + `music_slider`, a "Sound effects" label + `sfx_slider`, and
 `close_button` ("Close"). Sliders: `min_value = 0.0`, `max_value = 1.0`, `step = 0.05`,
 `custom_minimum_size = Vector2(300, 24)`. Connect
 `music_slider.value_changed.connect(func(v: float): volume_changed.emit("music", v))`, the same for

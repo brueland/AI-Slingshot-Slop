@@ -16,10 +16,13 @@ var coins_label: Label
 var launch_button: Button
 ```
 
+Set font sizes only with `label.add_theme_font_size_override("font_size", 26)` (Label has no
+`font_size` property, and `add_theme_font_override` takes a Font, not a number).
+
 Rebuild the list in `_ready()` in this order, all children of `list`:
-1. `coins_label` (font size 26).
+1. `coins_label` (font size 26: `add_theme_font_size_override("font_size", 26)`).
 2. For each `category` in `UpgradeCatalog.CATEGORIES`: a header Label with text
-   `UpgradeCatalog.CATEGORY_NAMES[category]` (Slingshot / Projectile / Score, font size 22) stored in
+   `UpgradeCatalog.CATEGORY_NAMES[category]` (Slingshot / Projectile / Score, font size 22: `add_theme_font_size_override("font_size", 22)`) stored in
    `header_labels[category]`, directly followed by the buttons of `UpgradeCatalog.ids_in_category(category)`
    (created and connected exactly as before).
 3. `launch_button`: a Button with text `"Launch!"` whose `pressed` emits `launch_requested`.
