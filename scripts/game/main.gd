@@ -17,6 +17,7 @@ var is_paused: bool = false
 var audio: AudioManager
 
 # UI nodes
+var fader: Fader
 var ui_layer: UiRoot
 var hud: Hud
 var results_panel: ResultsPanel
@@ -56,6 +57,10 @@ func _ready() -> void:
 	
 	# Apply saved settings
 	apply_settings()
+	
+	# Create fader before UI
+	fader = Fader.new()
+	add_child(fader)
 	
 	# Create world nodes
 	world_view = WorldView.new()
@@ -263,7 +268,9 @@ func _finish_run() -> void:
 		change_state(State.RESULTS)
 
 
-func _on_state_changed(_new_state: int) -> void:
+func _on_state_changed(new_state: int) -> void:
+	if new_state != State.FLIGHT:
+		fader.flash()
 	_update_ui()
 
 
