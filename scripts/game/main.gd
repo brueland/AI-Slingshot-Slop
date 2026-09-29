@@ -196,6 +196,7 @@ func _begin_aim() -> void:
 	slingshot.apply_stats(stats, progress.level_of("power"))
 	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
 	slingshot.enabled = true
+	slingshot.show_last_aim = progress.level_of("guide") >= 1
 	projectile_view.show_at(session.sim.position)
 	projectile_view.rotation = 0.0
 	camera.snap_to(projectile_view.position)
