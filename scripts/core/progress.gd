@@ -9,6 +9,7 @@ var total_runs: int = 0
 var goal_reached: bool = false
 var settings: Dictionary = {"music_volume": 0.8, "sfx_volume": 0.8}
 var lifetime: Dictionary = {"distance": 0.0, "stars": 0, "bounces": 0, "best_height": 0.0}
+var achievements: Array[String] = []
 var recent_distances: Array[float] = []
 
 const RECENT_RUNS: int = 10
@@ -57,6 +58,7 @@ func to_dict() -> Dictionary:
 		"goal_reached": goal_reached,
 		"settings": settings.duplicate(),
 		"lifetime": lifetime.duplicate(),
+		"achievements": achievements.duplicate(),
 		"recent_distances": recent_distances.duplicate(),
 	}
 
@@ -95,6 +97,20 @@ static func from_dict(data: Dictionary) -> Progress:
 		p.lifetime["stars"] = maxi(0, int(lifetime_data.get("stars", 0)))
 		p.lifetime["bounces"] = maxi(0, int(lifetime_data.get("bounces", 0)))
 		p.lifetime["best_height"] = maxf(0.0, float(lifetime_data.get("best_height", 0.0)))
+	
+	# Handle achievements safely
+	var achievements_data = data.get("achievements")
+	if typeof(achievements_data) == TYPE_ARRAY:
+		for value in achievements_data:
+			var id: String = str(value)
+			# Only add valid achievement IDs that are in the LIST
+			var is_valid := false
+			for entry in Achievements.LIST:
+				if entry["id"] == id:
+					is_valid = true
+					break
+			if is_valid and not p.achievements.has(id):
+				p.achievements.append(id)
 	
 	# Handle recent distances safely
 	var recent_distances_data = data.get("recent_distances")

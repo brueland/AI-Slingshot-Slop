@@ -277,6 +277,7 @@ func _finish_run() -> void:
 	progress.record_lifetime(last_result)
 	if not last_result["milestones"].is_empty():
 		audio.play_sfx("milestone")
+	last_result["achievements"] = Achievements.unlock(last_result, progress)
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
 	
