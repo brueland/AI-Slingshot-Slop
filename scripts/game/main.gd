@@ -34,6 +34,7 @@ var slingshot: Slingshot
 var trajectory: TrajectoryPreview
 var projectile_view: ProjectileView
 var camera: CameraRig
+var popups: Node2D
 
 
 func _ready() -> void:
@@ -68,6 +69,10 @@ func _ready() -> void:
 	
 	camera = CameraRig.new()
 	add_child(camera)
+	
+	# Create popups node for floating text
+	popups = Node2D.new()
+	add_child(popups)
 	
 	# Build UI
 	_build_ui()
@@ -253,6 +258,10 @@ func _on_state_changed(_new_state: int) -> void:
 
 func _on_star_collected(_index: int) -> void:
 	audio.play_sfx("star")
+	var popup := FloatingText.new()
+	popup.setup("+%d" % session.stats.star_value, Color(1.0, 0.85, 0.2))
+	popup.position = projectile_view.position + Vector2(-12.0, -40.0)
+	popups.add_child(popup)
 
 
 func _on_spring_hit(_index: int) -> void:
