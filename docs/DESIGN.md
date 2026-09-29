@@ -24,6 +24,17 @@ TITLE --Play--> AIM --release slingshot--> FLIGHT --projectile stops--> RESULTS 
 
 Esc pauses during AIM and FLIGHT.
 
+**Roguelike mode** (title button **Roguelike**, milestone 8): a separate run with no shop and no level cap. Every
+round has a goal (fly N m, reach N m high, stop inside a 12 m zone, bounce N times, collect N stars) whose target
+grows each round. The player has 3 lives: meeting the goal moves to the next round on a new course, missing costs
+a life and retries the same goal on the same course. After every shot the player picks 1 of 3 random perks
+(stats that stack with no cap, some with trade-offs), so the choice should fit the next goal. The run ends at 0
+lives; the best number of rounds cleared is saved. It reuses the AIM, FLIGHT and RESULTS states (`main.mode` is
+"classic" or "rogue"); in RESULTS the perk panel or the run-over panel is shown instead of the results panel.
+
+**Last-aim line:** a dashed line through the slingshot showing the previous launch's pull, so a good shot can be
+repeated. Classic: unlocked by Aim Guide level 1+. Roguelike: unlocked by the Steady Hand perk.
+
 ## 2. Units and coordinates
 
 - Game logic uses **meters and seconds in world space**: x = distance forward, **y = height above the ground
@@ -244,7 +255,7 @@ The per-task files (tasks/*.md) give each node's exact API.
 
 ## 11. Build plan
 
-70 tasks in 7 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+80 tasks in 8 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -256,3 +267,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 5 Audio and polish | 041–050, 050c | Music, sound effects, volume options, camera shake, popups, upgrade visuals, credits |
 | 6 Graphics polish | 051–060, 060c | UI theme, solid ground, scenery, projectile trail and shadow, particles, sky tint, slingshot with power meter |
 | 7 Player experience | 061–070, 070c | UiRoot refactor, screen fades, first-time hints, best-distance flag, boost flame, lifetime stats and stats screen, achievements with pop-ups |
+| 8 Roguelike | 071–080, 080c | Feedback refactor, last-aim line (Aim Guide upgrade), roguelike goals, perks, runs with lives, perk and run-over screens, title button |
