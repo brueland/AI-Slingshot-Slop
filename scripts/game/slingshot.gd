@@ -11,6 +11,8 @@ const POST_WIDTH: float = 12.0
 const POWER_LOW := Color(0.3, 0.9, 0.3)
 const POWER_MID := Color(1.0, 0.9, 0.2)
 const POWER_HIGH := Color(1.0, 0.3, 0.2)
+const AIM_LINE_LENGTH: float = 2.5
+const AIM_LINE_COLOR := Color(1, 1, 1, 0.55)
 
 var max_pull: float = Balance.MAX_PULL_PX
 var pull: Vector2 = Vector2.ZERO
@@ -19,6 +21,11 @@ var enabled: bool = true
 var frame_height_px: float = Balance.BASE_LAUNCH_HEIGHT * Balance.PIXELS_PER_METER
 var band_color: Color = Color(0.35, 0.2, 0.1)
 var post_texture: Texture2D
+var last_pull: Vector2 = Vector2.ZERO
+var show_last_aim: bool = false:
+	set(value):
+		show_last_aim = value
+		queue_redraw()
 
 
 func _ready():
@@ -74,6 +81,7 @@ func release() -> Vector2:
 	if p.length() < Balance.MIN_PULL_PX:
 		return Vector2.ZERO
 	
+	last_pull = p
 	launched.emit(p)
 	return p
 
@@ -86,6 +94,13 @@ func cancel_drag() -> void:
 
 func pouch_position() -> Vector2:
 	return global_position + pull
+
+
+## The remembered aim: from the last pull point forward through the anchor, or nothing when hidden.
+func aim_line_points() -> PackedVector2Array:
+	if not show_last_aim or last_pull == Vector2.ZERO:
+		return PackedVector2Array()
+	return PackedVector2Array([last_pull, -last_pull * AIM_LINE_LENGTH])
 
 
 ## How hard the band is pulled, 0..1.
@@ -103,6 +118,11 @@ static func power_color(ratio: float) -> Color:
 
 
 func _draw() -> void:
+	var aim := aim_line_points()
+	if aim.size() == 2:
+		draw_dashed_line(aim[0], aim[1], AIM_LINE_COLOR, 2.0, 8.0)
+		draw_circle(aim[0], 7.0, Color(1, 1, 1, 0.35))
+	
 	var left_tip := Vector2(-18.0, 0.0)
 	var right_tip := Vector2(18.0, 0.0)
 	var pouch: Vector2 = pull if dragging else Vector2.ZERO
