@@ -43,9 +43,17 @@ static func record(bests: Dictionary, key: String, rounds: int) -> void:
 		bests.erase(keys.pop_front())
 ```
 
-**2. `scripts/core/progress.gd`:** **declare** `var daily_best: Dictionary = {}` after `var best_path ...`;
-`to_dict()` adds `"daily_best": daily_best.duplicate(),`; in `from_dict()`, right before the line
-`var hat_id := str(data.get("hat", "none"))`:
+**2. `scripts/core/progress.gd`** (three small edits; without the first one every test fails with
+`Invalid assignment of property or key 'daily_best'`):
+- **Declare the variable** at the top of the class, on the line right after `var best_path: Array = []`:
+  ```gdscript
+  var daily_best: Dictionary = {}
+  ```
+- In `to_dict()`, add this entry to the returned Dictionary (after the `"best_path"` entry):
+  ```gdscript
+  		"daily_best": daily_best.duplicate(),
+  ```
+- In `from_dict()`, right before the line `var hat_id := str(data.get("hat", "none"))`:
 ```gdscript
 	var daily_data = data.get("daily_best")
 	if typeof(daily_data) == TYPE_DICTIONARY:
