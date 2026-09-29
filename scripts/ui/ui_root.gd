@@ -73,6 +73,7 @@ func refresh(main: Node) -> void:
 	title_panel.visible = state == "TITLE"
 	if title_panel.visible:
 		title_panel.show_progress(progress.best_distance, progress.total_runs)
+		title_panel.set_mascot_hat(progress.hat)
 	var result: Dictionary = main.last_result
 	if state == "RESULTS" and not rogue_mode:
 		results_panel.show_result(result, bool(result.get("new_best", false)))

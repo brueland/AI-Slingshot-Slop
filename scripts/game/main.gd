@@ -414,6 +414,7 @@ func choose_hat(id: String) -> bool:
 		return false
 	progress.hat = id
 	projectile_view.set_hat(id)
+	title_panel.set_mascot_hat(id)
 	save_progress()
 	wardrobe_panel.show_hats(progress)
 	return true

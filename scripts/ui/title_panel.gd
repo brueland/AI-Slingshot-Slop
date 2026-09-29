@@ -22,6 +22,7 @@ var rogue_button: Button
 var daily_button: Button
 var wardrobe_button: Button
 var box: VBoxContainer
+var mascot: TitleMascot
 
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -31,6 +32,9 @@ func _ready():
 	
 	box = VBoxContainer.new()
 	add_child(box)
+	
+	mascot = TitleMascot.new()
+	box.add_child(mascot)
 	
 	title_label = Label.new()
 	title_label.text = "Slingshot Skies"
@@ -96,6 +100,9 @@ func _on_stats_pressed():
 
 func _on_reset_pressed():
 	emit_signal("reset_pressed")
+
+func set_mascot_hat(id: String) -> void:
+	mascot.set_hat(id)
 
 func show_progress(best: float, runs: int) -> void:
 	best_label.text = "Best: %d m in %d runs" % [floori(best), runs]
