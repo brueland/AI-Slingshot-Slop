@@ -7,6 +7,10 @@ signal launched(pull: Vector2)
 
 const GRAB_RADIUS: float = 48.0
 const BAND_COLORS: Array[Color] = [Color(0.35, 0.2, 0.1), Color(0.8, 0.2, 0.2), Color(1.0, 0.8, 0.2)]
+const POST_WIDTH: float = 12.0
+const POWER_LOW := Color(0.3, 0.9, 0.3)
+const POWER_MID := Color(1.0, 0.9, 0.2)
+const POWER_HIGH := Color(1.0, 0.3, 0.2)
 
 var max_pull: float = Balance.MAX_PULL_PX
 var pull: Vector2 = Vector2.ZERO
@@ -84,19 +88,32 @@ func pouch_position() -> Vector2:
 	return global_position + pull
 
 
-func _draw():
-	# Draw two posts from -18 to +18 from anchor
-	var post_x: float = -18.0
-	var post_width: float = 36.0
-	
-	# Draw the posts (from y = -6 down to frame_height_px)
-	draw_texture_rect(post_texture, Rect2(post_x, -6.0, 6.0, frame_height_px + 6.0), false, band_color)
-	draw_texture_rect(post_texture, Rect2(post_x + post_width - 6.0, -6.0, 6.0, frame_height_px + 6.0), false, band_color)
-	
-	# Draw the bands
+## How hard the band is pulled, 0..1.
+func power_ratio() -> float:
+	if max_pull <= 0.0:
+		return 0.0
+	return clampf(pull.length() / max_pull, 0.0, 1.0)
+
+
+## Green at no pull, yellow at half, red at full.
+static func power_color(ratio: float) -> Color:
+	if ratio <= 0.5:
+		return POWER_LOW.lerp(POWER_MID, ratio * 2.0)
+	return POWER_MID.lerp(POWER_HIGH, (ratio - 0.5) * 2.0)
+
+
+func _draw() -> void:
+	var left_tip := Vector2(-18.0, 0.0)
+	var right_tip := Vector2(18.0, 0.0)
+	var pouch: Vector2 = pull if dragging else Vector2.ZERO
+	# Back band, then the two wooden posts, then the front band on top.
+	draw_line(right_tip, pouch, band_color, 4.0)
+	for tip in [left_tip, right_tip]:
+		draw_texture_rect(post_texture, Rect2(tip.x - POST_WIDTH / 2.0, -6.0, POST_WIDTH, frame_height_px + 6.0), false)
+	draw_line(left_tip, pouch, band_color, 4.0)
+	draw_circle(pouch, 6.0, band_color)
 	if dragging:
-		draw_line(Vector2(-18.0, 0.0), pull, band_color, 4.0)
-		draw_line(Vector2(18.0, 0.0), pull, band_color, 4.0)
-		
-		# Draw the pouch
-		draw_circle(pull, 6.0, band_color)
+		var ratio := power_ratio()
+		var bar := Rect2(-30.0, -48.0, 60.0, 8.0)
+		draw_rect(bar, Color(0, 0, 0, 0.5))
+		draw_rect(Rect2(bar.position, Vector2(bar.size.x * ratio, bar.size.y)), power_color(ratio))
