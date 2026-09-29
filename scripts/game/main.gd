@@ -106,7 +106,7 @@ func _build_ui() -> void:
 	pause_label = Label.new()
 	pause_label.text = "Paused - press Esc to resume"
 	pause_label.add_theme_font_size_override("font_size", 32)
-	pause_label.set_anchors_preset(Control.PRESET_CENTER)
+	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	pause_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	pause_label.grow_vertical = Control.GROW_DIRECTION_BOTH
 	pause_label.hide()

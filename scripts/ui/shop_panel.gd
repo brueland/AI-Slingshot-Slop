@@ -13,9 +13,10 @@ var list: VBoxContainer
 
 func _ready():
 	# Center the panel like results panel
+	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	grow_horizontal = Control.GROW_DIRECTION_BOTH
+	grow_vertical = Control.GROW_DIRECTION_BOTH
 	custom_minimum_size = Vector2(520, 0)
-	size_flags_horizontal = SIZE_EXPAND_FILL
-	size_flags_vertical = SIZE_EXPAND_FILL
 	
 	# Create the list container
 	list = VBoxContainer.new()

@@ -18,7 +18,7 @@ static func credits_text() -> String:
 
 
 func _ready():
-	set_anchors_preset(Control.PRESET_CENTER)
+	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
 	grow_vertical = Control.GROW_DIRECTION_BOTH
 	custom_minimum_size = Vector2(640, 0)
@@ -31,11 +31,17 @@ func _ready():
 	title_label.add_theme_font_size_override("font_size", 32)
 	box.add_child(title_label)
 	
+	# The credits are longer than the screen is tall: scroll them.
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(600, 420)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(scroll)
+
 	text_label = Label.new()
 	text_label.text = credits_text()
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	text_label.custom_minimum_size = Vector2(600, 0)
-	box.add_child(text_label)
+	text_label.custom_minimum_size = Vector2(580, 0)
+	scroll.add_child(text_label)
 	
 	close_button = Button.new()
 	close_button.text = "Close"

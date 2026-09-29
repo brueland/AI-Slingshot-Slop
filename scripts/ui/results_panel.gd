@@ -15,7 +15,7 @@ var milestones_label: Label
 var continue_button: Button
 
 func _ready():
-	set_anchors_preset(Control.PRESET_CENTER)
+	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
 	grow_vertical = Control.GROW_DIRECTION_BOTH
 	custom_minimum_size = Vector2(420, 0)
