@@ -244,7 +244,7 @@ The per-task files (tasks/*.md) give each node's exact API.
 
 ## 11. Build plan
 
-60 tasks in 6 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+70 tasks in 7 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -255,3 +255,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 4 Game loop UI | 031–040, 040c | HUD, results, shop, save/load, title, victory, pause, background |
 | 5 Audio and polish | 041–050, 050c | Music, sound effects, volume options, camera shake, popups, upgrade visuals, credits |
 | 6 Graphics polish | 051–060, 060c | UI theme, solid ground, scenery, projectile trail and shadow, particles, sky tint, slingshot with power meter |
+| 7 Player experience | 061–070, 070c | UiRoot refactor, screen fades, first-time hints, best-distance flag, boost flame, lifetime stats and stats screen, achievements with pop-ups |
