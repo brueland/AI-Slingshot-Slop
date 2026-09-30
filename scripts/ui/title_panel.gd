@@ -44,7 +44,7 @@ func _ready():
 	
 	title_label = Label.new()
 	title_label.text = "Slingshot Skies"
-	title_label.add_theme_font_size_override("font_size", 48)
+	title_label.theme_type_variation = "LogoLabel"
 	box.add_child(title_label)
 	
 	greeting_label = Label.new()
