@@ -19,12 +19,16 @@ const SFX: Dictionary = {
 	"click": "res://assets/audio/sfx/click.wav",
 }
 const SFX_VOICES: int = 6
+## These sounds get a slightly random pitch each time, so repeats don't sound robotic.
+const PITCH_VARIED: Array[String] = ["bounce", "star", "spring"]
 
 var music_player: AudioStreamPlayer
 var current_music: String = ""
 var sfx_players: Array[AudioStreamPlayer] = []
 var last_sfx: String = ""
 var sfx_played: int = 0
+var last_pitch: float = 1.0
+var _pitch_rng := RandomNumberGenerator.new()
 var _next_voice: int = 0
 
 var music_volume: float = 0.8
@@ -95,4 +99,6 @@ func play_sfx(id: String) -> bool:
 	player.play()
 	last_sfx = id
 	sfx_played += 1
+	last_pitch = _pitch_rng.randf_range(0.88, 1.12) if PITCH_VARIED.has(id) else 1.0
+	player.pitch_scale = last_pitch
 	return true
