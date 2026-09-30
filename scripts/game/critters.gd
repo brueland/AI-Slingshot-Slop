@@ -12,6 +12,7 @@ const BLACK_WOOL := Color(0.18, 0.17, 0.2)
 
 var xs: Array[float] = []
 var hop_left: Array[float] = []
+var time: float = 0.0
 
 
 ## Sheep x positions (meters) for a seed: one every 35-90 m, starting after 25 m.
@@ -64,11 +65,18 @@ func sheep_position(index: int) -> Vector2:
 	return WorldView.world_to_screen(Vector2(xs[index], 0.0)) - Vector2(0.0, hop_offset(index))
 
 
+## How far sheep `index` has lowered its head to graze right now (0-3 px).
+func head_bob(index: int) -> float:
+	return maxf(0.0, sin(time * 1.5 + index * 1.3)) * 3.0
+
+
 func _process(delta: float) -> void:
 	advance(delta)
 
 
 func advance(delta: float) -> void:
+	time += delta
+	queue_redraw()
 	var hopping := false
 	for i in hop_left.size():
 		if hop_left[i] > 0.0:
@@ -85,8 +93,8 @@ func _draw() -> void:
 		draw_line(p + Vector2(6, -5), p + Vector2(6, 0), FACE, 2.0)
 		for o in [Vector2(-7, -11), Vector2(0, -14), Vector2(7, -11), Vector2(-3, -8), Vector2(4, -8)]:
 			draw_circle(p + o, 6.0, BLACK_WOOL if is_black(i) else WOOL)
-		draw_circle(p + Vector2(12, -13), 4.0, FACE)
-		draw_circle(p + Vector2(13, -14), 1.0, Color.WHITE)
+		draw_circle(p + Vector2(12, -13 + head_bob(i)), 4.0, FACE)
+		draw_circle(p + Vector2(13, -14 + head_bob(i)), 1.0, Color.WHITE)
 
 
 ## Every sheep whose index is 2 more than a multiple of 4 is a black sheep (a little grumpier).
