@@ -17,6 +17,7 @@ var hint_label: Label
 var altitude_bar: AltitudeBar
 var perks_label: Label
 var boss_label: Label
+var lucky_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -99,6 +100,20 @@ func _ready() -> void:
 	boss_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	boss_label.hide()
 	add_child(boss_label)
+	lucky_label = Label.new()
+	lucky_label.text = "Lucky round! Beat it for a reroll"
+	lucky_label.add_theme_font_size_override("font_size", 24)
+	lucky_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5))
+	lucky_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lucky_label.anchor_left = 0.5
+	lucky_label.anchor_right = 0.5
+	lucky_label.offset_left = -240
+	lucky_label.offset_right = 240
+	lucky_label.offset_top = 64
+	lucky_label.offset_bottom = 96
+	lucky_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lucky_label.hide()
+	add_child(lucky_label)
 	
 	# Hint label at bottom center
 	hint_label = Label.new()
@@ -128,6 +143,10 @@ func show_hint(text: String) -> void:
 func show_perks(text: String) -> void:
 	perks_label.text = "Perks: " + text
 	perks_label.visible = text != ""
+
+
+func show_lucky(on: bool) -> void:
+	lucky_label.visible = on
 
 
 func show_boss(on: bool) -> void:

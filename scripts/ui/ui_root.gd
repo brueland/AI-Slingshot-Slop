@@ -98,10 +98,12 @@ func refresh(main: Node) -> void:
 		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
 		hud.show_perks(RoguePerks.summary(main.rogue.perks))
 		hud.show_boss(str(main.rogue.goal.get("type", "")) == "boss")
+		hud.show_lucky(RogueGoals.is_lucky_round(main.rogue.round_number, main.rogue.run_seed))
 	elif hud.visible:
 		hud.update_progress(progress.best_distance, progress.coins)
 		hud.show_perks("")
 		hud.show_boss(false)
+		hud.show_lucky(false)
 	title_panel.visible = state == "TITLE"
 	tip_label.visible = title_panel.visible
 	tip_label.text = Tips.for_date(Daily.today())
