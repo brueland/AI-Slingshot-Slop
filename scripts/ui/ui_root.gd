@@ -90,6 +90,7 @@ func refresh(main: Node) -> void:
 	var daily_key: String = main.daily_key
 	rogue_over_panel.daily_label.visible = daily_key != ""
 	rogue_over_panel.daily_label.text = "Daily run %s - best today: %d rounds" % [daily_key, int(progress.daily_best.get(daily_key, 0))]
+	rogue_over_panel.show_history(progress.rogue_history)
 
 
 func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_rounds: int) -> void:
@@ -117,6 +118,7 @@ func wire(main: Node) -> void:
 	pause_menu.resume_pressed.connect(Callable(main, "toggle_pause"))
 	pause_menu.quit_pressed.connect(Callable(main, "go_to_title"))
 	rogue_over_panel.back_pressed.connect(Callable(main, "go_to_title"))
+	rogue_over_panel.replay_pressed.connect(Callable(main, "replay_rogue_seed"))
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(main.progress))
 	wardrobe_panel.hat_chosen.connect(Callable(main, "choose_hat"))
 	wardrobe_panel.closed.connect(wardrobe_panel.hide)

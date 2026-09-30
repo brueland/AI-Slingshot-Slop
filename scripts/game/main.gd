@@ -148,6 +148,13 @@ func start_daily(date: Dictionary = {}) -> void:
 	daily_key = Daily.key_for(day)
 
 
+## Plays the last roguelike run's seed again (the run-over screen's button).
+func replay_rogue_seed() -> void:
+	var run_seed: int = rogue.run_seed
+	go_to_title()
+	start_rogue(run_seed)
+
+
 func choose_rogue_perk(id: String) -> bool:
 	if mode != "rogue" or state != State.RESULTS or not rogue.choose_perk(id):
 		return false
