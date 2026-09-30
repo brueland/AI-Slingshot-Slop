@@ -21,6 +21,7 @@ var lucky_label: Label
 var weather_label: Label
 var goal_progress_label: Label
 var course_bar: CourseBar
+var speed_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -51,6 +52,11 @@ func _ready() -> void:
 	left_container.add_child(boosts_label)
 	boosts_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	boosts_label.add_theme_font_size_override("font_size", 22)
+	
+	speed_label = Label.new()
+	left_container.add_child(speed_label)
+	speed_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	speed_label.add_theme_font_size_override("font_size", 22)
 	
 	altitude_bar = AltitudeBar.new()
 	left_container.add_child(altitude_bar)
@@ -161,6 +167,7 @@ func _ready() -> void:
 	
 	# Initialize with default values
 	update_flight(0.0, 0.0, 0, 0)
+	show_speed(0.0)
 	update_progress(0.0, 0)
 
 func show_hint(text: String) -> void:
@@ -207,6 +214,10 @@ func update_progress(best: float, coins: int) -> void:
 		goal_label.text = "All milestones reached!"
 	else:
 		goal_label.text = "Next: %s at %d m" % [next["name"], int(next["distance"])]
+
+
+func show_speed(meters_per_second: float) -> void:
+	speed_label.text = "Speed: %d m/s" % roundi(meters_per_second)
 
 
 ## Roguelike: the live goal readout under the goal ("" hides it); green once the goal is met.

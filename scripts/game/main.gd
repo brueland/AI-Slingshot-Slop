@@ -246,6 +246,7 @@ func advance(dt: float) -> void:
 		shadow.update_from(session.sim.position)
 		camera.follow(projectile_view.position, dt)
 		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_charges)
+		hud.show_speed(session.sim.velocity.length())
 		if mode == "rogue":
 			var so_far: Dictionary = session.result()
 			hud.show_goal_progress(RogueGoals.progress_text(rogue.goal, so_far), RogueGoals.check(rogue.goal, so_far))
