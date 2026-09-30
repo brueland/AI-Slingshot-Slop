@@ -2,15 +2,15 @@ class_name UiTheme
 extends RefCounted
 ## The game's look for all UI: rounded dark-blue panels with a gold border, blue buttons, outlined text.
 
-const PANEL_COLOR := Color(0.09, 0.13, 0.24, 0.92)
-const BORDER_COLOR := Color(1.0, 0.85, 0.3)
+const PANEL_COLOR := Color(0.12, 0.14, 0.32, 0.95)
+const BORDER_COLOR := Color(1.0, 0.88, 0.45)
 const FONT_PATH: String = "res://assets/fonts/Fredoka.ttf"
 const LOGO_FONT_PATH: String = "res://assets/fonts/LilitaOne-Regular.ttf"
 const BUTTON_COLORS: Dictionary = {
-	"normal": Color(0.2, 0.45, 0.85),
-	"hover": Color(0.3, 0.55, 0.95),
-	"pressed": Color(0.15, 0.35, 0.7),
-	"disabled": Color(0.3, 0.3, 0.35, 0.8),
+	"normal": Color(0.22, 0.5, 0.95),
+	"hover": Color(0.33, 0.6, 1.0),
+	"pressed": Color(0.18, 0.42, 0.85),
+	"disabled": Color(0.35, 0.37, 0.45, 0.9),
 }
 
 
@@ -36,15 +36,15 @@ static func build() -> Theme:
 	theme.set_constant("shadow_offset_y", "LogoLabel", 6)
 	var panel := StyleBoxFlat.new()
 	panel.bg_color = PANEL_COLOR
-	panel.set_corner_radius_all(16)
-	panel.set_border_width_all(3)
+	panel.set_corner_radius_all(22)
+	panel.set_border_width_all(4)
 	panel.border_color = BORDER_COLOR
 	panel.set_content_margin_all(24)
 	theme.set_stylebox("panel", "PanelContainer", panel)
 	for state in BUTTON_COLORS:
 		var box := StyleBoxFlat.new()
 		box.bg_color = BUTTON_COLORS[state]
-		box.set_corner_radius_all(10)
+		box.set_corner_radius_all(16)
 		box.content_margin_left = 16
 		box.content_margin_right = 16
 		box.content_margin_top = 8
