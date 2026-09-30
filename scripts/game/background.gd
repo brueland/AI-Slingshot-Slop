@@ -10,6 +10,8 @@ const HIGH_ALTITUDE_M: float = 150.0
 var layers: Array[Parallax2D] = []
 var stars_layer: Parallax2D
 var star_field: StarField
+var hills_layer: Parallax2D
+var hills: Hills
 
 func _ready() -> void:
 	z_index = -10
@@ -54,6 +56,15 @@ func _ready() -> void:
 	star_field = StarField.new()
 	stars_layer.add_child(star_field)
 	add_child(stars_layer)
+	
+	# Hills: a separate layer (not in `layers`) that scrolls slower than the world
+	hills_layer = Parallax2D.new()
+	hills_layer.scroll_scale = Vector2(0.3, 1.0)
+	hills_layer.repeat_size = Vector2(Hills.WIDTH, 0)
+	hills_layer.repeat_times = 3
+	hills = Hills.new()
+	hills_layer.add_child(hills)
+	add_child(hills_layer)
 
 ## Tints the whole sky toward deep blue as the projectile climbs (full tint at HIGH_ALTITUDE_M).
 func set_altitude(height_m: float) -> void:
