@@ -9,6 +9,7 @@ var title_label: Label
 var hat_buttons: Dictionary = {}
 var close_button: Button
 var preview: TitleMascot
+var worn: String = "none"
 
 
 func _ready() -> void:
@@ -29,6 +30,8 @@ func _ready() -> void:
 		var button := Button.new()
 		button.text = entry["name"]
 		button.pressed.connect(func(): hat_chosen.emit(id))
+		button.mouse_entered.connect(func(): preview_hat(id))
+		button.mouse_exited.connect(func(): preview_hat(worn))
 		box.add_child(button)
 		hat_buttons[id] = button
 	close_button = Button.new()
@@ -52,5 +55,13 @@ func show_hats(progress: Progress) -> void:
 			button.text = "%s (wearing)" % entry["name"]
 		else:
 			button.text = entry["name"]
+	worn = progress.hat
 	preview.set_hat(progress.hat)
 	show()
+
+
+## Hovering an unlocked hat's button shows it on the preview; leaving shows the worn hat again.
+func preview_hat(id: String) -> void:
+	var button: Button = hat_buttons.get(id)
+	if button != null and not button.disabled:
+		preview.set_hat(id)
