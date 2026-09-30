@@ -329,6 +329,7 @@ func _finish_run() -> void:
 	last_result["new_hats"] = Hats.newly_unlocked(hats_before, progress)
 	save_progress()
 	last_result["new_best"] = last_result["distance"] > previous_best
+	last_result["path"] = session.path
 	
 	feedback.celebrate(last_result)
 	

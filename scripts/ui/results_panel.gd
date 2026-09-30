@@ -14,6 +14,7 @@ var total_label: Label
 var coins_label: Label
 var milestones_label: Label
 var hats_label: Label
+var shot_map: ShotMap
 var continue_button: Button
 
 func _ready():
@@ -31,6 +32,9 @@ func _ready():
 	quip_label = Label.new()
 	quip_label.add_theme_color_override("font_color", Color(0.75, 1.0, 0.85))
 	vbox.add_child(quip_label)
+	
+	shot_map = ShotMap.new()
+	vbox.add_child(shot_map)
 	
 	distance_label = Label.new()
 	vbox.add_child(distance_label)
@@ -74,6 +78,8 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 	var said := result.duplicate()
 	said["new_best"] = is_new_best
 	quip_label.text = "\"%s\"" % Quips.pick(said)
+	var path: PackedVector2Array = result.get("path", PackedVector2Array())
+	shot_map.set_path(path)
 	distance_label.text = "Distance: %d m" % result["distance_points"]
 	stars_label.text = "Stars: %d (+%d)" % [result["stars"], result["star_points"]]
 	bounces_label.text = "Bounces: %d (+%d)" % [result["bounces"], result["bounce_points"]]
