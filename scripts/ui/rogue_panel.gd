@@ -4,6 +4,7 @@ extends PanelContainer
 
 signal perk_chosen(id: String)
 signal reroll_pressed
+signal size_chosen(id: String)
 
 var title_label: Label
 var goal_label: Label
@@ -11,6 +12,9 @@ var round_label: Label
 var perk_buttons: Array[Button] = []
 var perk_ids: Array[String] = []
 var reroll_button: Button
+var size_label: Label
+var size_buttons: Dictionary = {}
+var current_run: RogueRun
 
 
 func _ready() -> void:
@@ -28,6 +32,18 @@ func _ready() -> void:
 	goal_label = Label.new()
 	goal_label.add_theme_font_size_override("font_size", 24)
 	box.add_child(goal_label)
+	size_label = Label.new()
+	box.add_child(size_label)
+	var sizes := HBoxContainer.new()
+	box.add_child(sizes)
+	for entry in RogueSizes.LIST:
+		var id: String = entry["id"]
+		var size_button := Button.new()
+		size_button.text = entry["name"]
+		size_button.toggle_mode = true
+		size_button.pressed.connect(func(): _on_size(id))
+		sizes.add_child(size_button)
+		size_buttons[id] = size_button
 	var pick := Label.new()
 	pick.text = "Choose a perk:"
 	box.add_child(pick)
@@ -64,8 +80,27 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 	
 	reroll_button.text = "Reroll perks (%d left)" % run.rerolls
 	reroll_button.disabled = run.rerolls <= 0
+	current_run = run
+	_show_size()
 
 
 func _on_pick(index: int) -> void:
 	if index < perk_ids.size():
 		perk_chosen.emit(perk_ids[index])
+
+
+## The size row: "Next shot size: Big - ..." and the chosen size's button pressed.
+func _show_size() -> void:
+	var d := RogueSizes.get_def(current_run.size_id)
+	size_label.text = "Next shot size: %s - %s" % [d["name"], d["description"]]
+	for id in size_buttons:
+		var size_button: Button = size_buttons[id]
+		size_button.set_pressed_no_signal(id == current_run.size_id)
+
+
+func _on_size(id: String) -> void:
+	if current_run == null:
+		return
+	if current_run.set_size(id):
+		size_chosen.emit(id)
+	_show_size()
