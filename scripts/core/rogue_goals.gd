@@ -7,6 +7,9 @@ const TYPES: Array[String] = ["distance", "height", "zone", "bounces", "stars"]
 const ZONE_WIDTH: float = 12.0
 ## Star goals need speed perks and a precise aim, so they only show up from this round on.
 const STARS_FROM_ROUND: int = 4
+## Boss rounds: from BOSS_FROM_ROUND on, every BOSS_EVERY rounds, two goals at once.
+const BOSS_FROM_ROUND: int = 12
+const BOSS_EVERY: int = 6
 
 
 static func target_for(type: String, round_number: int) -> float:
@@ -36,6 +39,22 @@ static func make_goal(round_number: int, run_seed: int) -> Dictionary:
 	return {"type": type, "target": target, "round": round_number, "text": describe(type, target)}
 
 
+static func is_boss_round(round_number: int) -> bool:
+	return round_number >= BOSS_FROM_ROUND and round_number % BOSS_EVERY == 0
+
+
+## A boss goal: two goals of different types at once (never distance together with zone, which could clash).
+static func make_boss_goal(round_number: int, run_seed: int) -> Dictionary:
+	var first := make_goal(round_number, run_seed)
+	var second := make_goal(round_number, run_seed + 1)
+	var k := 1
+	while k < 50 and (second["type"] == first["type"] or (first["type"] in ["distance", "zone"] and second["type"] in ["distance", "zone"])):
+		k += 1
+		second = make_goal(round_number, run_seed + k)
+	return {"type": "boss", "target": 0.0, "round": round_number, "parts": [first, second],
+		"text": "BOSS: %s + %s" % [first["text"], second["text"]]}
+
+
 static func describe(type: String, target: float) -> String:
 	var n := int(target)
 	match type:
@@ -49,6 +68,9 @@ static func describe(type: String, target: float) -> String:
 			return "Collect %d star%s" % [n, "" if n == 1 else "s"]
 		"zone":
 			return "Stop between %d and %d m" % [n, n + int(ZONE_WIDTH)]
+		"boss":
+			# Boss goals are handled separately in the make_boss_goal function
+			return ""
 	return ""
 
 
@@ -66,4 +88,10 @@ static func check(goal: Dictionary, result: Dictionary) -> bool:
 		"zone":
 			var d := float(result.get("distance", 0.0))
 			return d >= target and d <= target + ZONE_WIDTH
+		"boss":
+			var parts: Array = goal.get("parts", [])
+			for part in parts:
+				if not check(part, result):
+					return false
+			return not parts.is_empty()
 	return false
