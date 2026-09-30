@@ -14,6 +14,7 @@ var best_label: Label
 var coins_label: Label
 var goal_label: Label
 var hint_label: Label
+var perks_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -70,6 +71,14 @@ func _ready() -> void:
 	goal_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_label.add_theme_font_size_override("font_size", 22)
 	
+	perks_label = Label.new()
+	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	perks_label.custom_minimum_size = Vector2(300, 0)
+	perks_label.add_theme_font_size_override("font_size", 16)
+	perks_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	perks_label.hide()
+	right_container.add_child(perks_label)
+	
 	# Hint label at bottom center
 	hint_label = Label.new()
 	hint_label.add_theme_font_size_override("font_size", 26)
@@ -93,6 +102,12 @@ func _ready() -> void:
 func show_hint(text: String) -> void:
 	hint_label.text = text
 	hint_label.show()
+
+## Roguelike: the perks taken so far, under the goal (hidden when `text` is empty).
+func show_perks(text: String) -> void:
+	perks_label.text = "Perks: " + text
+	perks_label.visible = text != ""
+
 
 func hide_hint() -> void:
 	hint_label.hide()

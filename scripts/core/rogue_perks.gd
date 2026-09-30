@@ -16,6 +16,22 @@ const MAX_RESTITUTION: float = 0.9
 const MIN_RESTITUTION: float = 0.1
 
 
+## The perks taken so far, like "Stronger Bands x2, Rocket" (in the order first taken); "" when none.
+static func summary(perk_ids: Array) -> String:
+	var order: Array[String] = []
+	var counts := {}
+	for id in perk_ids:
+		var key := str(id)
+		if not counts.has(key):
+			order.append(key)
+		counts[key] = int(counts.get(key, 0)) + 1
+	var parts := PackedStringArray()
+	for key in order:
+		var perk_name := str(get_def(key).get("name", key))
+		parts.append(perk_name if int(counts[key]) == 1 else "%s x%d" % [perk_name, int(counts[key])])
+	return ", ".join(parts)
+
+
 static func get_def(id: String) -> Dictionary:
 	for p in LIST:
 		if p["id"] == id:
