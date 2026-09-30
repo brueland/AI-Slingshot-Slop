@@ -2,6 +2,8 @@ class_name Hud
 extends Control
 ## Flight readouts (top left) and progress (top right). Never blocks the mouse.
 
+signal menu_pressed
+
 const HINT_AIM: String = "Drag the alien back, aim, and let go!"
 const HINT_BOOST: String = "Press Space in the air to boost!"
 const HINT_REPEAT: String = "Press R to repeat your last shot"
@@ -21,6 +23,7 @@ var lucky_label: Label
 var weather_label: Label
 var goal_progress_label: Label
 var course_bar: CourseBar
+var menu_button: Button
 var speed_label: Label
 
 func _ready() -> void:
@@ -148,6 +151,21 @@ func _ready() -> void:
 	course_bar.offset_top = -30
 	course_bar.offset_bottom = -22
 	add_child(course_bar)
+	
+	# Menu button in the bottom-right corner: pauses the game (the pause menu has Options and Quit to title)
+	menu_button = Button.new()
+	menu_button.text = "Menu (Esc)"
+	menu_button.focus_mode = Control.FOCUS_NONE
+	menu_button.anchor_left = 1.0
+	menu_button.anchor_right = 1.0
+	menu_button.anchor_top = 1.0
+	menu_button.anchor_bottom = 1.0
+	menu_button.offset_left = -156
+	menu_button.offset_right = -16
+	menu_button.offset_top = -56
+	menu_button.offset_bottom = -16
+	menu_button.pressed.connect(func(): menu_pressed.emit())
+	add_child(menu_button)
 	
 	# Hint label at bottom center
 	hint_label = Label.new()

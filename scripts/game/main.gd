@@ -364,6 +364,7 @@ func go_to_title() -> void:
 	is_paused = false
 	pause_label.hide()
 	ui_layer.pause_menu.hide()
+	options_panel.hide()
 	slingshot.cancel_drag()
 	change_state(State.TITLE)
 	_update_ui()
@@ -429,6 +430,8 @@ func toggle_pause() -> void:
 	is_paused = not is_paused
 	pause_label.visible = is_paused
 	ui_layer.pause_menu.visible = is_paused
+	if not is_paused:
+		options_panel.hide()
 	slingshot.enabled = state == State.AIM and not is_paused
 	if is_paused:
 		slingshot.cancel_drag()
