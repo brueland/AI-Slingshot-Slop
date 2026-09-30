@@ -50,14 +50,41 @@ func _ready() -> void:
 	add_child(pause_menu)
 ```
 
-**3. `scripts/game/main.gd`** (only these edits):
-- In `_build_ui()`, right after `ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)`:
-  ```gdscript
-  	ui_layer.pause_menu.resume_pressed.connect(toggle_pause)
-  	ui_layer.pause_menu.quit_pressed.connect(go_to_title)
-  ```
-- In `go_to_title()`, right after `pause_label.hide()`: `ui_layer.pause_menu.hide()`
-- In `toggle_pause()`, right after `pause_label.visible = is_paused`: `ui_layer.pause_menu.visible = is_paused`
+**3. `scripts/game/main.gd`**: exactly these SEARCH/REPLACE edits. Each REPLACE keeps the SEARCH lines and adds the new ones; nothing else in
+main.gd changes.
+
+Edit 1 - SEARCH:
+```gdscript
+	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
+```
+REPLACE:
+```gdscript
+	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
+	ui_layer.pause_menu.resume_pressed.connect(toggle_pause)
+	ui_layer.pause_menu.quit_pressed.connect(go_to_title)
+```
+
+Edit 2 - SEARCH:
+```gdscript
+	is_paused = false
+	pause_label.hide()
+```
+REPLACE:
+```gdscript
+	is_paused = false
+	pause_label.hide()
+	ui_layer.pause_menu.hide()
+```
+
+Edit 3 - SEARCH:
+```gdscript
+	pause_label.visible = is_paused
+```
+REPLACE:
+```gdscript
+	pause_label.visible = is_paused
+	ui_layer.pause_menu.visible = is_paused
+```
 
 ## Acceptance criteria
 - Pausing shows the themed menu on screen, not overlapping the "Paused" text; Resume unpauses and hides it.
