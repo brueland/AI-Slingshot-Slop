@@ -39,6 +39,13 @@ static func make_goal(round_number: int, run_seed: int) -> Dictionary:
 	return {"type": type, "target": target, "round": round_number, "text": describe(type, target)}
 
 
+## Lucky rounds: from round 4, about one round in eight (never a boss round); meeting one gives a reroll.
+static func is_lucky_round(round_number: int, run_seed: int) -> bool:
+	if round_number < 4 or is_boss_round(round_number):
+		return false
+	return posmod(run_seed * 13 + round_number * 29, 8) == 0
+
+
 static func is_boss_round(round_number: int) -> bool:
 	return round_number >= BOSS_FROM_ROUND and round_number % BOSS_EVERY == 0
 
