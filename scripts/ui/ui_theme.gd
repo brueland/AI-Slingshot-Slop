@@ -31,6 +31,20 @@ static func game_font(weight: int) -> FontVariation:
 	return font
 
 
+## The HUD's group boxes: dark glass with a thin light outline.
+static func hud_panel() -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = Color(0.05, 0.07, 0.2, 0.55)
+	box.border_color = Color(1, 1, 1, 0.3)
+	box.set_border_width_all(2)
+	box.set_corner_radius_all(14)
+	box.content_margin_left = 14
+	box.content_margin_right = 14
+	box.content_margin_top = 8
+	box.content_margin_bottom = 10
+	return box
+
+
 ## A chunky button face: rounded, with a darker lip along the bottom that shrinks when the button is pressed
 ## (the text moves down with it), and a soft shadow.
 static func button_box(color: Color, pressed: bool) -> StyleBoxFlat:

@@ -31,9 +31,17 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# Left VBoxContainer for flight readouts
+	var left_panel := PanelContainer.new()
+	left_panel.position = Vector2(12, 12)
+	left_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	left_panel.add_theme_stylebox_override("panel", UiTheme.hud_panel())
+	add_child(left_panel)
+	var left_row := HBoxContainer.new()
+	left_row.add_theme_constant_override("separation", 14)
+	left_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	left_panel.add_child(left_row)
 	var left_container := VBoxContainer.new()
-	left_container.position = Vector2(16, 16)
-	add_child(left_container)
+	left_row.add_child(left_container)
 	left_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	distance_label = Label.new()
@@ -62,16 +70,20 @@ func _ready() -> void:
 	speed_label.add_theme_font_size_override("font_size", 22)
 	
 	altitude_bar = AltitudeBar.new()
-	left_container.add_child(altitude_bar)
+	left_row.add_child(altitude_bar)
 	
 	# Right VBoxContainer for progress
+	var right_panel := PanelContainer.new()
+	right_panel.anchor_left = 1.0
+	right_panel.anchor_right = 1.0
+	right_panel.offset_left = -344
+	right_panel.offset_right = -12
+	right_panel.offset_top = 12
+	right_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	right_panel.add_theme_stylebox_override("panel", UiTheme.hud_panel())
+	add_child(right_panel)
 	var right_container := VBoxContainer.new()
-	right_container.anchor_left = 1.0
-	right_container.anchor_right = 1.0
-	right_container.offset_left = -320
-	right_container.offset_right = -16
-	right_container.offset_top = 16
-	add_child(right_container)
+	right_panel.add_child(right_container)
 	right_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	best_label = Label.new()
@@ -164,6 +176,8 @@ func _ready() -> void:
 	menu_button.offset_right = -16
 	menu_button.offset_top = -56
 	menu_button.offset_bottom = -16
+	menu_button.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	menu_button.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	menu_button.pressed.connect(func(): menu_pressed.emit())
 	add_child(menu_button)
 	
