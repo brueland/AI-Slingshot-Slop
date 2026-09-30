@@ -41,6 +41,7 @@ var background: SkyBackground
 var world_view: WorldView
 var scenery: Scenery
 var critters: Critters
+var birds: Birds
 var course_view: CourseView
 var slingshot: Slingshot
 var trajectory: TrajectoryPreview
@@ -72,6 +73,8 @@ func _ready() -> void:
 	critters = Critters.new()
 	add_child(critters)
 	critters.build(Critters.SEED, Balance.COURSE_LENGTH)
+	birds = Birds.new()
+	add_child(birds)
 	course_view = CourseView.new()
 	add_child(course_view)
 	balloon_view = BalloonView.new()
@@ -99,6 +102,7 @@ func _ready() -> void:
 	_build_ui()
 	feedback.setup(audio, effects, camera, course_view, projectile_view, popups, hud)
 	feedback.critters = critters
+	birds.target = projectile_view
 	feedback.balloon_view = balloon_view
 	projectile_view.set_hat(progress.hat)
 	slingshot.launched.connect(launch_with_pull)
@@ -204,6 +208,7 @@ func _begin_aim() -> void:
 	# Set up views for the new session
 	course_view.build(session.course)
 	balloon_view.build(session.balloons)
+	birds.reset()
 	ghost.set_points(GhostPath.unpack(progress.best_path) if mode == "classic" else PackedVector2Array())
 	course_view.set_best_marker(progress.best_distance)
 	feedback.watch(session)
