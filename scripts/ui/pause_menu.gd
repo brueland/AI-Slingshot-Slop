@@ -4,9 +4,11 @@ extends PanelContainer
 
 signal resume_pressed
 signal quit_pressed
+signal options_pressed
 
 var resume_button: Button
 var quit_button: Button
+var options_button: Button
 
 
 func _ready() -> void:
@@ -22,6 +24,10 @@ func _ready() -> void:
 	resume_button.text = "Resume"
 	resume_button.pressed.connect(func(): resume_pressed.emit())
 	box.add_child(resume_button)
+	options_button = Button.new()
+	options_button.text = "Options"
+	options_button.pressed.connect(func(): options_pressed.emit())
+	box.add_child(options_button)
 	quit_button = Button.new()
 	quit_button.text = "Quit to title"
 	quit_button.pressed.connect(func(): quit_pressed.emit())

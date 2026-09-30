@@ -174,6 +174,7 @@ func wire(main: Node) -> void:
 	rogue_panel.reroll_pressed.connect(Callable(main, "reroll_perks"))
 	pause_menu.resume_pressed.connect(Callable(main, "toggle_pause"))
 	pause_menu.quit_pressed.connect(Callable(main, "go_to_title"))
+	pause_menu.options_pressed.connect(Callable(main, "open_options"))
 	rogue_over_panel.back_pressed.connect(Callable(main, "go_to_title"))
 	rogue_over_panel.replay_pressed.connect(Callable(main, "replay_rogue_seed"))
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(main.progress))
