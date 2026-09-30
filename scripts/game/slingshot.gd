@@ -13,6 +13,8 @@ const POWER_MID := Color(1.0, 0.9, 0.2)
 const POWER_HIGH := Color(1.0, 0.3, 0.2)
 const AIM_LINE_LENGTH: float = 2.5
 const AIM_LINE_COLOR := Color(1, 1, 1, 0.55)
+const KEY_ANGLE_STEP: float = 2.0
+const KEY_POWER_STEP: float = 0.05
 
 var max_pull: float = Balance.MAX_PULL_PX
 var pull: Vector2 = Vector2.ZERO
@@ -22,6 +24,9 @@ var frame_height_px: float = Balance.BASE_LAUNCH_HEIGHT * Balance.PIXELS_PER_MET
 var band_color: Color = Color(0.35, 0.2, 0.1)
 var post_texture: Texture2D
 var last_pull: Vector2 = Vector2.ZERO
+var key_angle: float = 45.0
+var key_power: float = 0.8
+var key_aiming: bool = false
 var show_last_aim: bool = false:
 	set(value):
 		show_last_aim = value
@@ -55,6 +60,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_R:
 		if repeat_last_shot():
 			get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and key_aim(event.keycode):
+		get_viewport().set_input_as_handled()
 
 
 func begin_drag(point: Vector2) -> bool:
@@ -89,7 +96,45 @@ func release() -> Vector2:
 	return p
 
 
+## The pull for the keyboard aim: key_angle degrees up, key_power (0..1) of the full pull.
+func key_pull() -> Vector2:
+	var r := deg_to_rad(key_angle)
+	return Vector2(-cos(r), sin(r)) * max_pull * key_power
+
+
+## Keyboard aiming: the arrow keys start aiming and change the angle (up/down) and power (left/right); Enter
+## launches. Returns true when the key was used.
+func key_aim(keycode: int) -> bool:
+	if not enabled:
+		return false
+	match keycode:
+		KEY_UP:
+			key_angle = clampf(key_angle + KEY_ANGLE_STEP, 5.0, 85.0)
+		KEY_DOWN:
+			key_angle = clampf(key_angle - KEY_ANGLE_STEP, 5.0, 85.0)
+		KEY_RIGHT:
+			key_power = clampf(key_power + KEY_POWER_STEP, 0.1, 1.0)
+		KEY_LEFT:
+			key_power = clampf(key_power - KEY_POWER_STEP, 0.1, 1.0)
+		KEY_ENTER, KEY_KP_ENTER:
+			if not key_aiming:
+				return false
+			key_aiming = false
+			dragging = true
+			pull = key_pull()
+			release()
+			return true
+		_:
+			return false
+	key_aiming = true
+	dragging = true
+	pull = key_pull()
+	queue_redraw()
+	return true
+
+
 func cancel_drag() -> void:
+	key_aiming = false
 	dragging = false
 	pull = Vector2.ZERO
 	queue_redraw()
