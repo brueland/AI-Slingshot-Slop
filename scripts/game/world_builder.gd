@@ -26,6 +26,8 @@ static func build(main: Node) -> void:
 	main.add_child(main.cows)
 	main.kites = Kites.new()
 	main.add_child(main.kites)
+	var sock := WindSock.new()
+	main.add_child(sock)
 	main.birds = Birds.new()
 	main.add_child(main.birds)
 	main.ufo = Ufo.new()
@@ -59,3 +61,4 @@ static func build(main: Node) -> void:
 	main.feedback.cows = main.cows
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
+	main.weather_fx.windsock = sock

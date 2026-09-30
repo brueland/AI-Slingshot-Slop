@@ -8,6 +8,8 @@ const COUNT: int = 40
 var weather: String = "calm"
 var time: float = 0.0
 var canvas: Node2D
+## The windsock near the slingshot (set by WorldBuilder); show_weather() points it.
+var windsock: WindSock
 
 
 func _ready() -> void:
@@ -21,6 +23,8 @@ func _ready() -> void:
 func show_weather(id: String) -> void:
 	weather = id if not RogueWeather.get_def(id).is_empty() else "calm"
 	canvas.visible = weather != "calm"
+	if windsock != null:
+		windsock.set_weather(weather)
 	canvas.queue_redraw()
 
 
