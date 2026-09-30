@@ -9,6 +9,8 @@ const TEXTURES: Array[String] = [
 ]
 
 const WOBBLE_SECONDS: float = 0.4
+## The alien is drawn this much bigger than its physical size (PROJECTILE_RADIUS), so its face reads.
+const LOOK_SCALE: float = 1.5
 
 var tier: int = 0
 var base_scale: Vector2 = Vector2.ONE
@@ -21,6 +23,7 @@ var size_scale: float = 1.0
 func _init() -> void:
 	decor = ProjectileDecor.new()
 	add_child(decor)
+	decor.scale = Vector2.ONE * LOOK_SCALE
 
 
 func _ready() -> void:
@@ -35,14 +38,14 @@ func _process(delta: float) -> void:
 func set_tier(new_tier: int) -> void:
 	tier = clampi(new_tier, 0, 2)
 	texture = load(TEXTURES[tier])
-	# Scale the sprite so it is 2 * Balance.PROJECTILE_RADIUS meters wide on screen
-	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER) / texture.get_width() * size_scale
+	# Scale the sprite so it is 2 * Balance.PROJECTILE_RADIUS * LOOK_SCALE meters wide on screen
+	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER * LOOK_SCALE) / texture.get_width() * size_scale
 	base_scale = scale
 
 
 func show_at(world_pos: Vector2) -> void:
 	# The sprite's center is one (sized) radius above the given point
-	position = WorldView.world_to_screen(world_pos + Vector2(0.0, Balance.PROJECTILE_RADIUS * size_scale))
+	position = WorldView.world_to_screen(world_pos + Vector2(0.0, Balance.PROJECTILE_RADIUS * size_scale * LOOK_SCALE))
 	_sync_decor()
 
 
@@ -75,7 +78,7 @@ func advance_wobble(delta: float) -> void:
 func set_size(s: float) -> void:
 	size_scale = maxf(s, 0.1)
 	set_tier(tier)
-	decor.scale = Vector2.ONE * size_scale
+	decor.scale = Vector2.ONE * size_scale * LOOK_SCALE
 
 
 func set_hat(id: String) -> void:
