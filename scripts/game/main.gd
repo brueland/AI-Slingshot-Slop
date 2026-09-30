@@ -43,6 +43,7 @@ var scenery: Scenery
 var critters: Critters
 var flowers: Flowers
 var cows: Cows
+var kites: Kites
 var birds: Birds
 var ufo: Ufo
 var weather_fx: WeatherFx
