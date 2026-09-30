@@ -301,3 +301,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 20 Collecting | 165–170, 171c | Balloon and sheep records, collection line on the Stats screen, hat hover preview, Surprise me! hat, poke the mascot, balloons on the results |
 | 21 Goal feedback | 172–176, 177c | Goal progress helpers, live goal readout on the HUD, So close!, how close on the perk panel, longest shot of the run |
 | 22 Menus | 178–183, 184c | Achievements panel, How to play panel, title row for both, panels wired, course bar on the HUD |
+| 23 Flight stats | 185–189, 190c | Air time, air time on the results, best air time, Hang time! |
