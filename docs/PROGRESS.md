@@ -25,4 +25,5 @@ Milestone 20: complete (collecting: balloon and sheep records, collection stats,
 Milestone 21: complete (goal feedback: goal progress helpers, live goal readout, so close, how close on the perk panel, longest shot)
 Milestone 22: complete (menus: achievements panel, how to play, title row, panels wired, course bar on the HUD)
 Milestone 23: complete (flight stats: air time, air time on the results, best air time, hang time)
+Milestone 24: complete (sky: windsock, windsock by the slingshot, hot-air balloons, balloons in the sky)
 
