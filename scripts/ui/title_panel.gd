@@ -29,6 +29,8 @@ var mascot: TitleMascot
 var greeting_label: Label
 var help_button: Button
 var achievements_button: Button
+var start_button: Button
+var mode_overlay: Control
 
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -62,7 +64,7 @@ func _ready():
 	box.add_child(rogue_best_label)
 	
 	play_button = Button.new()
-	play_button.text = "Play"
+	play_button.text = "Classic"
 	play_button.connect("pressed", Callable(self, "_on_play_pressed"))
 	box.add_child(play_button)
 	
@@ -114,7 +116,7 @@ func _ready():
 	reset_button.connect("pressed", Callable(self, "_on_reset_pressed"))
 	box.add_child(reset_button)
 	
-	_pair(rogue_button, daily_button)
+	_build_mode_chooser()
 	_pair(wardrobe_button, stats_button)
 	_pair(options_button, credits_button)
 	show_progress(0.0, 0)
@@ -154,3 +156,56 @@ func set_mascot_hat(id: String) -> void:
 
 func show_progress(best: float, runs: int) -> void:
 	best_label.text = "Best: %d m in %d runs" % [floori(best), runs]
+
+## PLAY opens a card over the title to choose Classic, Roguelike or Daily Run, each with a short description.
+func _build_mode_chooser() -> void:
+	start_button = Button.new()
+	start_button.text = "PLAY"
+	start_button.theme_type_variation = "PrimaryButton"
+	start_button.custom_minimum_size = Vector2(340, 84)
+	start_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	start_button.pressed.connect(func(): mode_overlay.show())
+	box.add_child(start_button)
+	box.move_child(start_button, play_button.get_index())
+	mode_overlay = Control.new()
+	mode_overlay.hide()
+	add_child(mode_overlay)
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.5)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mode_overlay.add_child(dim)
+	var card := PanelContainer.new()
+	card.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	card.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	card.grow_vertical = Control.GROW_DIRECTION_BOTH
+	mode_overlay.add_child(card)
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation", 14)
+	card.add_child(list)
+	var heading := Label.new()
+	heading.text = "Choose a mode"
+	heading.add_theme_font_size_override("font_size", 34)
+	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	list.add_child(heading)
+	var modes := [[play_button, "Fly as far as you can and buy upgrades."],
+		[rogue_button, "A new goal every round, a perk after every shot. Three lives."],
+		[daily_button, "Today's roguelike run: the same for everyone."]]
+	for mode in modes:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 18)
+		list.add_child(row)
+		var button: Button = mode[0]
+		button.reparent(row)
+		button.custom_minimum_size = Vector2(210, 0)
+		button.pressed.connect(mode_overlay.hide)
+		var about := Label.new()
+		about.text = mode[1]
+		about.custom_minimum_size = Vector2(330, 0)
+		about.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		about.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		row.add_child(about)
+	var back := Button.new()
+	back.text = "Back"
+	back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	back.pressed.connect(mode_overlay.hide)
+	list.add_child(back)
