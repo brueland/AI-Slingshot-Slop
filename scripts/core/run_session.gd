@@ -67,4 +67,5 @@ func result() -> Dictionary:
 	r["bounces"] = sim.bounce_count
 	r["max_height"] = sim.max_height
 	r["balloons"] = balloons.popped_count
+	r["air_time"] = sim.air_time
 	return r
