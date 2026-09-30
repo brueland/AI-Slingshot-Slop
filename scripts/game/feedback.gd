@@ -21,11 +21,15 @@ var combo: int = 0
 var combo_left: float = 0.0
 var best_combo_run: int = 0
 var sheep_woken_run: int = 0
+## sim.air_time when the current hop began (the launch or the last bounce).
+var hop_start: float = 0.0
 
 ## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
 const COMBO_WINDOW: float = 1.2
 ## A missed roguelike goal at least this close (0-1) gets a "So close!".
 const CLOSE_RATIO: float = 0.85
+## A single hop at least this long (seconds in the air) gets a "Hang time!" popup when it lands.
+const HANG_SECONDS: float = 3.0
 
 
 func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_course_view: CourseView,
@@ -47,6 +51,7 @@ func watch(session: RunSession) -> void:
 	combo_left = 0.0
 	best_combo_run = 0
 	sheep_woken_run = 0
+	hop_start = 0.0
 	if projectile_view != null:
 		projectile_view.set_mood("")
 	if session.tracker != null:
@@ -154,6 +159,10 @@ func _on_bounced(impact_speed: float) -> void:
 	if projectile_view != null:
 		projectile_view.wobble(clampf(impact_speed / 25.0, 0.08, 0.35))
 	bounces_seen += 1
+	if sim != null:
+		if sim.air_time - hop_start >= HANG_SECONDS:
+			_say("Hang time! %.1f s" % (sim.air_time - hop_start), Color(0.6, 0.9, 1.0))
+		hop_start = sim.air_time
 	if bounces_seen >= 3 and projectile_view != null:
 		projectile_view.set_mood("dizzy", 2.0)
 	if flowers != null and sim != null:
