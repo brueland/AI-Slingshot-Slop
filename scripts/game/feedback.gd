@@ -45,6 +45,7 @@ func watch(session: RunSession) -> void:
 		session.tracker.star_collected.connect(course_view.mark_collected)
 		session.tracker.star_collected.connect(_on_star_collected)
 		session.tracker.spring_hit.connect(_on_spring_hit)
+		session.tracker.mud_hit.connect(_on_mud_hit)
 	if session.sim != null:
 		session.sim.bounced.connect(_on_bounced)
 		session.sim.boosted.connect(_on_boosted)
@@ -124,6 +125,7 @@ func _on_spring_hit(index: int) -> void:
 	if index >= 0 and course_view != null and index < course_view.sprites.size():
 		if effects != null:
 			effects.spawn_burst(course_view.sprites[index].position)
+	_say("Boing!", Color(0.6, 1.0, 0.6))
 
 
 func _on_bounced(impact_speed: float) -> void:
@@ -159,6 +161,22 @@ func _on_boosted() -> void:
 		camera.shake(3.0, 0.15)
 	if hud != null:
 		hud.hide_hint()
+
+
+## A short popup above the alien.
+func _say(text: String, color: Color) -> void:
+	if popups == null or projectile_view == null:
+		return
+	var popup := FloatingText.new()
+	popup.setup(text, color)
+	popup.position = projectile_view.position + Vector2(-24.0, -56.0)
+	popups.add_child(popup)
+
+
+func _on_mud_hit(_index: int) -> void:
+	_say("Splat!", Color(0.6, 0.45, 0.3))
+	if effects != null and projectile_view != null:
+		effects.spawn_dust(projectile_view.position + Vector2(0, 12), 20.0)
 
 
 func _on_balloon_popped(index: int) -> void:
