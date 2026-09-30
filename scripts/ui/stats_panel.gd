@@ -10,6 +10,9 @@ var best_label: Label
 var height_label: Label
 var stars_label: Label
 var bounces_label: Label
+var rogue_label: Label
+var daily_label: Label
+var hats_label: Label
 var chart: DistanceChart
 var close_button: Button
 
@@ -53,6 +56,13 @@ func _ready() -> void:
 	bounces_label.name = "BouncesLabel"
 	vbox.add_child(bounces_label)
 	
+	rogue_label = Label.new()
+	vbox.add_child(rogue_label)
+	daily_label = Label.new()
+	vbox.add_child(daily_label)
+	hats_label = Label.new()
+	vbox.add_child(hats_label)
+	
 	var chart_label := Label.new()
 	chart_label.text = "Last 10 runs"
 	vbox.add_child(chart_label)
@@ -79,6 +89,9 @@ func show_stats(progress: Progress) -> void:
 	height_label.text = "Best height: %d m" % floori(float(progress.lifetime["best_height"]))
 	stars_label.text = "Stars collected: %d" % int(progress.lifetime["stars"])
 	bounces_label.text = "Bounces: %d" % int(progress.lifetime["bounces"])
+	rogue_label.text = "Best roguelike run: %d rounds" % progress.best_rogue_round
+	daily_label.text = "Daily runs played: %d" % progress.daily_best.size()
+	hats_label.text = "Hats: %d / %d" % [Hats.unlocked(progress).size() - 1, Hats.LIST.size() - 1]
 	
 	chart.set_values(progress.recent_distances)
 	show()

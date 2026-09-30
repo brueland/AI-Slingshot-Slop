@@ -15,6 +15,7 @@ var goal: Dictionary = {}
 var offer: Array[String] = []
 var rerolls: int = 1
 var size_id: String = "normal"
+var weather: String = "calm"
 
 
 func start(new_seed: int) -> void:
@@ -25,13 +26,15 @@ func start(new_seed: int) -> void:
 	shots = 0
 	rerolls = 1
 	size_id = "normal"
+	weather = RogueWeather.for_round(1, new_seed)
 	perks.clear()
 	offer.clear()
 	goal = RogueGoals.make_goal(1, run_seed)
 
 
 func stats() -> PlayerStats:
-	return RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
+	var s := RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
+	return RogueWeather.apply(s, weather)
 
 
 ## The course seed for this round: a new course every round, and the same course again when retrying after a
@@ -66,6 +69,7 @@ func finish_shot(result: Dictionary) -> Dictionary:
 		if rounds_cleared % 5 == 0:
 			rerolls += 1
 		goal = RogueGoals.make_goal(round_number, run_seed)
+		weather = RogueWeather.for_round(round_number, run_seed)
 	else:
 		lives -= 1
 	offer.clear()

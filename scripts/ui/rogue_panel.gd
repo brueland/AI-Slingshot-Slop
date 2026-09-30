@@ -15,6 +15,7 @@ var reroll_button: Button
 var size_label: Label
 var size_buttons: Dictionary = {}
 var current_run: RogueRun
+var weather_label: Label
 
 
 func _ready() -> void:
@@ -32,6 +33,9 @@ func _ready() -> void:
 	goal_label = Label.new()
 	goal_label.add_theme_font_size_override("font_size", 24)
 	box.add_child(goal_label)
+	weather_label = Label.new()
+	weather_label.add_theme_color_override("font_color", Color(0.7, 0.9, 1.0))
+	box.add_child(weather_label)
 	size_label = Label.new()
 	box.add_child(size_label)
 	var sizes := HBoxContainer.new()
@@ -67,6 +71,8 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 		title_label.text = "Missed! Lives left: %d" % int(outcome.get("lives", run.lives))
 	round_label.text = "Round %d - Lives %d" % [run.round_number, run.lives]
 	goal_label.text = "Next goal: %s" % run.goal.get("text", "")
+	var weather := RogueWeather.get_def(run.weather)
+	weather_label.text = "Weather: %s - %s" % [weather["name"], weather["description"]]
 	perk_ids.assign(run.offer)
 	for i in perk_buttons.size():
 		var button := perk_buttons[i]
