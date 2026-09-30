@@ -16,6 +16,7 @@ var milestones_label: Label
 var hats_label: Label
 var balloons_label: Label
 var air_label: Label
+var rating: StarRating
 var shot_map: ShotMap
 var gap_label: Label
 var continue_button: Button
@@ -31,6 +32,9 @@ func _ready():
 	
 	title_label = Label.new()
 	vbox.add_child(title_label)
+	
+	rating = StarRating.new()
+	vbox.add_child(rating)
 	
 	quip_label = Label.new()
 	quip_label.add_theme_color_override("font_color", Color(0.75, 1.0, 0.85))
@@ -90,6 +94,7 @@ func _on_continue_pressed():
 
 func show_result(result: Dictionary, is_new_best: bool) -> void:
 	title_label.text = "New best!" if is_new_best else "Run complete"
+	rating.set_rating(StarRating.rating_for(float(result.get("distance", 0.0)), float(result.get("previous_best", 0.0))))
 	var said := result.duplicate()
 	said["new_best"] = is_new_best
 	quip_label.text = "\"%s\"" % Quips.pick(said)
