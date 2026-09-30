@@ -10,6 +10,8 @@ var hat: String = "none"
 var spin: float = 0.0
 var mood: String = ""
 var mood_left: float = 0.0
+var face: String = "happy"
+var look: Vector2 = Vector2(0.5, 0.0)
 
 
 func _ready() -> void:
@@ -42,6 +44,20 @@ func set_mood(id: String, seconds: float = 0.0) -> void:
 	mood = id
 	mood_left = seconds
 	queue_redraw()
+
+
+## Sets the face (one of AlienFace.FACES) and where the pupils look (a direction, screen y down).
+func set_face(id: String, eyes: Vector2) -> void:
+	if id == face and eyes.distance_to(look) < 0.05:
+		return
+	face = id if AlienFace.FACES.has(id) else "happy"
+	look = eyes
+	queue_redraw()
+
+
+## The face to draw: a mood (dizzy, wow, sleepy) shows its own face, otherwise `face`.
+func shown_face() -> String:
+	return mood if mood != "" else face
 
 
 ## The upper half of a circle (a dome) as a polygon.
@@ -87,6 +103,7 @@ func _draw_hat() -> void:
 
 
 func _draw() -> void:
+	AlienFace.draw(self, shown_face(), look)
 	_draw_hat()
 	_draw_mood()
 
