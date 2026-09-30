@@ -80,6 +80,8 @@ func item_count() -> int:
 
 
 func set_best_marker(distance: float) -> void:
+	for k in flags.size():
+		flags[k].modulate = Color(1.0, 0.9, 0.4) if float(Milestones.LIST[k]["distance"]) <= distance else Color.WHITE
 	if distance <= 0.0:
 		best_marker.hide()
 		return
