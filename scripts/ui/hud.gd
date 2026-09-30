@@ -15,6 +15,7 @@ var coins_label: Label
 var goal_label: Label
 var hint_label: Label
 var perks_label: Label
+var boss_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -79,6 +80,22 @@ func _ready() -> void:
 	perks_label.hide()
 	right_container.add_child(perks_label)
 	
+	# Boss banner at the top center
+	boss_label = Label.new()
+	boss_label.text = "BOSS ROUND!"
+	boss_label.add_theme_font_size_override("font_size", 34)
+	boss_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.45))
+	boss_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	boss_label.anchor_left = 0.5
+	boss_label.anchor_right = 0.5
+	boss_label.offset_left = -200
+	boss_label.offset_right = 200
+	boss_label.offset_top = 16
+	boss_label.offset_bottom = 60
+	boss_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	boss_label.hide()
+	add_child(boss_label)
+	
 	# Hint label at bottom center
 	hint_label = Label.new()
 	hint_label.add_theme_font_size_override("font_size", 26)
@@ -107,6 +124,10 @@ func show_hint(text: String) -> void:
 func show_perks(text: String) -> void:
 	perks_label.text = "Perks: " + text
 	perks_label.visible = text != ""
+
+
+func show_boss(on: bool) -> void:
+	boss_label.visible = on
 
 
 func hide_hint() -> void:

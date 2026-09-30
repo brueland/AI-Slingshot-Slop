@@ -69,9 +69,11 @@ func refresh(main: Node) -> void:
 	if hud.visible and rogue_mode:
 		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
 		hud.show_perks(RoguePerks.summary(main.rogue.perks))
+		hud.show_boss(str(main.rogue.goal.get("type", "")) == "boss")
 	elif hud.visible:
 		hud.update_progress(progress.best_distance, progress.coins)
 		hud.show_perks("")
+		hud.show_boss(false)
 	title_panel.visible = state == "TITLE"
 	if title_panel.visible:
 		title_panel.show_progress(progress.best_distance, progress.total_runs)
