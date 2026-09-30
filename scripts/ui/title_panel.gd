@@ -114,6 +114,9 @@ func _ready():
 	reset_button.connect("pressed", Callable(self, "_on_reset_pressed"))
 	box.add_child(reset_button)
 	
+	_pair(rogue_button, daily_button)
+	_pair(wardrobe_button, stats_button)
+	_pair(options_button, credits_button)
 	show_progress(0.0, 0)
 
 func _on_play_pressed():
@@ -135,6 +138,16 @@ func _on_reset_pressed():
 func show_greeting(text: String) -> void:
 	greeting_label.text = text
 	greeting_label.visible = text != ""
+
+## Puts two buttons side by side in one row, where the first one was (keeps the title short enough).
+func _pair(left: Button, right: Button) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	box.add_child(row)
+	box.move_child(row, left.get_index())
+	for button in [left, right]:
+		button.reparent(row)
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return row
 
 func set_mascot_hat(id: String) -> void:
 	mascot.set_hat(id)
