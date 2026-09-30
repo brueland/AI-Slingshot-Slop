@@ -43,6 +43,7 @@ var scenery: Scenery
 var critters: Critters
 var birds: Birds
 var ufo: Ufo
+var weather_fx: WeatherFx
 var course_view: CourseView
 var slingshot: Slingshot
 var trajectory: TrajectoryPreview
@@ -172,6 +173,7 @@ func _begin_aim() -> void:
 	balloon_view.build(session.balloons)
 	birds.reset()
 	ufo.reset()
+	weather_fx.show_weather(rogue.weather if mode == "rogue" else "calm")
 	ghost.set_points(GhostPath.unpack(progress.best_path) if mode == "classic" else PackedVector2Array())
 	course_view.set_best_marker(progress.best_distance)
 	feedback.watch(session)

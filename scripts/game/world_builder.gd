@@ -48,3 +48,5 @@ static func build(main: Node) -> void:
 	main.add_child(main.effects)
 	main.feedback = Feedback.new()
 	main.add_child(main.feedback)
+	main.weather_fx = WeatherFx.new()
+	main.add_child(main.weather_fx)
