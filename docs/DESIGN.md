@@ -46,6 +46,11 @@ Small (0.6x) is faster with less drag, so it flies farther, but has less reach; 
 more drag but reaches stars easily. In the roguelike stars are picked up by the alien's body (its radius + 0.9 m
 around its center), so rolling into a low star counts; classic keeps its 1.5 m rule.
 
+**Weather and polish** (milestone 12): from round 3 each roguelike round has a weather (Tailwind, Headwind, Thick
+Air, Springy or Soggy Ground, or Calm) shown on the perk panel; it changes the shot a little. Birds perch along the
+course and scatter with a "Tweet!", quick lively moments pop up "Combo xN!", bounces and stars vary their pitch,
+and the Stats screen shows the roguelike records.
+
 **Last-aim line:** a dashed line through the slingshot showing the previous launch's pull, so a good shot can be
 repeated. Classic: unlocked by Aim Guide level 1+. Roguelike: unlocked by the Steady Hand perk.
 
@@ -269,7 +274,7 @@ The per-task files (tasks/*.md) give each node's exact API.
 
 ## 11. Build plan
 
-105 tasks in 11 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+113 tasks in 12 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -285,3 +290,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 9 Whimsy | 081–090, 090c | UiRoot.refresh refactor, jelly wobble, hats with a Wardrobe, alien moods, sheep that hop, confetti, alien quips |
 | 10 Features | 091–100 (096 in two parts: 096, 096b), 100c | Compact main._ready, R repeats the last shot, party balloons, best-run ghost, daily run, perk rerolls, pause menu, title mascot, night stars |
 | 11 Roguelike sizes | 101–104, 105c | Star pickup settings, Small/Normal/Big alien sizes, size drawn on screen, size choice on the perk panel |
+| 12 Weather and polish | 106–112, 113c | UiRoot.wire refactor, varied sound pitch, combo popups, birds that scatter, roguelike weather, weather on the perk panel, roguelike stats |
