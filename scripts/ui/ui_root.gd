@@ -95,6 +95,9 @@ func refresh(main: Node) -> void:
 	rogue_over_panel.daily_label.visible = daily_key != ""
 	rogue_over_panel.daily_label.text = "Daily run %s - best today: %d rounds" % [daily_key, int(progress.daily_best.get(daily_key, 0))]
 	rogue_over_panel.show_history(progress.rogue_history)
+	var streak := Daily.streak(progress.daily_best, Daily.today())
+	rogue_over_panel.streak_label.visible = daily_key != "" and streak > 0
+	rogue_over_panel.streak_label.text = "Daily streak: %d day%s" % [streak, "" if streak == 1 else "s"]
 
 
 func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_rounds: int) -> void:

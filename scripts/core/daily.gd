@@ -15,6 +15,16 @@ static func seed_for(date: Dictionary) -> int:
 	return int(date.get("year", 2000)) * 10000 + int(date.get("month", 1)) * 100 + int(date.get("day", 1))
 
 
+## How many days in a row, up to and including `today_date`, have a daily result in `bests`.
+static func streak(bests: Dictionary, today_date: Dictionary) -> int:
+	var noon := {"year": int(today_date.get("year", 2000)), "month": int(today_date.get("month", 1)), "day": int(today_date.get("day", 1)), "hour": 12}
+	var day_seconds := Time.get_unix_time_from_datetime_dict(noon)
+	var count := 0
+	while bests.has(key_for(Time.get_date_dict_from_unix_time(day_seconds - count * 86400))):
+		count += 1
+	return count
+
+
 static func today() -> Dictionary:
 	return Time.get_date_dict_from_system()
 

@@ -9,6 +9,7 @@ var title_label: Label
 var rounds_label: Label
 var best_label: Label
 var daily_label: Label
+var streak_label: Label
 var perks_label: Label
 var back_button: Button
 var history_label: Label
@@ -45,6 +46,10 @@ func _ready() -> void:
 	daily_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4))
 	daily_label.hide()
 	box.add_child(daily_label)
+	streak_label = Label.new()
+	streak_label.add_theme_color_override("font_color", Color(1.0, 0.7, 0.3))
+	streak_label.hide()
+	box.add_child(streak_label)
 	back_button = Button.new()
 	back_button.text = "Back to title"
 	box.add_child(back_button)
