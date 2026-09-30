@@ -17,6 +17,7 @@ var best_path: Array = []
 var daily_best: Dictionary = {}
 ## The last roguelike runs, newest first: {"rounds": int, "seed": int, "perks": int}.
 var rogue_history: Array = []
+var shake_on: bool = true
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -80,6 +81,7 @@ func to_dict() -> Dictionary:
 		"best_path": best_path.duplicate(true),
 		"daily_best": daily_best.duplicate(),
 		"rogue_history": rogue_history.duplicate(true),
+		"shake_on": shake_on,
 	}
 
 
@@ -164,6 +166,7 @@ static func from_dict(data: Dictionary) -> Progress:
 		for item in history_data:
 			if typeof(item) == TYPE_DICTIONARY and p.rogue_history.size() < ROGUE_HISTORY_SIZE:
 				p.rogue_history.append({"rounds": maxi(0, int(item.get("rounds", 0))), "seed": int(item.get("seed", 0)), "perks": maxi(0, int(item.get("perks", 0)))})
+	p.shake_on = bool(data.get("shake_on", true))
 	return p
 
 

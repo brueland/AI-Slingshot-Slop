@@ -7,6 +7,7 @@ var view_size: Vector2 = Vector2(1280, 720)
 var shake_strength: float = 0.0
 var shake_duration: float = 0.0
 var shake_time_left: float = 0.0
+var shake_enabled: bool = true
 var _rng := RandomNumberGenerator.new()
 
 
@@ -32,6 +33,8 @@ func snap_to(target: Vector2) -> void:
 
 
 func shake(strength: float, duration: float) -> void:
+	if not shake_enabled:
+		return
 	shake_strength = strength
 	shake_duration = maxf(duration, 0.001)
 	shake_time_left = shake_duration
