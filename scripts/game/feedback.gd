@@ -20,6 +20,7 @@ var bounces_seen: int = 0
 var combo: int = 0
 var combo_left: float = 0.0
 var best_combo_run: int = 0
+var sheep_woken_run: int = 0
 
 ## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
 const COMBO_WINDOW: float = 1.2
@@ -43,6 +44,7 @@ func watch(session: RunSession) -> void:
 	combo = 0
 	combo_left = 0.0
 	best_combo_run = 0
+	sheep_woken_run = 0
 	if projectile_view != null:
 		projectile_view.set_mood("")
 	if session.tracker != null:
@@ -156,6 +158,7 @@ func _on_bounced(impact_speed: float) -> void:
 	if critters != null and sim != null:
 		var sheep := critters.react(sim.position.x)
 		if sheep >= 0:
+			sheep_woken_run += 1
 			var baa := FloatingText.new()
 			baa.setup("Meh." if Critters.is_black(sheep) else "Baa!", Color.WHITE)
 			baa.position = critters.sheep_position(sheep) + Vector2(-16.0, -48.0)

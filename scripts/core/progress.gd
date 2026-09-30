@@ -22,6 +22,8 @@ var shake_on: bool = true
 var challenge_day: String = ""
 var best_combo: int = 0
 var rogue_rounds_total: int = 0
+var balloons_total: int = 0
+var sheep_woken: int = 0
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -98,6 +100,8 @@ func to_dict() -> Dictionary:
 		"challenge_day": challenge_day,
 		"best_combo": best_combo,
 		"rogue_rounds_total": rogue_rounds_total,
+		"balloons_total": balloons_total,
+		"sheep_woken": sheep_woken,
 	}
 
 
@@ -186,6 +190,8 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.challenge_day = str(data.get("challenge_day", ""))
 	p.best_combo = maxi(0, int(data.get("best_combo", 0)))
 	p.rogue_rounds_total = maxi(0, int(data.get("rogue_rounds_total", 0)))
+	p.balloons_total = maxi(0, int(data.get("balloons_total", 0)))
+	p.sheep_woken = maxi(0, int(data.get("sheep_woken", 0)))
 	return p
 
 
