@@ -67,3 +67,5 @@ func _ready() -> void:
 func set_altitude(height_m: float) -> void:
 	sky_gradient.set_height(height_m)
 	layers[1].modulate.a = 1.0 - clampf((height_m - CLOUDS_FADE_START_M) / (CLOUDS_GONE_M - CLOUDS_FADE_START_M), 0.0, 1.0)
+	if star_field != null:
+		star_field.set_height(height_m)
