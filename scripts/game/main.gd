@@ -41,6 +41,7 @@ var background: SkyBackground
 var world_view: WorldView
 var scenery: Scenery
 var critters: Critters
+var flowers: Flowers
 var birds: Birds
 var ufo: Ufo
 var weather_fx: WeatherFx

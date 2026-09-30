@@ -13,6 +13,7 @@ var hud: Hud
 var critters: Critters
 var sim: FlightSim
 var balloon_view: BalloonView
+var flowers: Flowers
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 var combo: int = 0
@@ -144,6 +145,8 @@ func _on_bounced(impact_speed: float) -> void:
 	bounces_seen += 1
 	if bounces_seen >= 3 and projectile_view != null:
 		projectile_view.set_mood("dizzy", 2.0)
+	if flowers != null and sim != null:
+		flowers.grow_at(sim.position.x)
 	if critters != null and sim != null:
 		var sheep := critters.react(sim.position.x)
 		if sheep >= 0:

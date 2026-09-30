@@ -20,6 +20,8 @@ static func build(main: Node) -> void:
 	main.critters = Critters.new()
 	main.add_child(main.critters)
 	main.critters.build(Critters.SEED, Balance.COURSE_LENGTH)
+	main.flowers = Flowers.new()
+	main.add_child(main.flowers)
 	main.birds = Birds.new()
 	main.add_child(main.birds)
 	main.ufo = Ufo.new()
@@ -48,5 +50,6 @@ static func build(main: Node) -> void:
 	main.add_child(main.effects)
 	main.feedback = Feedback.new()
 	main.add_child(main.feedback)
+	main.feedback.flowers = main.flowers
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
