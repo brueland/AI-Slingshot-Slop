@@ -28,6 +28,7 @@ static func build(main: Node) -> void:
 	main.add_child(main.kites)
 	var sock := WindSock.new()
 	main.add_child(sock)
+	main.add_child(SkyBalloons.new())
 	main.birds = Birds.new()
 	main.add_child(main.birds)
 	main.ufo = Ufo.new()
