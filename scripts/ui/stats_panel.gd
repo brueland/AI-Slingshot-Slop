@@ -15,6 +15,7 @@ var daily_label: Label
 var hats_label: Label
 var combo_label: Label
 var rogue_total_label: Label
+var collection_label: Label
 var chart: DistanceChart
 var close_button: Button
 
@@ -68,6 +69,8 @@ func _ready() -> void:
 	vbox.add_child(combo_label)
 	rogue_total_label = Label.new()
 	vbox.add_child(rogue_total_label)
+	collection_label = Label.new()
+	vbox.add_child(collection_label)
 	
 	var chart_label := Label.new()
 	chart_label.text = "Last 10 runs"
@@ -99,6 +102,7 @@ func show_stats(progress: Progress) -> void:
 	daily_label.text = "Daily runs played: %d" % progress.daily_best.size()
 	combo_label.text = "Best combo: x%d" % progress.best_combo
 	rogue_total_label.text = "Roguelike rounds cleared: %d" % progress.rogue_rounds_total
+	collection_label.text = "Balloons popped: %d   Sheep woken: %d   Achievements: %d/%d" % [progress.balloons_total, progress.sheep_woken, progress.achievements.size(), Achievements.LIST.size()]
 	hats_label.text = "Hats: %d / %d" % [Hats.unlocked(progress).size() - 1, Hats.LIST.size() - 1]
 	
 	chart.set_values(progress.recent_distances)
