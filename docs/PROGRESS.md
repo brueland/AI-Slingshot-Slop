@@ -22,4 +22,5 @@ Milestone 17: complete (options and extras: screen shake option, classic daily c
 Milestone 18: complete (final polish: hat trails, grazing sheep, mascot hop, height bar)
 Milestone 19: complete (variety: lucky rounds, weather on the HUD, roguelike total, best buy, glowing flags, victory confetti)
 Milestone 20: complete (collecting: balloon and sheep records, collection stats, hat hover preview, surprise hat, poke the mascot, results balloons)
+Milestone 21: complete (goal feedback: goal progress helpers, live goal readout, so close, how close on the perk panel, longest shot)
 
