@@ -21,6 +21,7 @@ var shake_on: bool = true
 ## The day ("2026-09-30") the classic daily challenge was last done.
 var challenge_day: String = ""
 var best_combo: int = 0
+var rogue_rounds_total: int = 0
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -183,6 +184,7 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.shake_on = bool(data.get("shake_on", true))
 	p.challenge_day = str(data.get("challenge_day", ""))
 	p.best_combo = maxi(0, int(data.get("best_combo", 0)))
+	p.rogue_rounds_total = maxi(0, int(data.get("rogue_rounds_total", 0)))
 	return p
 
 
