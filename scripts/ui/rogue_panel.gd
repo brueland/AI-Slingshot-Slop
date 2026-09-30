@@ -71,6 +71,9 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 		title_label.text = "Missed! Lives left: %d" % int(outcome.get("lives", run.lives))
 	round_label.text = "Round %d - Lives %d" % [run.round_number, run.lives]
 	goal_label.text = "Next goal: %s" % run.goal.get("text", "")
+	if outcome.get("boss_beaten", false):
+		title_label.text = "Boss beaten! +1 life"
+	goal_label.modulate = Color(1.0, 0.6, 0.6) if run.goal.get("type", "") == "boss" else Color.WHITE
 	var weather := RogueWeather.get_def(run.weather)
 	weather_label.text = "Weather: %s - %s" % [weather["name"], weather["description"]]
 	perk_ids.assign(run.offer)
