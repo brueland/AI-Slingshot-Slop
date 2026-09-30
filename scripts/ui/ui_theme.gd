@@ -74,6 +74,10 @@ static func build() -> Theme:
 		theme.set_stylebox(state, "Button", button_box(BUTTON_COLORS[state], state == "pressed"))
 		theme.set_stylebox(state, "PrimaryButton", button_box(PRIMARY_COLORS[state], state == "pressed"))
 	theme.set_font_size("font_size", "PrimaryButton", 42)
+	theme.set_color("font_color", "Button", Color.WHITE)
 	theme.set_color("font_outline_color", "Button", Color(0.05, 0.08, 0.2, 0.55))
 	theme.set_constant("outline_size", "Button", 5)
+	theme.set_color("font_color", "Label", Color.WHITE)
+	theme.set_constant("outline_size", "Label", 6)
+	theme.set_color("font_outline_color", "Label", Color(0.0, 0.0, 0.0, 0.5))
 	return theme
