@@ -14,6 +14,7 @@ var best_label: Label
 var coins_label: Label
 var goal_label: Label
 var hint_label: Label
+var altitude_bar: AltitudeBar
 var perks_label: Label
 var boss_label: Label
 
@@ -46,6 +47,9 @@ func _ready() -> void:
 	left_container.add_child(boosts_label)
 	boosts_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	boosts_label.add_theme_font_size_override("font_size", 22)
+	
+	altitude_bar = AltitudeBar.new()
+	left_container.add_child(altitude_bar)
 	
 	# Right VBoxContainer for progress
 	var right_container := VBoxContainer.new()
@@ -138,6 +142,7 @@ func update_flight(distance: float, height: float, stars: int, boosts: int) -> v
 	height_label.text = "Height: %d m" % floori(maxf(height, 0.0))
 	stars_label.text = "Stars: %d" % stars
 	boosts_label.text = "Boosts: %d" % boosts
+	altitude_bar.set_height(height)
 
 func update_progress(best: float, coins: int) -> void:
 	best_label.text = "Best: %d m" % floori(best)
