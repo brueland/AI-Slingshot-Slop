@@ -12,6 +12,13 @@ const BUTTON_COLORS: Dictionary = {
 	"pressed": Color(0.18, 0.42, 0.85),
 	"disabled": Color(0.35, 0.37, 0.45, 0.9),
 }
+## The main button (PLAY) is warm orange instead of blue.
+const PRIMARY_COLORS: Dictionary = {
+	"normal": Color(1.0, 0.6, 0.15),
+	"hover": Color(1.0, 0.7, 0.3),
+	"pressed": Color(0.93, 0.52, 0.1),
+	"disabled": Color(0.35, 0.37, 0.45, 0.9),
+}
 
 
 ## Fredoka at a weight from 400 (regular) to 700 (bold): the game's font.
@@ -20,6 +27,24 @@ static func game_font(weight: int) -> FontVariation:
 	font.base_font = load(FONT_PATH)
 	font.variation_opentype = {TextServerManager.get_primary_interface().name_to_tag("wght"): weight}
 	return font
+
+
+## A chunky button face: rounded, with a darker lip along the bottom that shrinks when the button is pressed
+## (the text moves down with it), and a soft shadow.
+static func button_box(color: Color, pressed: bool) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = color
+	box.border_color = color.darkened(0.35)
+	box.border_width_bottom = 2 if pressed else 6
+	box.set_corner_radius_all(16)
+	box.content_margin_left = 22
+	box.content_margin_right = 22
+	box.content_margin_top = 12 if pressed else 8
+	box.content_margin_bottom = 8 if pressed else 12
+	box.shadow_color = Color(0, 0, 0, 0.25)
+	box.shadow_size = 3
+	box.shadow_offset = Vector2(0, 3)
+	return box
 
 
 static func build() -> Theme:
@@ -40,20 +65,15 @@ static func build() -> Theme:
 	panel.set_border_width_all(4)
 	panel.border_color = BORDER_COLOR
 	panel.set_content_margin_all(24)
+	panel.shadow_color = Color(0, 0, 0, 0.35)
+	panel.shadow_size = 10
+	panel.shadow_offset = Vector2(0, 6)
 	theme.set_stylebox("panel", "PanelContainer", panel)
+	theme.set_type_variation("PrimaryButton", "Button")
 	for state in BUTTON_COLORS:
-		var box := StyleBoxFlat.new()
-		box.bg_color = BUTTON_COLORS[state]
-		box.set_corner_radius_all(16)
-		box.content_margin_left = 16
-		box.content_margin_right = 16
-		box.content_margin_top = 8
-		box.content_margin_bottom = 8
-		theme.set_stylebox(state, "Button", box)
-	theme.set_stylebox("focus", "Button", StyleBoxEmpty.new())
-	theme.set_color("font_color", "Button", Color.WHITE)
-	theme.set_color("font_disabled_color", "Button", Color(0.7, 0.7, 0.75))
-	theme.set_color("font_color", "Label", Color.WHITE)
-	theme.set_color("font_outline_color", "Label", Color(0, 0, 0, 0.85))
-	theme.set_constant("outline_size", "Label", 6)
+		theme.set_stylebox(state, "Button", button_box(BUTTON_COLORS[state], state == "pressed"))
+		theme.set_stylebox(state, "PrimaryButton", button_box(PRIMARY_COLORS[state], state == "pressed"))
+	theme.set_font_size("font_size", "PrimaryButton", 42)
+	theme.set_color("font_outline_color", "Button", Color(0.05, 0.08, 0.2, 0.55))
+	theme.set_constant("outline_size", "Button", 5)
 	return theme
