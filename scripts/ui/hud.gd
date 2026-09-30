@@ -18,6 +18,7 @@ var altitude_bar: AltitudeBar
 var perks_label: Label
 var boss_label: Label
 var lucky_label: Label
+var weather_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -85,6 +86,13 @@ func _ready() -> void:
 	perks_label.hide()
 	right_container.add_child(perks_label)
 	
+	weather_label = Label.new()
+	weather_label.add_theme_font_size_override("font_size", 18)
+	weather_label.add_theme_color_override("font_color", Color(0.7, 0.9, 1.0))
+	weather_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weather_label.hide()
+	right_container.add_child(weather_label)
+	
 	# Boss banner at the top center
 	boss_label = Label.new()
 	boss_label.text = "BOSS ROUND!"
@@ -143,6 +151,12 @@ func show_hint(text: String) -> void:
 func show_perks(text: String) -> void:
 	perks_label.text = "Perks: " + text
 	perks_label.visible = text != ""
+
+
+## Roguelike: the round's weather under the perks (hidden when `weather_name` is empty).
+func show_weather(weather_name: String) -> void:
+	weather_label.text = "Weather: " + weather_name
+	weather_label.visible = weather_name != ""
 
 
 func show_lucky(on: bool) -> void:
