@@ -298,3 +298,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 17 Options and extras | 145–150, 151c | Screen shake setting and option, classic daily challenge and its label, best combo and its stat |
 | 18 Final polish | 152–155, 156c | Hat trails, grazing sheep, mascot hop, height bar on the HUD |
 | 19 Variety | 157–163, 164c | Lucky rounds and their banner, weather on the HUD, roguelike total, best buy in the shop, glowing reached flags, victory confetti |
+| 20 Collecting | 165–170, 171c | Balloon and sheep records, collection line on the Stats screen, hat hover preview, Surprise me! hat, poke the mascot, balloons on the results |
