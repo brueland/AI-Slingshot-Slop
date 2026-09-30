@@ -63,12 +63,17 @@ func is_over() -> bool:
 func finish_shot(result: Dictionary) -> Dictionary:
 	shots += 1
 	var met := RogueGoals.check(goal, result)
+	var boss_beaten := met and str(goal.get("type", "")) == "boss"
+	if boss_beaten:
+		lives += 1
 	if met:
 		rounds_cleared += 1
 		round_number += 1
 		if rounds_cleared % 5 == 0:
 			rerolls += 1
 		goal = RogueGoals.make_goal(round_number, run_seed)
+		if RogueGoals.is_boss_round(round_number):
+			goal = RogueGoals.make_boss_goal(round_number, run_seed)
 		weather = RogueWeather.for_round(round_number, run_seed)
 	else:
 		lives -= 1
