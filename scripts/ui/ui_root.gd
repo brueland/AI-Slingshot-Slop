@@ -173,6 +173,7 @@ func wire(main: Node) -> void:
 	rogue_panel.perk_chosen.connect(Callable(main, "choose_rogue_perk"))
 	rogue_panel.reroll_pressed.connect(Callable(main, "reroll_perks"))
 	pause_menu.resume_pressed.connect(Callable(main, "toggle_pause"))
+	hud.menu_pressed.connect(Callable(main, "toggle_pause"))
 	pause_menu.quit_pressed.connect(Callable(main, "go_to_title"))
 	pause_menu.options_pressed.connect(Callable(main, "open_options"))
 	rogue_over_panel.back_pressed.connect(Callable(main, "go_to_title"))
