@@ -303,3 +303,5 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 22 Menus | 178–183, 184c | Achievements panel, How to play panel, title row for both, panels wired, course bar on the HUD |
 | 23 Flight stats | 185–189, 190c | Air time, air time on the results, best air time, Hang time! |
 | 24 Sky | 191–194, 195c | Windsock that points with the roguelike wind, hot-air balloons drifting in the sky |
+| 25 Last touches | 196–200, 201c | Holiday greetings on the title, star rating on the results, speed on the HUD |
+| 26 Menus in play | 202–203, 204c | Options (volume) in the pause menu, Menu button on the HUD to pause and quit to the title |
