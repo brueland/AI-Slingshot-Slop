@@ -293,3 +293,13 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 12 Weather and polish | 106–112, 113c | UiRoot.wire refactor, varied sound pitch, combo popups, birds that scatter, roguelike weather, weather on the perk panel, roguelike stats |
 | 13 Bosses and extras | 114–119, 120c | Shot map on the results, wardrobe preview, friendly UFOs, roguelike boss rounds (every 6th round from 12, +1 life) |
 | 14 Juice | 121–128, 129c | Boing/Splat popups, twinkling stars and waving flags, fading aim dots, black sheep, hat celebration, keyboard aiming, WorldBuilder refactor, weather on screen |
+| 15 Roguelike depth | 130–135, 136c | Run history, replay a seed, perks and boss banner on the HUD, daily streak, best roguelike run on the title |
+| 16 Meadow | 137–143, 144c | Rolling hills, flowers where you bounce, cows, kites, shooting stars, tip of the day, distance to best |
+| 17 Options and extras | 145–150, 151c | Screen shake setting and option, classic daily challenge and its label, best combo and its stat |
+| 18 Final polish | 152–155, 156c | Hat trails, grazing sheep, mascot hop, height bar on the HUD |
+| 19 Variety | 157–163, 164c | Lucky rounds and their banner, weather on the HUD, roguelike total, best buy in the shop, glowing reached flags, victory confetti |
+| 20 Collecting | 165–170, 171c | Balloon and sheep records, collection line on the Stats screen, hat hover preview, Surprise me! hat, poke the mascot, balloons on the results |
+| 21 Goal feedback | 172–176, 177c | Goal progress helpers, live goal readout on the HUD, So close!, how close on the perk panel, longest shot of the run |
+| 22 Menus | 178–183, 184c | Achievements panel, How to play panel, title row for both, panels wired, course bar on the HUD |
+| 23 Flight stats | 185–189, 190c | Air time, air time on the results, best air time, Hang time! |
+| 24 Sky | 191–194, 195c | Windsock that points with the roguelike wind, hot-air balloons drifting in the sky |
