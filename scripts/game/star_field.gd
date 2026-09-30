@@ -9,6 +9,7 @@ const FADE_FULL_M: float = 150.0
 
 var stars: Array[Vector3] = []
 var time: float = 0.0
+var shooting: Array[Vector3] = []
 
 
 func _ready() -> void:
@@ -31,10 +32,32 @@ func set_height(height_m: float) -> void:
 func _process(delta: float) -> void:
 	if modulate.a > 0.0:
 		time += delta
+		advance_shooting(delta)
 		queue_redraw()
+
+
+## A shooting star every 3 seconds while the stars are out; each one crosses the sky in 1 second.
+func advance_shooting(delta: float) -> void:
+	if fmod(time, 3.0) < delta:
+		shooting.append(Vector3(fposmod(time * 211.0, 1400.0) - 700.0, -650.0, 0.0))
+	for i in range(shooting.size() - 1, -1, -1):
+		var s := shooting[i]
+		s.z += delta
+		if s.z >= 1.0:
+			shooting.remove_at(i)
+		else:
+			shooting[i] = s
+
+
+## Where a shooting star's head is: it starts at (x, y) and flies down and to the right.
+static func shooting_position(s: Vector3) -> Vector2:
+	return Vector2(s.x, s.y) + Vector2(420.0, 180.0) * s.z
 
 
 func _draw() -> void:
 	for s in stars:
 		var twinkle := 0.6 + 0.4 * sin(time * 2.0 + s.z)
 		draw_circle(Vector2(s.x, s.y), 1.5 + 0.8 * twinkle, Color(1.0, 1.0, 0.9, twinkle))
+	for streak in shooting:
+		var head := shooting_position(streak)
+		draw_line(head, head - Vector2(60.0, 26.0), Color(1.0, 1.0, 0.9, 1.0 - streak.z), 2.0)
