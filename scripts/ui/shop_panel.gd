@@ -52,8 +52,30 @@ func _ready():
 	launch_button.text = "Launch!"
 	launch_button.pressed.connect(func(): launch_requested.emit())
 	list.add_child(launch_button)
+	_build_columns()
 	
 	hide()
+
+
+## One column per upgrade category (its header on top), with the coins above and a big Launch! below.
+func _build_columns() -> void:
+	custom_minimum_size = Vector2(1000, 0)
+	var columns := HBoxContainer.new()
+	columns.add_theme_constant_override("separation", 16)
+	list.add_child(columns)
+	list.move_child(columns, launch_button.get_index())
+	for category in UpgradeCatalog.CATEGORIES:
+		var column := VBoxContainer.new()
+		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		columns.add_child(column)
+		header_labels[category].reparent(column)
+		for id in UpgradeCatalog.ids_in_category(category):
+			buttons[id].reparent(column)
+			buttons[id].add_theme_font_size_override("font_size", 18)
+	launch_button.theme_type_variation = "PrimaryButton"
+	launch_button.add_theme_font_size_override("font_size", 30)
+	launch_button.custom_minimum_size = Vector2(300, 0)
+	launch_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 
 
 func refresh(progress: Progress) -> void:
