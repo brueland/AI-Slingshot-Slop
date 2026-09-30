@@ -8,6 +8,7 @@ signal closed
 var title_label: Label
 var hat_buttons: Dictionary = {}
 var close_button: Button
+var preview: TitleMascot
 
 
 func _ready() -> void:
@@ -21,6 +22,8 @@ func _ready() -> void:
 	title_label.text = "Wardrobe"
 	title_label.add_theme_font_size_override("font_size", 32)
 	box.add_child(title_label)
+	preview = TitleMascot.new()
+	box.add_child(preview)
 	for entry in Hats.LIST:
 		var id: String = entry["id"]
 		var button := Button.new()
@@ -49,4 +52,5 @@ func show_hats(progress: Progress) -> void:
 			button.text = "%s (wearing)" % entry["name"]
 		else:
 			button.text = entry["name"]
+	preview.set_hat(progress.hat)
 	show()
