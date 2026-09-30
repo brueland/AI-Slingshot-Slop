@@ -303,6 +303,8 @@ func _finish_run() -> void:
 	progress.best_combo = maxi(progress.best_combo, feedback.best_combo_run)
 	progress.balloons_total += int(last_result.get("balloons", 0))
 	progress.sheep_woken += feedback.sheep_woken_run
+	progress.best_air_time = maxf(progress.best_air_time, float(last_result["air_time"]))
+	last_result["best_air_time"] = progress.best_air_time
 	if progress.try_challenge(last_result["distance"], Daily.today()):
 		toast.enqueue("Daily challenge done!", "Come back tomorrow for a new one")
 	if last_result["distance"] > previous_best:

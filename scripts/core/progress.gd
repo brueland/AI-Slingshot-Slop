@@ -24,6 +24,7 @@ var best_combo: int = 0
 var rogue_rounds_total: int = 0
 var balloons_total: int = 0
 var sheep_woken: int = 0
+var best_air_time: float = 0.0
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -102,6 +103,7 @@ func to_dict() -> Dictionary:
 		"rogue_rounds_total": rogue_rounds_total,
 		"balloons_total": balloons_total,
 		"sheep_woken": sheep_woken,
+		"best_air_time": best_air_time,
 	}
 
 
@@ -192,6 +194,7 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.rogue_rounds_total = maxi(0, int(data.get("rogue_rounds_total", 0)))
 	p.balloons_total = maxi(0, int(data.get("balloons_total", 0)))
 	p.sheep_woken = maxi(0, int(data.get("sheep_woken", 0)))
+	p.best_air_time = maxf(0.0, float(data.get("best_air_time", 0.0)))
 	return p
 
 
