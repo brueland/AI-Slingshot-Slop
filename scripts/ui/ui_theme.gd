@@ -5,6 +5,8 @@ extends RefCounted
 const PANEL_COLOR := Color(0.12, 0.14, 0.32, 0.95)
 const BORDER_COLOR := Color(1.0, 0.88, 0.45)
 const FONT_PATH: String = "res://assets/fonts/Fredoka.ttf"
+const HOVER_SCALE: float = 1.06
+const PRESS_SCALE: float = 0.94
 const LOGO_FONT_PATH: String = "res://assets/fonts/LilitaOne-Regular.ttf"
 const BUTTON_COLORS: Dictionary = {
 	"normal": Color(0.22, 0.5, 0.95),
@@ -45,6 +47,25 @@ static func button_box(color: Color, pressed: bool) -> StyleBoxFlat:
 	box.shadow_size = 3
 	box.shadow_offset = Vector2(0, 3)
 	return box
+
+
+## Makes a button springy: it grows a little under the mouse and squashes while it is held down.
+static func add_juice(button: Button) -> void:
+	button.pivot_offset = button.size / 2.0
+	button.resized.connect(func(): button.pivot_offset = button.size / 2.0)
+	button.mouse_entered.connect(func(): _spring(button, HOVER_SCALE))
+	button.mouse_exited.connect(func(): _spring(button, 1.0))
+	button.button_down.connect(func(): _spring(button, PRESS_SCALE))
+	button.button_up.connect(func(): _spring(button, HOVER_SCALE if button.is_hovered() else 1.0))
+
+
+static func _spring(button: Button, to: float) -> void:
+	if not button.is_inside_tree():
+		return
+	var tween := button.create_tween()
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(button, "scale", Vector2.ONE * to, 0.12)
 
 
 static func build() -> Theme:

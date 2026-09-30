@@ -92,6 +92,8 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Control:
 			child.theme = ui_theme
+	for button in find_children("*", "Button", true, false):
+		UiTheme.add_juice(button)
 
 
 ## Shows the screens that belong to main's current state and mode. `main` is the node running scripts/game/main.gd.
