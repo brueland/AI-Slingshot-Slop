@@ -199,6 +199,7 @@ func _begin_aim() -> void:
 	camera.snap_to(projectile_view.position)
 	trajectory.clear()
 	trail.clear_trail()
+	trail.set_style(progress.hat)
 	shadow.update_from(session.sim.position)
 	background.set_altitude(0.0)
 	
