@@ -28,5 +28,5 @@ Milestone 23: complete (flight stats: air time, air time on the results, best ai
 Milestone 24: complete (sky: windsock, windsock by the slingshot, hot-air balloons, balloons in the sky)
 Milestone 25: complete (last touches: holiday greetings, greeting on the title, star rating, stars on the results, speed on the HUD)
 Milestone 26: complete (menus in play: Options in the pause menu, Menu button on the HUD)
-Milestone 27: complete (faces and sky: bigger alien, cartoon faces, faces in flight, focus and ouch, mascot eyes, sky gradient to space, title buttons in pairs)
+Milestone 28: complete (new look: game fonts, juicy springy buttons, title redesign with a mode chooser, HUD panels and progress bar, pause row, results and shop in columns)
 
