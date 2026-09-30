@@ -20,6 +20,7 @@ var rogue_history: Array = []
 var shake_on: bool = true
 ## The day ("2026-09-30") the classic daily challenge was last done.
 var challenge_day: String = ""
+var best_combo: int = 0
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -94,6 +95,7 @@ func to_dict() -> Dictionary:
 		"rogue_history": rogue_history.duplicate(true),
 		"shake_on": shake_on,
 		"challenge_day": challenge_day,
+		"best_combo": best_combo,
 	}
 
 
@@ -180,6 +182,7 @@ static func from_dict(data: Dictionary) -> Progress:
 				p.rogue_history.append({"rounds": maxi(0, int(item.get("rounds", 0))), "seed": int(item.get("seed", 0)), "perks": maxi(0, int(item.get("perks", 0)))})
 	p.shake_on = bool(data.get("shake_on", true))
 	p.challenge_day = str(data.get("challenge_day", ""))
+	p.best_combo = maxi(0, int(data.get("best_combo", 0)))
 	return p
 
 

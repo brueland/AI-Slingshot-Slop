@@ -295,6 +295,7 @@ func _finish_run() -> void:
 	last_result = session.result()
 	last_result["milestones"] = progress.record_run(last_result["distance"], last_result["coins"])
 	progress.record_lifetime(last_result)
+	progress.best_combo = maxi(progress.best_combo, feedback.best_combo_run)
 	if progress.try_challenge(last_result["distance"], Daily.today()):
 		toast.enqueue("Daily challenge done!", "Come back tomorrow for a new one")
 	if last_result["distance"] > previous_best:

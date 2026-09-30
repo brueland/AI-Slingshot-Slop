@@ -19,6 +19,7 @@ var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 var combo: int = 0
 var combo_left: float = 0.0
+var best_combo_run: int = 0
 
 ## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
 const COMBO_WINDOW: float = 1.2
@@ -41,6 +42,7 @@ func watch(session: RunSession) -> void:
 	bounces_seen = 0
 	combo = 0
 	combo_left = 0.0
+	best_combo_run = 0
 	if projectile_view != null:
 		projectile_view.set_mood("")
 	if session.tracker != null:
@@ -71,6 +73,7 @@ func tick_combo(delta: float) -> void:
 func add_combo() -> int:
 	combo = combo + 1 if combo_left > 0.0 else 1
 	combo_left = COMBO_WINDOW
+	best_combo_run = maxi(best_combo_run, combo)
 	if combo >= 3 and projectile_view != null and popups != null:
 		var popup := FloatingText.new()
 		popup.setup("Combo x%d!" % combo, Color(0.5, 1.0, 1.0))
