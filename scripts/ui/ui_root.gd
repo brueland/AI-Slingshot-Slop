@@ -19,6 +19,8 @@ var tip_label: Label
 var challenge_label: Label
 var rogue_panel: RoguePanel
 var rogue_over_panel: RogueOverPanel
+var help_panel: HelpPanel
+var achievements_panel: AchievementsPanel
 
 
 func _ready() -> void:
@@ -54,6 +56,10 @@ func _ready() -> void:
 	add_child(rogue_over_panel)
 	wardrobe_panel = WardrobePanel.new()
 	add_child(wardrobe_panel)
+	help_panel = HelpPanel.new()
+	add_child(help_panel)
+	achievements_panel = AchievementsPanel.new()
+	add_child(achievements_panel)
 	pause_menu = PauseMenu.new()
 	add_child(pause_menu)
 	tip_label = Label.new()
@@ -180,6 +186,10 @@ func wire(main: Node) -> void:
 	title_panel.stats_pressed.connect(func(): stats_panel.show_stats(main.progress))
 	stats_panel.closed.connect(stats_panel.hide)
 	credits_panel.closed.connect(credits_panel.hide)
+	title_panel.help_pressed.connect(help_panel.show)
+	help_panel.closed.connect(help_panel.hide)
+	title_panel.achievements_pressed.connect(func(): achievements_panel.show_list(main.progress))
+	achievements_panel.closed.connect(achievements_panel.hide)
 	options_panel.volume_changed.connect(Callable(main, "_on_volume_changed"))
 	options_panel.shake_toggled.connect(Callable(main, "set_shake"))
 	options_panel.closed.connect(options_panel.hide)
