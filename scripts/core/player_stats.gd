@@ -13,10 +13,10 @@ var star_value: int = Balance.BASE_STAR_VALUE
 var bounce_bonus: int = 0
 
 ## Star pickups: a star is collected within pickup_radius of a point pickup_offset meters above the alien's
-## contact point. The defaults are the classic rule; the roguelike measures from the alien's body (see RogueSizes).
+## contact point: the center of the alien as it is drawn, and its drawn radius plus RogueSizes.STAR_REACH.
 var size_scale: float = 1.0
-var pickup_offset: float = 0.0
-var pickup_radius: float = Balance.STAR_RADIUS
+var pickup_offset: float = Balance.PROJECTILE_RADIUS * Balance.LOOK_SCALE
+var pickup_radius: float = Balance.PROJECTILE_RADIUS * Balance.LOOK_SCALE + RogueSizes.STAR_REACH
 
 
 static func _level(levels: Dictionary, id: String) -> int:

@@ -10,7 +10,7 @@ const TEXTURES: Array[String] = [
 
 const WOBBLE_SECONDS: float = 0.4
 ## The alien is drawn this much bigger than its physical size (PROJECTILE_RADIUS), so its face reads.
-const LOOK_SCALE: float = 1.5
+const LOOK_SCALE: float = Balance.LOOK_SCALE
 
 var tier: int = 0
 var base_scale: Vector2 = Vector2.ONE

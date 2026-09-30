@@ -30,7 +30,7 @@ static func apply(stats: PlayerStats, id: String) -> PlayerStats:
 	stats.size_scale = s
 	stats.max_speed *= float(d["speed"])
 	stats.drag *= float(d["drag"])
-	var body := Balance.PROJECTILE_RADIUS * s
+	var body := Balance.PROJECTILE_RADIUS * s * Balance.LOOK_SCALE
 	stats.pickup_offset = body
 	stats.pickup_radius = body + STAR_REACH
 	return stats

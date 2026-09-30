@@ -27,3 +27,5 @@ const GOAL_DISTANCE: float = 1000.0
 const MAX_RUN_SECONDS: float = 120.0
 const PIXELS_PER_METER: float = 16.0
 const PROJECTILE_RADIUS: float = 0.75
+## The alien is drawn this much bigger than PROJECTILE_RADIUS; star pickups use the drawn body.
+const LOOK_SCALE: float = 1.5
