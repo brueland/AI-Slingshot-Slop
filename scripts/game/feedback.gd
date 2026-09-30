@@ -24,6 +24,8 @@ var sheep_woken_run: int = 0
 
 ## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
 const COMBO_WINDOW: float = 1.2
+## A missed roguelike goal at least this close (0-1) gets a "So close!".
+const CLOSE_RATIO: float = 0.85
 
 
 func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_course_view: CourseView,
@@ -97,6 +99,9 @@ func celebrate(result: Dictionary) -> String:
 		text = "Goal!"
 	elif not (result.get("new_hats", []) as Array).is_empty():
 		text = "New hat!"
+	if text == "" and float(result.get("goal_ratio", 0.0)) >= CLOSE_RATIO:
+		_say("So close!", Color(1.0, 0.8, 0.4))
+		return "So close!"
 	if text == "":
 		return ""
 	if effects != null and projectile_view != null:

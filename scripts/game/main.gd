@@ -282,7 +282,7 @@ func _finish_run() -> void:
 	if mode == "rogue":
 		last_result = session.result()
 		rogue_outcome = rogue.finish_shot(last_result)
-		feedback.celebrate({"goal_met": rogue_outcome["met"]})
+		feedback.celebrate({"goal_met": rogue_outcome["met"], "goal_ratio": rogue_outcome["ratio"]})
 		if rogue.is_over():
 			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
 			progress.add_rogue_run(rogue.rounds_cleared, rogue.run_seed, rogue.perks.size())
