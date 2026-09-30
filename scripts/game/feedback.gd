@@ -14,6 +14,7 @@ var critters: Critters
 var sim: FlightSim
 var balloon_view: BalloonView
 var flowers: Flowers
+var cows: Cows
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 var combo: int = 0
@@ -147,6 +148,8 @@ func _on_bounced(impact_speed: float) -> void:
 		projectile_view.set_mood("dizzy", 2.0)
 	if flowers != null and sim != null:
 		flowers.grow_at(sim.position.x)
+	if cows != null and sim != null and cows.react(sim.position.x) >= 0:
+		_say("Moo!", Color.WHITE)
 	if critters != null and sim != null:
 		var sheep := critters.react(sim.position.x)
 		if sheep >= 0:
