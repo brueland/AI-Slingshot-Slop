@@ -2,16 +2,17 @@ class_name SkyBackground
 extends Node2D
 ## Parallax sky and clouds behind the world. Parallax2D layers follow the camera on their own.
 
-const SKY_TEXTURE: String = "res://assets/backgrounds/sky.png"
 const CLOUD_TEXTURE: String = "res://assets/sprites/cloud.png"
-const HIGH_SKY_COLOR := Color(0.45, 0.5, 0.85)
-const HIGH_ALTITUDE_M: float = 150.0
+## The clouds fade out while the alien climbs from CLOUDS_FADE_START_M to CLOUDS_GONE_M.
+const CLOUDS_FADE_START_M: float = 60.0
+const CLOUDS_GONE_M: float = 120.0
 
 var layers: Array[Parallax2D] = []
 var stars_layer: Parallax2D
 var star_field: StarField
 var hills_layer: Parallax2D
 var hills: Hills
+var sky_gradient: SkyGradient
 
 func _ready() -> void:
 	z_index = -10
@@ -22,13 +23,9 @@ func _ready() -> void:
 	sky_layer.repeat_size = Vector2(1536, 0)
 	sky_layer.repeat_times = 3
 	
-	var sky_sprite = Sprite2D.new()
-	sky_sprite.texture = preload(SKY_TEXTURE)
-	sky_sprite.centered = false
-	sky_sprite.scale = Vector2(1.5, 1.5)
-	sky_sprite.position = Vector2(-768, -1400)
-	
-	sky_layer.add_child(sky_sprite)
+	# The sky itself: a gradient drawn behind everything in screen space (a CanvasLayer ignores the parallax)
+	sky_gradient = SkyGradient.new()
+	sky_layer.add_child(sky_gradient)
 	add_child(sky_layer)
 	layers.append(sky_layer)
 	
@@ -66,9 +63,7 @@ func _ready() -> void:
 	hills_layer.add_child(hills)
 	add_child(hills_layer)
 
-## Tints the whole sky toward deep blue as the projectile climbs (full tint at HIGH_ALTITUDE_M).
+## As the projectile climbs, the sky darkens toward space (SkyGradient) and the clouds fade out.
 func set_altitude(height_m: float) -> void:
-	var t := clampf(height_m / HIGH_ALTITUDE_M, 0.0, 1.0)
-	modulate = Color.WHITE.lerp(HIGH_SKY_COLOR, t)
-	if star_field != null:
-		star_field.set_height(height_m)
+	sky_gradient.set_height(height_m)
+	layers[1].modulate.a = 1.0 - clampf((height_m - CLOUDS_FADE_START_M) / (CLOUDS_GONE_M - CLOUDS_FADE_START_M), 0.0, 1.0)
