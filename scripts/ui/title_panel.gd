@@ -26,6 +26,7 @@ var wardrobe_button: Button
 var box: VBoxContainer
 var rogue_best_label: Label
 var mascot: TitleMascot
+var greeting_label: Label
 var help_button: Button
 var achievements_button: Button
 
@@ -45,6 +46,12 @@ func _ready():
 	title_label.text = "Slingshot Skies"
 	title_label.add_theme_font_size_override("font_size", 48)
 	box.add_child(title_label)
+	
+	greeting_label = Label.new()
+	greeting_label.add_theme_color_override("font_color", Color(1.0, 0.75, 0.9))
+	greeting_label.hide()
+	box.add_child(greeting_label)
+	show_greeting(Greetings.today())
 	
 	best_label = Label.new()
 	box.add_child(best_label)
@@ -123,6 +130,11 @@ func _on_stats_pressed():
 
 func _on_reset_pressed():
 	emit_signal("reset_pressed")
+
+## Shows a holiday greeting under the title ("" hides it).
+func show_greeting(text: String) -> void:
+	greeting_label.text = text
+	greeting_label.visible = text != ""
 
 func set_mascot_hat(id: String) -> void:
 	mascot.set_hat(id)
