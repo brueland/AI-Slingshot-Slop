@@ -63,6 +63,7 @@ func is_over() -> bool:
 func finish_shot(result: Dictionary) -> Dictionary:
 	shots += 1
 	var met := RogueGoals.check(goal, result)
+	var ratio := RogueGoals.progress_ratio(goal, result)
 	var boss_beaten := met and str(goal.get("type", "")) == "boss"
 	var lucky := met and RogueGoals.is_lucky_round(round_number, run_seed)
 	if lucky:
