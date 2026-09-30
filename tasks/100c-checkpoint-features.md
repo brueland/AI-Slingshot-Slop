@@ -3,23 +3,19 @@ id: 100c-checkpoint-features
 status: ready
 tests: [tests/acceptance/test_100c_checkpoint_features.gd]
 files: [docs/PROGRESS.md]
-read: [scripts/game/main.gd]
 ---
 
 # Checkpoint 10: the new features work together
 
-Milestone 10 (tasks 091-100) is built. This checkpoint's test plays with real frames: a strong classic shot
-(dragged with the mouse API) pops a balloon while the pause menu pauses and resumes the flight, the next shot shows
-the best run's ghost and the R key repeats the same launch; a daily run rerolls its perks and picks one; the title
-mascot bobs wearing its hat. It also checks the new scripts' conventions and main.gd's length.
+Milestone 10 (tasks 091-100) is built and its tests pass; this checkpoint's test plays its features together.
 
-What to do:
-1. Append this line to the end of `docs/PROGRESS.md` (keep what is there):
-   `Milestone 10: complete (features: balloons, best-run ghost, repeat shot, daily run, rerolls, pause menu, title mascot, night stars)`
-2. If another assertion fails, fix the script it names to match the task files 091-100. If main.gd is too long,
-   make its code more compact rather than removing features.
-
-If the other assertions already pass, the only change needed is the PROGRESS.md line.
+What to do: **append this one line to the end of `docs/PROGRESS.md`** (keep everything already there):
+```
+Milestone 10: complete (features: balloons, best-run ghost, repeat shot, daily run, rerolls, pause menu, title mascot, night stars)
+```
+That is the whole task. The scripts for milestone 10 are already finished and their tests already pass: do not
+open, add to the chat, or edit any other file (not the scripts, not the tests). Only if the test output after this
+change names a failing assertion should you fix the one script it names.
 
 ## Acceptance criteria
 - `docs/PROGRESS.md` contains `Milestone 10: complete`.
