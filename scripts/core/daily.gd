@@ -25,6 +25,11 @@ static func streak(bests: Dictionary, today_date: Dictionary) -> int:
 	return count
 
 
+## Today's classic challenge: fly this far (150-450 m, the same for everyone on that day).
+static func challenge_distance(date: Dictionary) -> float:
+	return 150.0 + posmod(seed_for(date), 7) * 50.0
+
+
 static func today() -> Dictionary:
 	return Time.get_date_dict_from_system()
 

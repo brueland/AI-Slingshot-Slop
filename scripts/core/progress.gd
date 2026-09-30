@@ -18,6 +18,8 @@ var daily_best: Dictionary = {}
 ## The last roguelike runs, newest first: {"rounds": int, "seed": int, "perks": int}.
 var rogue_history: Array = []
 var shake_on: bool = true
+## The day ("2026-09-30") the classic daily challenge was last done.
+var challenge_day: String = ""
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -29,6 +31,15 @@ func add_rogue_run(rounds: int, run_seed: int, perk_count: int) -> void:
 	rogue_history.push_front({"rounds": rounds, "seed": run_seed, "perks": perk_count})
 	while rogue_history.size() > ROGUE_HISTORY_SIZE:
 		rogue_history.pop_back()
+
+
+## Marks the daily challenge of `date` done when `distance` reaches it (once a day). Returns true when it just got done.
+func try_challenge(distance: float, date: Dictionary) -> bool:
+	var key := Daily.key_for(date)
+	if challenge_day == key or distance < Daily.challenge_distance(date):
+		return false
+	challenge_day = key
+	return true
 
 
 func level_of(id: String) -> int:
@@ -82,6 +93,7 @@ func to_dict() -> Dictionary:
 		"daily_best": daily_best.duplicate(),
 		"rogue_history": rogue_history.duplicate(true),
 		"shake_on": shake_on,
+		"challenge_day": challenge_day,
 	}
 
 
@@ -167,6 +179,7 @@ static func from_dict(data: Dictionary) -> Progress:
 			if typeof(item) == TYPE_DICTIONARY and p.rogue_history.size() < ROGUE_HISTORY_SIZE:
 				p.rogue_history.append({"rounds": maxi(0, int(item.get("rounds", 0))), "seed": int(item.get("seed", 0)), "perks": maxi(0, int(item.get("perks", 0)))})
 	p.shake_on = bool(data.get("shake_on", true))
+	p.challenge_day = str(data.get("challenge_day", ""))
 	return p
 
 
