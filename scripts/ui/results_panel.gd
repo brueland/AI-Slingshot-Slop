@@ -15,6 +15,7 @@ var coins_label: Label
 var milestones_label: Label
 var hats_label: Label
 var shot_map: ShotMap
+var gap_label: Label
 var continue_button: Button
 
 func _ready():
@@ -35,6 +36,10 @@ func _ready():
 	
 	shot_map = ShotMap.new()
 	vbox.add_child(shot_map)
+	
+	gap_label = Label.new()
+	gap_label.add_theme_color_override("font_color", Color(0.85, 0.9, 1.0))
+	vbox.add_child(gap_label)
 	
 	distance_label = Label.new()
 	vbox.add_child(distance_label)
@@ -80,6 +85,15 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 	quip_label.text = "\"%s\"" % Quips.pick(said)
 	var path: PackedVector2Array = result.get("path", PackedVector2Array())
 	shot_map.set_path(path)
+	var previous := float(result.get("previous_best", 0.0))
+	var flown := float(result.get("distance", 0.0))
+	if is_new_best and previous > 0.0:
+		gap_label.text = "New best by %d m!" % roundi(flown - previous)
+	elif not is_new_best and previous > 0.0:
+		gap_label.text = "%d m short of your best (%d m)" % [roundi(previous - flown), roundi(previous)]
+	else:
+		gap_label.text = ""
+	gap_label.visible = gap_label.text != ""
 	distance_label.text = "Distance: %d m" % result["distance_points"]
 	stars_label.text = "Stars: %d (+%d)" % [result["stars"], result["star_points"]]
 	bounces_label.text = "Bounces: %d (+%d)" % [result["bounces"], result["bounce_points"]]
