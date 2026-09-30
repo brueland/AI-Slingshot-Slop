@@ -234,6 +234,7 @@ func _begin_aim() -> void:
 	slingshot.position = WorldView.world_to_screen(Vector2(0.0, stats.launch_height))
 	slingshot.apply_stats(stats, progress.level_of("power"))
 	projectile_view.set_tier(floori(progress.level_of("aero") / 2.0))
+	projectile_view.set_size(stats.size_scale)
 	slingshot.enabled = true
 	slingshot.show_last_aim = rogue.has_perk("steady") if mode == "rogue" else progress.level_of("guide") >= 1
 	projectile_view.show_at(session.sim.position)

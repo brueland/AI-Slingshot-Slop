@@ -15,6 +15,7 @@ var base_scale: Vector2 = Vector2.ONE
 var wobble_strength: float = 0.0
 var wobble_left: float = 0.0
 var decor: ProjectileDecor
+var size_scale: float = 1.0
 
 
 func _init() -> void:
@@ -35,13 +36,13 @@ func set_tier(new_tier: int) -> void:
 	tier = clampi(new_tier, 0, 2)
 	texture = load(TEXTURES[tier])
 	# Scale the sprite so it is 2 * Balance.PROJECTILE_RADIUS meters wide on screen
-	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER) / texture.get_width()
+	scale = Vector2.ONE * (Balance.PROJECTILE_RADIUS * 2.0 * Balance.PIXELS_PER_METER) / texture.get_width() * size_scale
 	base_scale = scale
 
 
 func show_at(world_pos: Vector2) -> void:
-	# The sprite's center is one radius above the given point
-	position = WorldView.world_to_screen(world_pos + Vector2(0.0, Balance.PROJECTILE_RADIUS))
+	# The sprite's center is one (sized) radius above the given point
+	position = WorldView.world_to_screen(world_pos + Vector2(0.0, Balance.PROJECTILE_RADIUS * size_scale))
 	_sync_decor()
 
 
@@ -68,6 +69,13 @@ func advance_wobble(delta: float) -> void:
 	scale = base_scale * Vector2(1.0 + w, 1.0 - w)
 	if wobble_left <= 0.0:
 		scale = base_scale
+
+
+## Draws the alien (and its hat) `s` times its normal size; 1.0 is normal. Used by the roguelike sizes.
+func set_size(s: float) -> void:
+	size_scale = maxf(s, 0.1)
+	set_tier(tier)
+	decor.scale = Vector2.ONE * size_scale
 
 
 func set_hat(id: String) -> void:
