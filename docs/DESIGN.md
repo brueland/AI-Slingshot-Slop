@@ -293,3 +293,8 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 12 Weather and polish | 106–112, 113c | UiRoot.wire refactor, varied sound pitch, combo popups, birds that scatter, roguelike weather, weather on the perk panel, roguelike stats |
 | 13 Bosses and extras | 114–119, 120c | Shot map on the results, wardrobe preview, friendly UFOs, roguelike boss rounds (every 6th round from 12, +1 life) |
 | 14 Juice | 121–128, 129c | Boing/Splat popups, twinkling stars and waving flags, fading aim dots, black sheep, hat celebration, keyboard aiming, WorldBuilder refactor, weather on screen |
+| 15 Roguelike depth | 130–135, 136c | Run history, replay a seed, perks and boss banner on the HUD, daily streak, best roguelike run on the title |
+| 16 Meadow | 137–143, 144c | Rolling hills, flowers where you bounce, cows, kites, shooting stars, tip of the day, distance to best |
+| 17 Options and extras | 145–150, 151c | Screen shake setting and option, classic daily challenge and its label, best combo and its stat |
+| 18 Final polish | 152–155, 156c | Hat trails, grazing sheep, mascot hop, height bar on the HUD |
+| 19 Variety | 157–163, 164c | Lucky rounds and their banner, weather on the HUD, roguelike total, best buy in the shop, glowing reached flags, victory confetti |
