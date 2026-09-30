@@ -14,6 +14,7 @@ var total_label: Label
 var coins_label: Label
 var milestones_label: Label
 var hats_label: Label
+var balloons_label: Label
 var shot_map: ShotMap
 var gap_label: Label
 var continue_button: Button
@@ -68,6 +69,11 @@ func _ready():
 	hats_label.visible = false
 	vbox.add_child(hats_label)
 	
+	balloons_label = Label.new()
+	balloons_label.add_theme_color_override("font_color", Color(1.0, 0.6, 0.85))
+	balloons_label.visible = false
+	vbox.add_child(balloons_label)
+	
 	continue_button = Button.new()
 	continue_button.text = "Continue"
 	continue_button.connect("pressed", Callable(self, "_on_continue_pressed"))
@@ -117,5 +123,8 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 		names.append(str(Hats.get_def(str(id)).get("name", id)))
 	hats_label.text = "New hat: %s! Try it on in the Wardrobe" % ", ".join(names)
 	hats_label.visible = not new_hats.is_empty()
+	var popped := int(result.get("balloons", 0))
+	balloons_label.text = "Balloons popped: %d" % popped
+	balloons_label.visible = popped > 0
 	
 	show()
