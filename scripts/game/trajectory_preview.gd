@@ -38,8 +38,15 @@ func clear() -> void:
 	queue_redraw()
 
 
+## How opaque dot `i` of `n` is: 0.9 next to the slingshot, fading to 0.2 at the far end.
+static func dot_alpha(i: int, n: int) -> float:
+	if n <= 1:
+		return 0.9
+	return lerpf(0.9, 0.2, float(i) / float(n - 1))
+
+
 ## Draw trajectory dots with shrinking radius.
 func _draw() -> void:
 	for i in range(points.size()):
 		var radius := 4.0 - (3.5 * (i / maxf(1, points.size() - 1)))
-		draw_circle(points[i], radius, Color(1, 1, 1, 0.7))
+		draw_circle(points[i], radius, Color(1, 1, 1, dot_alpha(i, points.size())))
