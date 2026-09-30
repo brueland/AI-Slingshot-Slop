@@ -30,6 +30,7 @@ func _gui_input(event: InputEvent) -> void:
 
 func poke() -> void:
 	poke_left = 0.4
+	decor.set_mood("wow", 0.6)
 	var hi := FloatingText.new()
 	hi.setup("Hi!", Color(0.7, 1.0, 0.7))
 	hi.position = center() + Vector2(24.0, -40.0)
@@ -46,6 +47,7 @@ func poke_offset() -> float:
 func _process(delta: float) -> void:
 	time += delta
 	poke_left = maxf(0.0, poke_left - delta)
+	decor.set_face(decor.face, (get_local_mouse_position() - center()).limit_length(60.0) / 60.0)
 	decor.position = center()
 	queue_redraw()
 
