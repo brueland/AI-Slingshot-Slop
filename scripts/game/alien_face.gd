@@ -9,6 +9,28 @@ const WHITE := Color(1, 1, 1)
 const MOUTH_RED := Color(0.75, 0.25, 0.3)
 const EYE_L := Vector2(-4.4, -2.4)
 const EYE_R := Vector2(4.4, -2.4)
+## Falling faster than this (m/s) looks scary; flying faster than WEE_SPEED is fun.
+const SCARED_FALL_SPEED: float = 14.0
+const WEE_SPEED: float = 16.0
+
+
+## Which face the alien makes in flight: a hard bounce (ouch_left > 0) first, then falling fast (scared),
+## flying fast (wee), and happy otherwise (also while rolling on the ground).
+static func pick(velocity: Vector2, airborne: bool, ouch_left: float) -> String:
+	if ouch_left > 0.0:
+		return "ouch"
+	if airborne and velocity.y < -SCARED_FALL_SPEED:
+		return "scared"
+	if airborne and velocity.length() > WEE_SPEED:
+		return "wee"
+	return "happy"
+
+
+## Where the pupils look: along the flight (the sim's y is up, the screen's is down), or ahead when still.
+static func look_for(velocity: Vector2) -> Vector2:
+	if velocity.length() < 1.0:
+		return Vector2(0.5, 0.0)
+	return Vector2(velocity.x, -velocity.y).normalized()
 
 
 ## Draws `face` on `canvas` (call it from the canvas's _draw); `look` is where the pupils look (length 0 to 1).
