@@ -16,9 +16,9 @@ func _ready() -> void:
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
 	grow_vertical = Control.GROW_DIRECTION_BEGIN
 	custom_minimum_size = Vector2(260, 0)
-	offset_top -= 140.0
-	offset_bottom -= 140.0
-	var box := VBoxContainer.new()
+	offset_top -= 96.0
+	offset_bottom -= 96.0
+	var box := HBoxContainer.new()
 	add_child(box)
 	resume_button = Button.new()
 	resume_button.text = "Resume"
