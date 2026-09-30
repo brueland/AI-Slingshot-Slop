@@ -10,6 +10,8 @@ signal stats_pressed
 signal rogue_pressed
 signal daily_pressed
 signal wardrobe_pressed
+signal help_pressed
+signal achievements_pressed
 
 var title_label: Label
 var best_label: Label
@@ -24,6 +26,8 @@ var wardrobe_button: Button
 var box: VBoxContainer
 var rogue_best_label: Label
 var mascot: TitleMascot
+var help_button: Button
+var achievements_button: Button
 
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -74,6 +78,19 @@ func _ready():
 	stats_button.text = "Stats"
 	stats_button.connect("pressed", Callable(self, "_on_stats_pressed"))
 	box.add_child(stats_button)
+	
+	var more_row := HBoxContainer.new()
+	box.add_child(more_row)
+	help_button = Button.new()
+	help_button.text = "How to play"
+	help_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	help_button.pressed.connect(func(): help_pressed.emit())
+	more_row.add_child(help_button)
+	achievements_button = Button.new()
+	achievements_button.text = "Achievements"
+	achievements_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	achievements_button.pressed.connect(func(): achievements_pressed.emit())
+	more_row.add_child(achievements_button)
 	
 	options_button = Button.new()
 	options_button.text = "Options"
