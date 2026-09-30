@@ -13,4 +13,5 @@ Milestone 8: complete (roguelike mode: goals, perks, lives, perk and run-over sc
 Milestone 9: complete (whimsy: hats and wardrobe, jelly wobble, moods, sheep, confetti, quips)
 Milestone 10: complete (features: balloons, best-run ghost, repeat shot, daily run, rerolls, pause menu, title mascot, night stars)
 Milestone 11: complete (roguelike sizes: small, normal and big aliens; stars picked up by the alien's body)
+Milestone 12: complete (polish: button wiring refactor, sound pitch, combos, birds, roguelike weather, roguelike stats)
 
