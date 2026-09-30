@@ -108,6 +108,8 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 	stars_label.text = "Stars: %d (+%d)" % [result["stars"], result["star_points"]]
 	bounces_label.text = "Bounces: %d (+%d)" % [result["bounces"], result["bounce_points"]]
 	air_label.text = "Air time: %.1f s" % float(result.get("air_time", 0.0))
+	if float(result.get("best_air_time", 0.0)) > 0.0:
+		air_label.text += "   (best %.1f s)" % float(result["best_air_time"])
 	multiplier_label.text = "Multiplier: x%.2f" % result["multiplier"]
 	total_label.text = "Total: %d" % result["total"]
 	coins_label.text = "Coins earned: +%d" % result["coins"]
