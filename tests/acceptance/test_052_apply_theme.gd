@@ -38,6 +38,6 @@ func test_theme_reaches_nested_controls() -> void:
 		return
 	assert_eq(main.hud.distance_label.get_theme_constant("outline_size"), 6, "HUD labels are outlined")
 	var sb = main.title_panel.play_button.get_theme_stylebox("normal")
-	assert_true(sb is StyleBoxFlat and sb.corner_radius_top_left == 10, "buttons are rounded")
+	assert_true(sb is StyleBoxFlat and sb.corner_radius_top_left == 16 and sb.border_width_bottom == 6, "chunky rounded buttons with a lip (task 215)")
 	var panel = main.shop_panel.get_theme_stylebox("panel")
-	assert_true(panel is StyleBoxFlat and panel.border_width_top == 3, "panels have the gold border")
+	assert_true(panel is StyleBoxFlat and panel.border_width_top == 4, "panels have the gold border (task 215)")

@@ -34,7 +34,7 @@ func test_mascot_on_the_title() -> void:
 		return
 	assert_eq(mascot.get_script().resource_path, PATH)
 	assert_eq(mascot.get_parent(), main.title_panel.box)
-	assert_eq(mascot.get_index(), 0, "above the game name")
+	assert_eq(mascot.get_index(), main.title_panel.title_label.get_index() - 1, "right above the game name (task 217)")
 	assert_false(mascot.decor.top_level, "the hat is drawn inside the title panel")
 	var y0: float = mascot.center().y
 	await wait_seconds(0.3)

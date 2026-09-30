@@ -26,21 +26,15 @@ func _main():
 func test_title_pairs() -> void:
 	var main = _main()
 	var t = main.title_panel
-	for pair in [[t.rogue_button, t.daily_button], [t.wardrobe_button, t.stats_button], [t.options_button, t.credits_button]]:
-		assert_true(pair[0].get_parent() is HBoxContainer, pair[0].text + " is in a row")
-		assert_eq(pair[0].get_parent(), pair[1].get_parent(), pair[0].text + " and " + pair[1].text + " side by side")
-		assert_eq(pair[0].get_index(), 0, pair[0].text + " on the left")
-	assert_eq(t.play_button.get_parent(), t.box, "Play keeps its own row")
-	assert_eq(t.reset_button.get_parent(), t.box, "so does Reset progress")
-	var order := [t.play_button, t.rogue_button.get_parent(), t.wardrobe_button.get_parent(), t.help_button.get_parent(),
-		t.options_button.get_parent(), t.reset_button]
-	for i in range(1, order.size()):
-		assert_gt(order[i].get_index(), order[i - 1].get_index(), "rows in order")
+	# Updated by task 217: the mode buttons moved into the mode chooser, the others into the bottom bar
+	for button in [t.wardrobe_button, t.stats_button, t.achievements_button, t.help_button, t.options_button, t.credits_button]:
+		assert_eq(button.get_parent(), t.bottom_bar, button.text + " is in the bottom bar")
+	assert_eq(t.play_button.get_parent().get_parent(), t.rogue_button.get_parent().get_parent(), "the modes share a list")
 	main.progress.best_rogue_round = 5
 	main.ui_layer.refresh(main)
 	t.show_greeting("Happy Halloween!")
 	await wait_process_frames(3)
-	var rect: Rect2 = t.get_global_rect()
+	var rect: Rect2 = t.bottom_bar.get_global_rect()
 	assert_true(main.get_viewport().get_visible_rect().encloses(rect), "on screen")
 	assert_lt(rect.end.y, main.ui_layer.challenge_label.get_global_rect().position.y, "clear of the daily challenge line")
 	assert_lt(rect.end.y, main.ui_layer.tip_label.get_global_rect().position.y, "clear of the tip line")

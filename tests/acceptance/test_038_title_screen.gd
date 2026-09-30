@@ -31,7 +31,7 @@ func test_title_panel() -> void:
 	watch_signals(t)
 	assert_true(t is PanelContainer)
 	assert_eq(t.title_label.text, "Slingshot Skies")
-	assert_eq(t.play_button.text, "Play")
+	assert_eq(t.play_button.text, "Classic", "the classic mode button in the mode chooser (task 217)")
 	assert_eq(t.reset_button.text, "Reset progress")
 	t.show_progress(312.8, 9)
 	assert_eq(t.best_label.text, "Best: 312 m in 9 runs")

@@ -30,7 +30,7 @@ func test_title_row() -> void:
 	var row = title.help_button.get_parent()
 	assert_true(row is HBoxContainer, "side by side")
 	assert_eq(title.achievements_button.get_parent(), row)
-	assert_eq(row.get_index(), title.stats_button.get_parent().get_index() + 1, "right under the Stats row (task 212)")
+	assert_eq(row, title.stats_button.get_parent(), "in the bottom bar with Stats (task 217)")
 	watch_signals(title)
 	title.help_button.pressed.emit()
 	assert_signal_emitted(title, "help_pressed")

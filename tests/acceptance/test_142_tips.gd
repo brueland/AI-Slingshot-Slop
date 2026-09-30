@@ -47,6 +47,6 @@ func test_tips() -> void:
 	assert_eq(label.text, t.for_date(load("res://scripts/core/daily.gd").today()))
 	await wait_process_frames(2)
 	assert_true(main.get_viewport().get_visible_rect().encloses(label.get_global_rect()), "on screen")
-	assert_false(label.get_global_rect().intersects(main.title_panel.get_global_rect()), "under the title panel")
+	assert_gt(label.get_global_rect().position.y, main.title_panel.bottom_bar.get_global_rect().end.y, "under the title's buttons (task 217)")
 	main.start_game()
 	assert_false(label.visible, "only on the title")

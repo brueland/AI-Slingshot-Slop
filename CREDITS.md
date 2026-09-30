@@ -18,5 +18,9 @@ Slingshot Skies uses these third-party assets. Thank you!
 - **Kenney** (www.kenney.nl), "51 UI sound effects": click.
   https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks
 
+## Fonts (SIL Open Font License 1.1, license texts in assets/fonts/)
+- **Fredoka** by The Fredoka Project Authors. https://github.com/hafontia/Fredoka-One
+- **Lilita One** by Juan Montoreano. https://fonts.google.com/specimen/Lilita+One
+
 ## Tools
 - Godot Engine (MIT), GUT - Godot Unit Test by Butch Wesley (MIT).

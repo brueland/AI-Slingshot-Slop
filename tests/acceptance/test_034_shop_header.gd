@@ -43,7 +43,7 @@ func test_category_headers_come_before_their_upgrades() -> void:
 	assert_eq(s.buttons["aero"].get_parent(), parent, "headers and buttons share one list")
 	var header_index: int = s.header_labels["projectile"].get_index()
 	assert_eq(s.buttons["aero"].get_index(), header_index + 1, "aero right below the Projectile header")
-	assert_lt(s.buttons["bounce_bonus"].get_index(), s.launch_button.get_index(), "Launch! comes last")
+	assert_lt(s.buttons["bounce_bonus"].get_parent().get_parent().get_index(), s.launch_button.get_index(), "Launch! comes last, under the columns (task 222)")
 
 
 func test_launch_button() -> void:

@@ -41,7 +41,7 @@ func test_challenge_label() -> void:
 	await wait_process_frames(2)
 	var screen: Rect2 = main.get_viewport().get_visible_rect()
 	assert_true(screen.encloses(label.get_global_rect()))
-	assert_false(label.get_global_rect().intersects(main.title_panel.get_global_rect()))
+	assert_gt(label.get_global_rect().position.y, main.title_panel.bottom_bar.get_global_rect().end.y, "under the title's buttons (task 217)")
 	assert_false(label.get_global_rect().intersects(main.ui_layer.tip_label.get_global_rect()), "above the tip")
 	main.progress.challenge_day = d.key_for(d.today())
 	main.go_to_title()

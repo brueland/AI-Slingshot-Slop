@@ -17,7 +17,7 @@ func test_build_returns_a_theme() -> void:
 	if t == null:
 		return
 	assert_true(t is Theme)
-	assert_eq(t.default_font_size, 20)
+	assert_eq(t.default_font_size, 22, "Fredoka at 22 px (task 214)")
 
 
 func test_panel_style() -> void:
@@ -28,12 +28,13 @@ func test_panel_style() -> void:
 	assert_true(sb is StyleBoxFlat, "PanelContainer/panel is a StyleBoxFlat")
 	if not sb is StyleBoxFlat:
 		return
-	assert_eq(sb.bg_color, Color(0.09, 0.13, 0.24, 0.92))
-	assert_eq(sb.corner_radius_top_left, 16)
-	assert_eq(sb.corner_radius_bottom_right, 16)
-	assert_eq(sb.border_width_top, 3)
-	assert_eq(sb.border_width_left, 3)
-	assert_eq(sb.border_color, Color(1.0, 0.85, 0.3))
+	# Updated by task 215: rounder panels with a thicker border and a shadow
+	assert_eq(sb.bg_color, Color(0.12, 0.14, 0.32, 0.95))
+	assert_eq(sb.corner_radius_top_left, 22)
+	assert_eq(sb.corner_radius_bottom_right, 22)
+	assert_eq(sb.border_width_top, 4)
+	assert_eq(sb.border_width_left, 4)
+	assert_eq(sb.border_color, Color(1.0, 0.88, 0.45))
 	assert_almost_eq(sb.content_margin_left, 24.0, 0.001)
 
 
@@ -42,15 +43,15 @@ func test_button_styles() -> void:
 	if t == null:
 		return
 	var want := {
-		"normal": Color(0.2, 0.45, 0.85), "hover": Color(0.3, 0.55, 0.95),
-		"pressed": Color(0.15, 0.35, 0.7), "disabled": Color(0.3, 0.3, 0.35, 0.8),
+		"normal": Color(0.22, 0.5, 0.95), "hover": Color(0.33, 0.6, 1.0),
+		"pressed": Color(0.18, 0.42, 0.85), "disabled": Color(0.35, 0.37, 0.45, 0.9),
 	}
 	for state in want:
 		var sb = t.get_stylebox(state, "Button")
 		assert_true(sb is StyleBoxFlat, "Button/%s is a StyleBoxFlat" % state)
 		if sb is StyleBoxFlat:
 			assert_eq(sb.bg_color, want[state], "Button/%s color" % state)
-			assert_eq(sb.corner_radius_top_left, 10, "Button/%s rounded" % state)
+			assert_eq(sb.corner_radius_top_left, 16, "Button/%s rounded (task 215)" % state)
 	assert_eq(t.get_color("font_color", "Button"), Color.WHITE)
 
 
