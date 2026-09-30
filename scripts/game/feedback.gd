@@ -88,6 +88,8 @@ func celebrate(result: Dictionary) -> String:
 		text = "Milestone!"
 	elif bool(result.get("goal_met", false)):
 		text = "Goal!"
+	elif not (result.get("new_hats", []) as Array).is_empty():
+		text = "New hat!"
 	if text == "":
 		return ""
 	if effects != null and projectile_view != null:
