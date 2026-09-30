@@ -8,6 +8,7 @@ const HOP_HEIGHT_PX: float = 14.0
 const REACT_DISTANCE: float = 4.0
 const WOOL := Color(0.97, 0.97, 0.94)
 const FACE := Color(0.2, 0.2, 0.22)
+const BLACK_WOOL := Color(0.18, 0.17, 0.2)
 
 var xs: Array[float] = []
 var hop_left: Array[float] = []
@@ -83,6 +84,11 @@ func _draw() -> void:
 		draw_line(p + Vector2(-6, -5), p + Vector2(-6, 0), FACE, 2.0)
 		draw_line(p + Vector2(6, -5), p + Vector2(6, 0), FACE, 2.0)
 		for o in [Vector2(-7, -11), Vector2(0, -14), Vector2(7, -11), Vector2(-3, -8), Vector2(4, -8)]:
-			draw_circle(p + o, 6.0, WOOL)
+			draw_circle(p + o, 6.0, BLACK_WOOL if is_black(i) else WOOL)
 		draw_circle(p + Vector2(12, -13), 4.0, FACE)
 		draw_circle(p + Vector2(13, -14), 1.0, Color.WHITE)
+
+
+## Every sheep whose index is 2 more than a multiple of 4 is a black sheep (a little grumpier).
+static func is_black(index: int) -> bool:
+	return index % 4 == 2

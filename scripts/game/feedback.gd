@@ -146,7 +146,7 @@ func _on_bounced(impact_speed: float) -> void:
 		var sheep := critters.react(sim.position.x)
 		if sheep >= 0:
 			var baa := FloatingText.new()
-			baa.setup("Baa!", Color.WHITE)
+			baa.setup("Meh." if Critters.is_black(sheep) else "Baa!", Color.WHITE)
 			baa.position = critters.sheep_position(sheep) + Vector2(-16.0, -48.0)
 			if popups != null:
 				popups.add_child(baa)
