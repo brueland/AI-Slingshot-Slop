@@ -48,6 +48,7 @@ static func build(main: Node) -> void:
 	main.add_child(main.projectile_view)
 	main.camera = CameraRig.new()
 	main.add_child(main.camera)
+	main.camera.shake_enabled = main.progress.shake_on
 	main.popups = Node2D.new()
 	main.add_child(main.popups)
 	main.effects = Effects.new()

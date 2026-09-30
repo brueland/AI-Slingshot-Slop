@@ -154,4 +154,5 @@ func wire(main: Node) -> void:
 	stats_panel.closed.connect(stats_panel.hide)
 	credits_panel.closed.connect(credits_panel.hide)
 	options_panel.volume_changed.connect(Callable(main, "_on_volume_changed"))
+	options_panel.shake_toggled.connect(Callable(main, "set_shake"))
 	options_panel.closed.connect(options_panel.hide)

@@ -4,10 +4,12 @@ extends PanelContainer
 
 signal volume_changed(kind: String, value: float)
 signal closed
+signal shake_toggled(on: bool)
 
 var music_slider: HSlider
 var sfx_slider: HSlider
 var close_button: Button
+var shake_check: CheckButton
 var _setting_values: bool = false
 
 func _ready():
@@ -57,6 +59,12 @@ func _ready():
 	sfx_container.add_child(sfx_slider)
 	
 	# Close button
+	shake_check = CheckButton.new()
+	shake_check.text = "Screen shake"
+	shake_check.button_pressed = true
+	shake_check.toggled.connect(func(on: bool): shake_toggled.emit(on))
+	box.add_child(shake_check)
+	
 	close_button = Button.new()
 	close_button.text = "Close"
 	close_button.connect("pressed", Callable(self, "_on_close_pressed"))
@@ -76,6 +84,10 @@ func _on_sfx_value_changed(value: float) -> void:
 
 func _on_close_pressed() -> void:
 	emit_signal("closed")
+
+func set_shake(on: bool) -> void:
+	shake_check.set_pressed_no_signal(on)
+
 
 func set_values(music: float, sfx: float) -> void:
 	_setting_values = true

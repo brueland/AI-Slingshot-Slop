@@ -367,7 +367,15 @@ func reset_progress() -> void:
 func open_options() -> void:
 	options_panel.set_values(float(progress.settings.get("music_volume", 0.8)),
 		float(progress.settings.get("sfx_volume", 0.8)))
+	options_panel.set_shake(progress.shake_on)
 	options_panel.show()
+
+
+## The Screen shake option: saved, and applied to the camera right away.
+func set_shake(on: bool) -> void:
+	progress.shake_on = on
+	camera.shake_enabled = on
+	save_progress()
 
 
 func choose_hat(id: String) -> bool:
