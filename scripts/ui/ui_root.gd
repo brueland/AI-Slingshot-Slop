@@ -15,6 +15,7 @@ var stats_panel: StatsPanel
 var toast: Toast
 var wardrobe_panel: WardrobePanel
 var pause_menu: PauseMenu
+var tip_label: Label
 var rogue_panel: RoguePanel
 var rogue_over_panel: RogueOverPanel
 
@@ -54,6 +55,19 @@ func _ready() -> void:
 	add_child(wardrobe_panel)
 	pause_menu = PauseMenu.new()
 	add_child(pause_menu)
+	tip_label = Label.new()
+	tip_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tip_label.anchor_left = 0.5
+	tip_label.anchor_right = 0.5
+	tip_label.anchor_top = 1.0
+	tip_label.anchor_bottom = 1.0
+	tip_label.offset_left = -420
+	tip_label.offset_right = 420
+	tip_label.offset_top = -44
+	tip_label.offset_bottom = -14
+	tip_label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.85))
+	tip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(tip_label)
 	ui_theme = UiTheme.build()
 	for child in get_children():
 		if child is Control:
@@ -75,6 +89,8 @@ func refresh(main: Node) -> void:
 		hud.show_perks("")
 		hud.show_boss(false)
 	title_panel.visible = state == "TITLE"
+	tip_label.visible = title_panel.visible
+	tip_label.text = Tips.for_date(Daily.today())
 	if title_panel.visible:
 		title_panel.show_progress(progress.best_distance, progress.total_runs)
 		title_panel.set_mascot_hat(progress.hat)
