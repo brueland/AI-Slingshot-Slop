@@ -22,6 +22,7 @@ var rogue_button: Button
 var daily_button: Button
 var wardrobe_button: Button
 var box: VBoxContainer
+var rogue_best_label: Label
 var mascot: TitleMascot
 
 func _ready():
@@ -43,6 +44,11 @@ func _ready():
 	
 	best_label = Label.new()
 	box.add_child(best_label)
+	
+	rogue_best_label = Label.new()
+	rogue_best_label.add_theme_color_override("font_color", Color(0.8, 0.7, 1.0))
+	rogue_best_label.hide()
+	box.add_child(rogue_best_label)
 	
 	play_button = Button.new()
 	play_button.text = "Play"

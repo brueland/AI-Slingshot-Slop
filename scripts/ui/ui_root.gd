@@ -78,6 +78,8 @@ func refresh(main: Node) -> void:
 	if title_panel.visible:
 		title_panel.show_progress(progress.best_distance, progress.total_runs)
 		title_panel.set_mascot_hat(progress.hat)
+		title_panel.rogue_best_label.visible = progress.best_rogue_round > 0
+		title_panel.rogue_best_label.text = "Roguelike best: %d rounds" % progress.best_rogue_round
 	var result: Dictionary = main.last_result
 	if state == "RESULTS" and not rogue_mode:
 		results_panel.show_result(result, bool(result.get("new_best", false)))
