@@ -16,4 +16,5 @@ Milestone 11: complete (roguelike sizes: small, normal and big aliens; stars pic
 Milestone 12: complete (polish: button wiring refactor, sound pitch, combos, birds, roguelike weather, roguelike stats)
 Milestone 13: complete (shot map, wardrobe preview, UFOs, roguelike boss rounds)
 Milestone 14: complete (juice: boing and splat, twinkling stars, fading aim dots, black sheep, hat celebration, keyboard aiming, world builder, weather on screen)
+Milestone 15: complete (roguelike depth: run history, replay a seed, perks and boss banner on the HUD, daily streak, best on the title)
 
