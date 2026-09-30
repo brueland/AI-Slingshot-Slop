@@ -83,7 +83,7 @@ func finish_shot(result: Dictionary) -> Dictionary:
 	offer.clear()
 	if not is_over():
 		offer = RoguePerks.offer(run_seed * 100 + shots, perks)
-	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten}
+	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten, "lucky": lucky}
 
 
 ## Swaps the offer for a different one. One reroll per run, plus one for every 5 rounds cleared.
