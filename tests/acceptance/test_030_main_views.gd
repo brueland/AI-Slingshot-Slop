@@ -56,7 +56,7 @@ func test_aiming_sets_up_the_views() -> void:
 	assert_eq(main.slingshot.position, Vector2(0, -80), "anchor at world (0, launch_height = 5 m)")
 	assert_almost_eq(main.slingshot.frame_height_px, 80.0, 0.001)
 	assert_true(main.slingshot.enabled)
-	assert_eq(main.projectile_view.position, Vector2(0, -92), "projectile waits at the anchor")
+	assert_eq(main.projectile_view.position, Vector2(0, -98), "projectile waits at the anchor (-(5 + 0.75 * 1.5) * 16, task 205)")
 
 
 func test_dragging_shows_the_preview_and_releasing_launches() -> void:

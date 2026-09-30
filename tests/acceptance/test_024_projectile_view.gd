@@ -23,9 +23,9 @@ func test_is_a_sprite_with_the_first_alien() -> void:
 	assert_not_null(v.texture)
 	if v.texture != null:
 		assert_eq(v.texture.resource_path, "res://assets/sprites/projectile_1.png")
-	# 2 * PROJECTILE_RADIUS m * 16 px/m = 24 px wide; the texture is 70 px
-	assert_almost_eq(v.scale.x, 24.0 / 70.0, 0.001)
-	assert_almost_eq(v.scale.y, 24.0 / 70.0, 0.001)
+	# 2 * PROJECTILE_RADIUS m * 16 px/m * LOOK_SCALE (1.5) = 36 px wide; the texture is 70 px (updated by task 205)
+	assert_almost_eq(v.scale.x, 36.0 / 70.0, 0.001)
+	assert_almost_eq(v.scale.y, 36.0 / 70.0, 0.001)
 
 
 func test_show_at_sits_on_the_ground() -> void:
@@ -33,7 +33,7 @@ func test_show_at_sits_on_the_ground() -> void:
 	if v == null:
 		return
 	v.show_at(Vector2(10, 0))
-	assert_eq(v.position, Vector2(160, -12), "center is PROJECTILE_RADIUS (12 px) above the ground")
+	assert_eq(v.position, Vector2(160, -18), "center is PROJECTILE_RADIUS * LOOK_SCALE (18 px) above the ground")
 
 
 func test_sync_from_sim_moves_and_rolls() -> void:
@@ -44,7 +44,7 @@ func test_sync_from_sim_moves_and_rolls() -> void:
 	sim.launch(Vector2(3, 5), Vector2(10, 0))
 	v.sync_from(sim)
 	assert_almost_eq(v.position.x, 48.0, 0.001)
-	assert_almost_eq(v.position.y, -92.0, 0.001, "-(5 + 0.75) * 16")
+	assert_almost_eq(v.position.y, -98.0, 0.001, "-(5 + 0.75 * 1.5) * 16")
 	assert_almost_eq(v.rotation, 4.0, 0.0001, "rotation = x / PROJECTILE_RADIUS (rolling)")
 
 

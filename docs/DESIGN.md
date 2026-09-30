@@ -305,3 +305,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 24 Sky | 191–194, 195c | Windsock that points with the roguelike wind, hot-air balloons drifting in the sky |
 | 25 Last touches | 196–200, 201c | Holiday greetings on the title, star rating on the results, speed on the HUD |
 | 26 Menus in play | 202–203, 204c | Options (volume) in the pause menu, Menu button on the HUD to pause and quit to the title |
+| 27 Faces and sky | 205–212, 213c | Alien drawn 1.5x, cartoon faces (happy, focus, wee, scared, wow, ouch, dizzy, sleepy), mascot eyes follow the mouse, sky gradient up to space, title buttons in pairs |

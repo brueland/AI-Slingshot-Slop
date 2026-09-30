@@ -28,10 +28,8 @@ func test_two_parallax_layers() -> void:
 	assert_true(sky is Parallax2D and clouds is Parallax2D)
 	assert_lt(sky.scroll_scale.x, clouds.scroll_scale.x, "the sky moves slower than the clouds")
 	assert_lt(clouds.scroll_scale.x, 1.0, "both move slower than the world")
-	var sprite: Node = sky.get_child(0) if sky.get_child_count() > 0 else null
-	assert_true(sprite is Sprite2D)
-	if sprite is Sprite2D:
-		assert_eq(sprite.texture.resource_path, "res://assets/backgrounds/sky.png")
+	# Task 211: the sky layer holds the SkyGradient (a screen-space CanvasLayer) instead of a painted picture
+	assert_true(sky.get_child(0) is SkyGradient if sky.get_child_count() > 0 else false, "the sky is a gradient")
 	var cloud_count := 0
 	for c in clouds.get_children():
 		if c is Sprite2D and c.texture.resource_path == "res://assets/sprites/cloud.png":
