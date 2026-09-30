@@ -14,6 +14,8 @@ var sprites: Array[Sprite2D] = []
 var flags: Array[Sprite2D] = []
 var best_marker: Sprite2D
 var best_label: Label
+var star_indices: Array[int] = []
+var time: float = 0.0
 
 
 func _ready():
@@ -55,6 +57,7 @@ func build(items: Array) -> void:
 		if item["type"] == "star":
 			sprite.position = WorldView.world_to_screen(Vector2(item["x"], item["y"]))
 			sprite.scale = Vector2(0.5, 0.5)
+			star_indices.append(i)
 		elif item["type"] == "spring":
 			sprite.position = WorldView.world_to_screen(Vector2(item["x"], 0))
 			sprite.offset = Vector2(0, -35)
@@ -85,8 +88,23 @@ func set_best_marker(distance: float) -> void:
 	best_marker.show()
 
 
+func _process(delta: float) -> void:
+	advance(delta)
+
+
+## Stars gently pulse and the milestone flags sway.
+func advance(delta: float) -> void:
+	time += delta
+	for i in star_indices:
+		if i < sprites.size():
+			sprites[i].scale = Vector2(0.5, 0.5) * (1.0 + 0.1 * sin(time * 4.0 + i))
+	for k in flags.size():
+		flags[k].rotation = sin(time * 2.0 + k) * 0.06
+
+
 func clear() -> void:
 	for sprite in sprites:
 		remove_child(sprite)
 		sprite.free()
 	sprites.clear()
+	star_indices.clear()
