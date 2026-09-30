@@ -79,5 +79,5 @@ static func build() -> Theme:
 	theme.set_constant("outline_size", "Button", 5)
 	theme.set_color("font_color", "Label", Color.WHITE)
 	theme.set_constant("outline_size", "Label", 6)
-	theme.set_color("font_outline_color", "Label", Color(0.0, 0.0, 0.0, 0.5))
+	theme.set_color("font_outline_color", "Label", Color(0.0, 0.0, 0.0, 0.55))
 	return theme
