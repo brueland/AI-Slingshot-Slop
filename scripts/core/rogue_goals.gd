@@ -62,6 +62,62 @@ static func make_boss_goal(round_number: int, run_seed: int) -> Dictionary:
 		"text": "BOSS: %s + %s" % [first["text"], second["text"]]}
 
 
+## How close `result` came to `goal`: 0.0 (nowhere) to 1.0 (met). A boss goal counts its weakest part.
+static func progress_ratio(goal: Dictionary, result: Dictionary) -> float:
+	var target := float(goal.get("target", 0.0))
+	match str(goal.get("type", "")):
+		"distance":
+			return _ratio(float(result.get("distance", 0.0)), target)
+		"height":
+			return _ratio(float(result.get("max_height", 0.0)), target)
+		"bounces":
+			return _ratio(float(result.get("bounces", 0)), target)
+		"stars":
+			return _ratio(float(result.get("stars", 0)), target)
+		"zone":
+			if check(goal, result):
+				return 1.0
+			var d := float(result.get("distance", 0.0))
+			if d > target:
+				return clampf((target + ZONE_WIDTH) / d, 0.0, 0.99)
+			return _ratio(d, target)
+		"boss":
+			var parts: Array = goal.get("parts", [])
+			var lowest := 0.0 if parts.is_empty() else 1.0
+			for part in parts:
+				lowest = minf(lowest, progress_ratio(part, result))
+			return lowest
+	return 0.0
+
+
+static func _ratio(value: float, target: float) -> float:
+	if target <= 0.0:
+		return 1.0
+	return clampf(value / target, 0.0, 1.0)
+
+
+## The live goal readout for the HUD, like "34/50 m" or "2/3 bounces". A boss goal joins its parts with "  +  ".
+static func progress_text(goal: Dictionary, result: Dictionary) -> String:
+	var n := int(float(goal.get("target", 0.0)))
+	match str(goal.get("type", "")):
+		"distance":
+			return "%d/%d m" % [int(float(result.get("distance", 0.0))), n]
+		"height":
+			return "%d/%d m high" % [int(float(result.get("max_height", 0.0))), n]
+		"bounces":
+			return "%d/%d bounces" % [int(result.get("bounces", 0)), n]
+		"stars":
+			return "%d/%d stars" % [int(result.get("stars", 0)), n]
+		"zone":
+			return "%d m (stop at %d-%d m)" % [int(float(result.get("distance", 0.0))), n, n + int(ZONE_WIDTH)]
+		"boss":
+			var texts := PackedStringArray()
+			for part in goal.get("parts", []):
+				texts.append(progress_text(part, result))
+			return "  +  ".join(texts)
+	return ""
+
+
 static func describe(type: String, target: float) -> String:
 	var n := int(target)
 	match type:
