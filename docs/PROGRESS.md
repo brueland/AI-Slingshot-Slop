@@ -11,4 +11,5 @@ Milestone 6: complete (graphics polish: UI theme, solid ground, scenery, trail, 
 Milestone 7: complete (player experience: UI root, fades, hints, best flag, boost flame, stats, achievements, toasts)
 Milestone 8: complete (roguelike mode: goals, perks, lives, perk and run-over screens, last-aim line)
 Milestone 9: complete (whimsy: hats and wardrobe, jelly wobble, moods, sheep, confetti, quips)
+Milestone 10: complete (features: balloons, best-run ghost, repeat shot, daily run, rerolls, pause menu, title mascot, night stars)
 
