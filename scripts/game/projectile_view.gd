@@ -18,6 +18,8 @@ var wobble_strength: float = 0.0
 var wobble_left: float = 0.0
 var decor: ProjectileDecor
 var size_scale: float = 1.0
+## Seconds left of the "ouch" face after a hard bounce.
+var ouch_left: float = 0.0
 
 
 func _init() -> void:
@@ -33,6 +35,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	advance_wobble(delta)
 	_sync_decor()
+	ouch_left = maxf(0.0, ouch_left - delta)
 
 
 func set_tier(new_tier: int) -> void:
@@ -53,8 +56,16 @@ func sync_from(sim: FlightSim) -> void:
 	show_at(sim.position)
 	# Roll the projectile based on its x position
 	rotation = sim.position.x / Balance.PROJECTILE_RADIUS
+	var airborne := sim.is_airborne() and not sim.stopped
+	decor.set_face(AlienFace.pick(sim.velocity, airborne, ouch_left), AlienFace.look_for(sim.velocity))
 	if sim.stopped:
 		set_mood("sleepy")
+
+
+## A hard bounce: the alien winces (the "ouch" face) for 0.35 s.
+func ouch() -> void:
+	ouch_left = 0.35
+	decor.set_face("ouch", decor.look)
 
 
 ## Jelly wobble after a bounce: the alien squashes and stretches for WOBBLE_SECONDS, then is round again.
