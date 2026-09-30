@@ -15,8 +15,19 @@ var recent_distances: Array[float] = []
 var hat: String = "none"
 var best_path: Array = []
 var daily_best: Dictionary = {}
+## The last roguelike runs, newest first: {"rounds": int, "seed": int, "perks": int}.
+var rogue_history: Array = []
+
+const ROGUE_HISTORY_SIZE: int = 5
 
 const RECENT_RUNS: int = 10
+
+
+## Remembers a finished roguelike run (newest first; only the last ROGUE_HISTORY_SIZE are kept).
+func add_rogue_run(rounds: int, run_seed: int, perk_count: int) -> void:
+	rogue_history.push_front({"rounds": rounds, "seed": run_seed, "perks": perk_count})
+	while rogue_history.size() > ROGUE_HISTORY_SIZE:
+		rogue_history.pop_back()
 
 
 func level_of(id: String) -> int:
@@ -68,6 +79,7 @@ func to_dict() -> Dictionary:
 		"hat": hat,
 		"best_path": best_path.duplicate(true),
 		"daily_best": daily_best.duplicate(),
+		"rogue_history": rogue_history.duplicate(true),
 	}
 
 
@@ -147,6 +159,11 @@ static func from_dict(data: Dictionary) -> Progress:
 			if typeof(item) == TYPE_ARRAY and item.size() == 2:
 				p.best_path.append([float(item[0]), float(item[1])])
 	
+	var history_data = data.get("rogue_history")
+	if typeof(history_data) == TYPE_ARRAY:
+		for item in history_data:
+			if typeof(item) == TYPE_DICTIONARY and p.rogue_history.size() < ROGUE_HISTORY_SIZE:
+				p.rogue_history.append({"rounds": maxi(0, int(item.get("rounds", 0))), "seed": int(item.get("seed", 0)), "perks": maxi(0, int(item.get("perks", 0)))})
 	return p
 
 

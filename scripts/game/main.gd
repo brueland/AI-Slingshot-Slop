@@ -271,6 +271,7 @@ func _finish_run() -> void:
 		feedback.celebrate({"goal_met": rogue_outcome["met"]})
 		if rogue.is_over():
 			progress.best_rogue_round = maxi(progress.best_rogue_round, rogue.rounds_cleared)
+			progress.add_rogue_run(rogue.rounds_cleared, rogue.run_seed, rogue.perks.size())
 			if daily_key != "":
 				Daily.record(progress.daily_best, daily_key, rogue.rounds_cleared)
 			save_progress()
