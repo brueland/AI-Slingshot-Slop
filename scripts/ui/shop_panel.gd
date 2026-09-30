@@ -10,6 +10,7 @@ var header_labels: Dictionary = {}   # category -> Label
 var coins_label: Label
 var launch_button: Button
 var list: VBoxContainer
+var best_buy: String = ""
 
 func _ready():
 	# Center the panel like results panel
@@ -70,3 +71,9 @@ func refresh(progress: Progress) -> void:
 		
 		buttons[id].disabled = not progress.can_buy(id)
 		buttons[id].tooltip_text = str(d["description"])
+	best_buy = ""
+	for id in UpgradeCatalog.ids():
+		if progress.can_buy(id) and (best_buy == "" or progress.next_cost(id) < progress.next_cost(best_buy)):
+			best_buy = id
+	for id in UpgradeCatalog.ids():
+		buttons[id].modulate = Color(0.75, 1.0, 0.75) if id == best_buy else Color.WHITE
