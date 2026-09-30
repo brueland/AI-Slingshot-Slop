@@ -15,6 +15,11 @@ var sim: FlightSim
 var balloon_view: BalloonView
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
+var combo: int = 0
+var combo_left: float = 0.0
+
+## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
+const COMBO_WINDOW: float = 1.2
 
 
 func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_course_view: CourseView,
@@ -32,6 +37,8 @@ func watch(session: RunSession) -> void:
 	star_value = session.stats.star_value
 	sim = session.sim
 	bounces_seen = 0
+	combo = 0
+	combo_left = 0.0
 	projectile_view.set_mood("")
 	session.tracker.star_collected.connect(course_view.mark_collected)
 	session.tracker.star_collected.connect(_on_star_collected)
@@ -64,6 +71,7 @@ func celebrate(result: Dictionary) -> String:
 
 func _on_star_collected(index: int) -> void:
 	audio.play_sfx("star")
+	add_combo()
 	projectile_view.set_mood("wow", 0.8)
 	if index >= 0 and index < course_view.sprites.size():
 		effects.spawn_sparkle(course_view.sprites[index].position)
@@ -76,6 +84,7 @@ func _on_star_collected(index: int) -> void:
 func _on_spring_hit(index: int) -> void:
 	audio.play_sfx("spring")
 	camera.shake(10.0, 0.35)
+	add_combo()
 	if index >= 0 and index < course_view.sprites.size():
 		effects.spawn_burst(course_view.sprites[index].position)
 
@@ -84,6 +93,7 @@ func _on_bounced(impact_speed: float) -> void:
 	audio.play_sfx("bounce")
 	if impact_speed >= 8.0:
 		camera.shake(4.0, 0.2)
+		add_combo()
 	effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
 	projectile_view.wobble(clampf(impact_speed / 25.0, 0.08, 0.35))
 	bounces_seen += 1
@@ -108,6 +118,7 @@ func _on_boosted() -> void:
 func _on_balloon_popped(index: int) -> void:
 	audio.play_sfx("spring")
 	projectile_view.set_mood("wow", 0.8)
+	add_combo()
 	if balloon_view != null:
 		effects.spawn_confetti(balloon_view.screen_position(index))
 		balloon_view.pop(index)
