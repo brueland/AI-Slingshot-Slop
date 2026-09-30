@@ -122,30 +122,7 @@ func _build_ui() -> void:
 	toast = ui_layer.toast
 	wardrobe_panel = ui_layer.wardrobe_panel
 	
-	# Connect signals after all UI components are initialized
-	results_panel.continue_pressed.connect(continue_to_shop)
-	victory_panel.continue_pressed.connect(continue_to_shop)
-	shop_panel.purchase_requested.connect(buy_upgrade)
-	shop_panel.launch_requested.connect(leave_shop)
-	title_panel.play_pressed.connect(start_game)
-	title_panel.rogue_pressed.connect(start_rogue)
-	title_panel.daily_pressed.connect(start_daily)
-	ui_layer.rogue_panel.perk_chosen.connect(choose_rogue_perk)
-	ui_layer.rogue_panel.reroll_pressed.connect(reroll_perks)
-	ui_layer.pause_menu.resume_pressed.connect(toggle_pause)
-	ui_layer.pause_menu.quit_pressed.connect(go_to_title)
-	ui_layer.rogue_over_panel.back_pressed.connect(go_to_title)
-	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(progress))
-	wardrobe_panel.hat_chosen.connect(choose_hat)
-	wardrobe_panel.closed.connect(wardrobe_panel.hide)
-	title_panel.reset_pressed.connect(reset_progress)
-	title_panel.options_pressed.connect(open_options)
-	title_panel.credits_pressed.connect(credits_panel.show)
-	title_panel.stats_pressed.connect(func(): stats_panel.show_stats(progress))
-	stats_panel.closed.connect(stats_panel.hide)
-	credits_panel.closed.connect(credits_panel.hide)
-	options_panel.volume_changed.connect(_on_volume_changed)
-	options_panel.closed.connect(options_panel.hide)
+	ui_layer.wire(self)
 	
 	state_changed.connect(_on_state_changed)
 	_update_ui()
