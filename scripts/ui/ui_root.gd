@@ -101,3 +101,30 @@ func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_r
 		rogue_over_panel.show_over(run, best_rounds)
 	else:
 		rogue_panel.show_outcome(outcome, run)
+
+
+## Connects every screen's buttons to main.gd (`main` is the node running scripts/game/main.gd).
+func wire(main: Node) -> void:
+	results_panel.continue_pressed.connect(Callable(main, "continue_to_shop"))
+	victory_panel.continue_pressed.connect(Callable(main, "continue_to_shop"))
+	shop_panel.purchase_requested.connect(Callable(main, "buy_upgrade"))
+	shop_panel.launch_requested.connect(Callable(main, "leave_shop"))
+	title_panel.play_pressed.connect(Callable(main, "start_game"))
+	title_panel.rogue_pressed.connect(Callable(main, "start_rogue"))
+	title_panel.daily_pressed.connect(Callable(main, "start_daily"))
+	rogue_panel.perk_chosen.connect(Callable(main, "choose_rogue_perk"))
+	rogue_panel.reroll_pressed.connect(Callable(main, "reroll_perks"))
+	pause_menu.resume_pressed.connect(Callable(main, "toggle_pause"))
+	pause_menu.quit_pressed.connect(Callable(main, "go_to_title"))
+	rogue_over_panel.back_pressed.connect(Callable(main, "go_to_title"))
+	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(main.progress))
+	wardrobe_panel.hat_chosen.connect(Callable(main, "choose_hat"))
+	wardrobe_panel.closed.connect(wardrobe_panel.hide)
+	title_panel.reset_pressed.connect(Callable(main, "reset_progress"))
+	title_panel.options_pressed.connect(Callable(main, "open_options"))
+	title_panel.credits_pressed.connect(credits_panel.show)
+	title_panel.stats_pressed.connect(func(): stats_panel.show_stats(main.progress))
+	stats_panel.closed.connect(stats_panel.hide)
+	credits_panel.closed.connect(credits_panel.hide)
+	options_panel.volume_changed.connect(Callable(main, "_on_volume_changed"))
+	options_panel.closed.connect(options_panel.hide)
