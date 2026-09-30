@@ -86,8 +86,33 @@ func _ready():
 	continue_button.text = "Continue"
 	continue_button.connect("pressed", Callable(self, "_on_continue_pressed"))
 	vbox.add_child(continue_button)
+	_build_columns(vbox)
 	
 	hide()
+
+## Two columns above Continue: the shot on the left (title, stars, quip, map, gap to the best), the numbers on
+## the right. Wider and shorter than one long list, so it sits comfortably on the screen.
+func _build_columns(vbox: VBoxContainer) -> void:
+	custom_minimum_size = Vector2(860, 0)
+	var columns := HBoxContainer.new()
+	columns.add_theme_constant_override("separation", 28)
+	vbox.add_child(columns)
+	vbox.move_child(columns, 0)
+	var left := VBoxContainer.new()
+	left.custom_minimum_size = Vector2(400, 0)
+	columns.add_child(left)
+	var right := VBoxContainer.new()
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	columns.add_child(right)
+	for node in [title_label, rating, quip_label, shot_map, gap_label]:
+		node.reparent(left)
+	for node in [distance_label, stars_label, bounces_label, air_label, multiplier_label, total_label, coins_label,
+			milestones_label, hats_label, balloons_label]:
+		node.reparent(right)
+	title_label.add_theme_font_size_override("font_size", 34)
+	quip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	continue_button.theme_type_variation = "PrimaryButton"
+	continue_button.add_theme_font_size_override("font_size", 28)
 
 func _on_continue_pressed():
 	emit_signal("continue_pressed")
