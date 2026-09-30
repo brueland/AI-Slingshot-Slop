@@ -16,6 +16,7 @@ var size_label: Label
 var size_buttons: Dictionary = {}
 var current_run: RogueRun
 var weather_label: Label
+var close_label: Label
 
 
 func _ready() -> void:
@@ -28,6 +29,10 @@ func _ready() -> void:
 	title_label = Label.new()
 	title_label.add_theme_font_size_override("font_size", 32)
 	box.add_child(title_label)
+	close_label = Label.new()
+	close_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.4))
+	close_label.hide()
+	box.add_child(close_label)
 	round_label = Label.new()
 	box.add_child(round_label)
 	goal_label = Label.new()
@@ -71,6 +76,8 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 		title_label.text = "Missed! Lives left: %d" % int(outcome.get("lives", run.lives))
 	round_label.text = "Round %d - Lives %d" % [run.round_number, run.lives]
 	goal_label.text = "Next goal: %s" % run.goal.get("text", "")
+	close_label.text = "You got %d%% of the way there" % roundi(float(outcome.get("ratio", 0.0)) * 100.0)
+	close_label.visible = not outcome.get("met", false)
 	if outcome.get("lucky", false):
 		title_label.text = "Lucky! Goal met, +1 reroll"
 	if outcome.get("boss_beaten", false):
