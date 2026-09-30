@@ -18,7 +18,7 @@ func test_targets_grow_every_round() -> void:
 	if g == null:
 		return
 	assert_eq(g.TYPES, ["distance", "height", "zone", "bounces", "stars"])
-	assert_almost_eq(g.ZONE_WIDTH, 12.0, 0.0001)
+	assert_almost_eq(g.ZONE_WIDTH, 20.0, 0.0001, "a 20 m zone (task 226)")
 	assert_eq(g.STARS_FROM_ROUND, 4)
 	var want := {
 		"distance": {1: 40.0, 2: 45.0, 5: 63.0, 10: 111.0},
@@ -64,7 +64,7 @@ func test_describe() -> void:
 	assert_eq(g.describe("bounces", 4.0), "Bounce 4 times")
 	assert_eq(g.describe("stars", 1.0), "Collect 1 star")
 	assert_eq(g.describe("stars", 3.0), "Collect 3 stars")
-	assert_eq(g.describe("zone", 44.0), "Stop between 44 and 56 m")
+	assert_eq(g.describe("zone", 44.0), "Stop between 44 and 64 m")
 
 
 func test_check() -> void:
@@ -78,8 +78,8 @@ func test_check() -> void:
 	assert_false(g.check({"type": "height", "target": 10.0}, r))
 	assert_true(g.check({"type": "bounces", "target": 4.0}, r))
 	assert_false(g.check({"type": "stars", "target": 3.0}, r))
-	assert_true(g.check({"type": "zone", "target": 52.0}, r), "64 is inside 52..64")
+	assert_true(g.check({"type": "zone", "target": 52.0}, r), "64 is inside 52..72")
 	assert_true(g.check({"type": "zone", "target": 64.0}, r), "the edges count")
-	assert_false(g.check({"type": "zone", "target": 44.0}, r), "64 is past 44..56")
+	assert_false(g.check({"type": "zone", "target": 40.0}, r), "64 is past 40..60")
 	assert_false(g.check({"type": "zone", "target": 65.0}, r), "not there yet")
 	assert_false(g.check({"type": "juggle", "target": 1.0}, r))

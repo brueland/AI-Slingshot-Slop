@@ -307,3 +307,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 26 Menus in play | 202–203, 204c | Options (volume) in the pause menu, Menu button on the HUD to pause and quit to the title |
 | 27 Faces and sky | 205–212, 213c | Alien drawn 1.5x, cartoon faces (happy, focus, wee, scared, wow, ouch, dizzy, sleepy), mascot eyes follow the mouse, sky gradient up to space, title buttons in pairs |
 | 28 New look | 214–222, 223c | Fredoka and Lilita One fonts, juicy springy buttons, title redesign with a mode chooser, HUD panels and progress bar, pause menu row, results and shop in columns |
+| 29 Crisp and fair | 224–229, 230c | Star pickups match the drawn alien (all sizes), 256 px alien pictures, 20 m landing zones, a STOP HERE marker on the field, a sharp face on the big alien |

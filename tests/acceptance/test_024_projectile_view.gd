@@ -24,8 +24,8 @@ func test_is_a_sprite_with_the_first_alien() -> void:
 	if v.texture != null:
 		assert_eq(v.texture.resource_path, "res://assets/sprites/projectile_1.png")
 	# 2 * PROJECTILE_RADIUS m * 16 px/m * LOOK_SCALE (1.5) = 36 px wide; the texture is 70 px (updated by task 205)
-	assert_almost_eq(v.scale.x, 36.0 / 70.0, 0.001)
-	assert_almost_eq(v.scale.y, 36.0 / 70.0, 0.001)
+	assert_almost_eq(v.scale.x, 36.0 / v.texture.get_width(), 0.001, "36 px wide (the textures are 256 px since task 225)")
+	assert_almost_eq(v.scale.y, 36.0 / v.texture.get_width(), 0.001)
 
 
 func test_show_at_sits_on_the_ground() -> void:

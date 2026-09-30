@@ -20,8 +20,8 @@ func test_ratio_and_text() -> void:
 	var zone := {"type": "zone", "target": 40.0}
 	assert_eq(g.progress_ratio(zone, {"distance": 45.0}), 1.0, "inside the zone")
 	assert_almost_eq(g.progress_ratio(zone, {"distance": 30.0}), 0.75, 0.0001, "short of the zone")
-	assert_almost_eq(g.progress_ratio(zone, {"distance": 104.0}), 0.5, 0.0001, "past the zone")
-	assert_eq(g.progress_text(zone, {"distance": 45.2}), "45 m (stop at 40-52 m)")
+	assert_almost_eq(g.progress_ratio(zone, {"distance": 120.0}), 0.5, 0.0001, "past the zone (40..60 since task 226)")
+	assert_eq(g.progress_text(zone, {"distance": 45.2}), "45 m (stop at 40-60 m)")
 	var boss := {"type": "boss", "parts": [dist, hop]}
 	assert_almost_eq(g.progress_ratio(boss, {"distance": 50.0, "bounces": 1}), 0.25, 0.0001, "the weakest part")
 	assert_eq(g.progress_text(boss, {"distance": 50.0, "bounces": 1}), "50/50 m  +  1/4 bounces")

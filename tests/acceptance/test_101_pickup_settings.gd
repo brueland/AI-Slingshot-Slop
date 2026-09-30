@@ -18,8 +18,9 @@ func _sim_at(to: Vector2):
 func test_stats_defaults() -> void:
 	var s = load(STATS).from_levels({"power": 3})
 	assert_almost_eq(float(s.get("size_scale")), 1.0, 0.0001)
-	assert_almost_eq(float(s.get("pickup_offset")), 0.0, 0.0001)
-	assert_almost_eq(float(s.get("pickup_radius")), 1.5, 0.0001, "the classic star radius")
+	# Updated by task 224: stars are picked up by the alien as it is drawn (1.5x its physical radius)
+	assert_almost_eq(float(s.get("pickup_offset")), 1.125, 0.0001, "the drawn center")
+	assert_almost_eq(float(s.get("pickup_radius")), 1.125 + 0.9, 0.0001, "the drawn radius + STAR_REACH")
 
 
 func test_tracker_defaults_are_the_classic_rule() -> void:
@@ -49,5 +50,5 @@ func test_session_passes_the_settings() -> void:
 	assert_almost_eq(s.tracker.pickup_offset, 0.75, 0.0001)
 	assert_almost_eq(s.tracker.pickup_radius, 1.65, 0.0001)
 	var classic = load(SESSION).new(load(STATS).from_levels({}), 3)
-	assert_almost_eq(classic.tracker.pickup_offset, 0.0, 0.0001)
-	assert_almost_eq(classic.tracker.pickup_radius, 1.5, 0.0001)
+	assert_almost_eq(classic.tracker.pickup_offset, 1.125, 0.0001)
+	assert_almost_eq(classic.tracker.pickup_radius, 2.025, 0.0001)
