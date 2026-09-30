@@ -274,7 +274,7 @@ The per-task files (tasks/*.md) give each node's exact API.
 
 ## 11. Build plan
 
-120 tasks in 13 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
+129 tasks in 14 milestones. After every 10 tasks a checkpoint task (`010c`, `020c`, ...) runs integration tests
 across the milestone and records it in docs/PROGRESS.md. Tasks run in order; each builds on the previous one.
 
 | Milestone | Tasks | Result |
@@ -292,3 +292,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 11 Roguelike sizes | 101–104, 105c | Star pickup settings, Small/Normal/Big alien sizes, size drawn on screen, size choice on the perk panel |
 | 12 Weather and polish | 106–112, 113c | UiRoot.wire refactor, varied sound pitch, combo popups, birds that scatter, roguelike weather, weather on the perk panel, roguelike stats |
 | 13 Bosses and extras | 114–119, 120c | Shot map on the results, wardrobe preview, friendly UFOs, roguelike boss rounds (every 6th round from 12, +1 life) |
+| 14 Juice | 121–128, 129c | Boing/Splat popups, twinkling stars and waving flags, fading aim dots, black sheep, hat celebration, keyboard aiming, WorldBuilder refactor, weather on screen |
