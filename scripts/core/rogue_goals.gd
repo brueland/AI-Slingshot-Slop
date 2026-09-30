@@ -4,7 +4,8 @@ extends RefCounted
 ## target grows with the round number (there is no last round).
 
 const TYPES: Array[String] = ["distance", "height", "zone", "bounces", "stars"]
-const ZONE_WIDTH: float = 12.0
+## How wide a "Stop between" landing zone is.
+const ZONE_WIDTH: float = 20.0
 ## Star goals need speed perks and a precise aim, so they only show up from this round on.
 const STARS_FROM_ROUND: int = 4
 ## Boss rounds: from BOSS_FROM_ROUND on, every BOSS_EVERY rounds, two goals at once.
