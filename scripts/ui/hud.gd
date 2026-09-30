@@ -20,6 +20,7 @@ var boss_label: Label
 var lucky_label: Label
 var weather_label: Label
 var goal_progress_label: Label
+var course_bar: CourseBar
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -130,6 +131,18 @@ func _ready() -> void:
 	lucky_label.hide()
 	add_child(lucky_label)
 	
+	# Course bar at the very bottom
+	course_bar = CourseBar.new()
+	course_bar.anchor_left = 0.5
+	course_bar.anchor_right = 0.5
+	course_bar.anchor_top = 1.0
+	course_bar.anchor_bottom = 1.0
+	course_bar.offset_left = -200
+	course_bar.offset_right = 200
+	course_bar.offset_top = -30
+	course_bar.offset_bottom = -22
+	add_child(course_bar)
+	
 	# Hint label at bottom center
 	hint_label = Label.new()
 	hint_label.add_theme_font_size_override("font_size", 26)
@@ -183,10 +196,12 @@ func update_flight(distance: float, height: float, stars: int, boosts: int) -> v
 	stars_label.text = "Stars: %d" % stars
 	boosts_label.text = "Boosts: %d" % boosts
 	altitude_bar.set_height(height)
+	course_bar.set_distance(distance)
 
 func update_progress(best: float, coins: int) -> void:
 	best_label.text = "Best: %d m" % floori(best)
 	coins_label.text = "Coins: %d" % coins
+	course_bar.set_best(best)
 	var next := Milestones.next_milestone(best)
 	if next == {}:
 		goal_label.text = "All milestones reached!"
