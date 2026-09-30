@@ -50,6 +50,9 @@ static func build(main: Node) -> void:
 	main.add_child(main.effects)
 	main.feedback = Feedback.new()
 	main.add_child(main.feedback)
+	main.cows = Cows.new()
+	main.add_child(main.cows)
 	main.feedback.flowers = main.flowers
+	main.feedback.cows = main.cows
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
