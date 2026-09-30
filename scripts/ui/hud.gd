@@ -25,6 +25,9 @@ var goal_progress_label: Label
 var course_bar: CourseBar
 var menu_button: Button
 var speed_label: Label
+var goal_bar: ProgressBar
+## The next milestone's distance (0 when every milestone is reached).
+var next_target: float = 0.0
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -106,6 +109,14 @@ func _ready() -> void:
 	goal_progress_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_progress_label.hide()
 	right_container.add_child(goal_progress_label)
+	
+	goal_bar = ProgressBar.new()
+	goal_bar.custom_minimum_size = Vector2(0, 12)
+	goal_bar.max_value = 1.0
+	goal_bar.step = 0.0
+	goal_bar.show_percentage = false
+	goal_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	right_container.add_child(goal_bar)
 	
 	perks_label = Label.new()
 	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -236,6 +247,8 @@ func update_flight(distance: float, height: float, stars: int, boosts: int) -> v
 	boosts_label.text = "Boosts: %d" % boosts
 	altitude_bar.set_height(height)
 	course_bar.set_distance(distance)
+	if next_target > 0.0:
+		goal_bar.value = clampf(distance / next_target, 0.0, 1.0)
 
 func update_progress(best: float, coins: int) -> void:
 	best_label.text = "Best: %d m" % floori(best)
@@ -244,8 +257,11 @@ func update_progress(best: float, coins: int) -> void:
 	var next := Milestones.next_milestone(best)
 	if next == {}:
 		goal_label.text = "All milestones reached!"
+		next_target = 0.0
 	else:
 		goal_label.text = "Next: %s at %d m" % [next["name"], int(next["distance"])]
+		next_target = float(next["distance"])
+	goal_bar.value = 1.0 if next_target <= 0.0 else clampf(best / next_target, 0.0, 1.0)
 
 
 func show_speed(meters_per_second: float) -> void:
@@ -253,7 +269,9 @@ func show_speed(meters_per_second: float) -> void:
 
 
 ## Roguelike: the live goal readout under the goal ("" hides it); green once the goal is met.
-func show_goal_progress(text: String, met: bool) -> void:
+func show_goal_progress(text: String, met: bool, ratio: float = -1.0) -> void:
+	if ratio >= 0.0:
+		goal_bar.value = ratio
 	goal_progress_label.text = text
 	goal_progress_label.visible = text != ""
 	goal_progress_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5) if met else Color.WHITE)
@@ -264,3 +282,4 @@ func show_rogue(goal_text: String, round_number: int, lives: int) -> void:
 	best_label.text = "Round %d" % round_number
 	coins_label.text = "Lives: %d" % lives
 	goal_label.text = "Goal: %s" % goal_text
+	goal_bar.value = 0.0

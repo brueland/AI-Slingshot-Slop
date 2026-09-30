@@ -249,7 +249,7 @@ func advance(dt: float) -> void:
 		hud.show_speed(session.sim.velocity.length())
 		if mode == "rogue":
 			var so_far: Dictionary = session.result()
-			hud.show_goal_progress(RogueGoals.progress_text(rogue.goal, so_far), RogueGoals.check(rogue.goal, so_far))
+			hud.show_goal_progress(RogueGoals.progress_text(rogue.goal, so_far), RogueGoals.check(rogue.goal, so_far), RogueGoals.progress_ratio(rogue.goal, so_far))
 		background.set_altitude(session.sim.position.y)
 		if session.is_finished():
 			_finish_run()
