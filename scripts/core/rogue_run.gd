@@ -14,6 +14,7 @@ var perks: Array[String] = []
 var goal: Dictionary = {}
 var offer: Array[String] = []
 var rerolls: int = 1
+var size_id: String = "normal"
 
 
 func start(new_seed: int) -> void:
@@ -23,13 +24,14 @@ func start(new_seed: int) -> void:
 	rounds_cleared = 0
 	shots = 0
 	rerolls = 1
+	size_id = "normal"
 	perks.clear()
 	offer.clear()
 	goal = RogueGoals.make_goal(1, run_seed)
 
 
 func stats() -> PlayerStats:
-	return RoguePerks.apply(PlayerStats.from_levels({}), perks)
+	return RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
 
 
 ## The course seed for this round: a new course every round, and the same course again when retrying after a
@@ -40,6 +42,14 @@ func shot_seed() -> int:
 
 func has_perk(id: String) -> bool:
 	return perks.has(id)
+
+
+## The alien's size for the next shots ("small", "normal" or "big"); it stays until changed.
+func set_size(id: String) -> bool:
+	if RogueSizes.get_def(id).is_empty():
+		return false
+	size_id = id
+	return true
 
 
 func is_over() -> bool:
