@@ -45,14 +45,34 @@ func _draw() -> void:
 		draw_line(k + Vector2(0, 14), k + Vector2(-6, 26), COLORS[i], 1.5)
 ```
 
-**2. `scripts/game/world_builder.gd`**: exactly these 1 SEARCH/REPLACE edit(s). Each REPLACE keeps the SEARCH lines and adds the new ones; nothing else in the file changes.
+**2. `scripts/game/world_builder.gd`**: exactly these 2 SEARCH/REPLACE edit(s). The cows are built too late (after
+Feedback), so they are drawn on top of the course and the alien. Edit 1 removes the two cow lines from under
+`main.add_child(main.feedback)` (keep the two `main.feedback.` lines right where they are); Edit 2 builds the cows and
+the new kites right after the flowers. Nothing else in the file changes.
 
 Edit 1 - SEARCH:
 ```gdscript
+	main.add_child(main.feedback)
+	main.cows = Cows.new()
 	main.add_child(main.cows)
+	main.feedback.flowers = main.flowers
 ```
 REPLACE:
 ```gdscript
+	main.add_child(main.feedback)
+	main.feedback.flowers = main.flowers
+```
+
+Edit 2 - SEARCH:
+```gdscript
+	main.flowers = Flowers.new()
+	main.add_child(main.flowers)
+```
+REPLACE:
+```gdscript
+	main.flowers = Flowers.new()
+	main.add_child(main.flowers)
+	main.cows = Cows.new()
 	main.add_child(main.cows)
 	main.kites = Kites.new()
 	main.add_child(main.kites)
@@ -72,3 +92,4 @@ var kites: Kites
 
 ## Acceptance criteria
 - Kites sway over time, high above their anchors; main has `kites` behind the course items.
+- The cows and kites are built right after the flowers (behind the course and the alien).
