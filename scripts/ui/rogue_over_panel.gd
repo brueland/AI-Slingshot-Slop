@@ -8,6 +8,7 @@ signal replay_pressed
 var title_label: Label
 var rounds_label: Label
 var best_label: Label
+var longest_label: Label
 var daily_label: Label
 var streak_label: Label
 var perks_label: Label
@@ -31,6 +32,8 @@ func _ready() -> void:
 	box.add_child(rounds_label)
 	best_label = Label.new()
 	box.add_child(best_label)
+	longest_label = Label.new()
+	box.add_child(longest_label)
 	perks_label = Label.new()
 	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	perks_label.custom_minimum_size = Vector2(440, 0)
@@ -68,6 +71,7 @@ func show_history(history: Array) -> void:
 func show_over(run: RogueRun, best_rounds: int) -> void:
 	rounds_label.text = "Rounds cleared: %d" % run.rounds_cleared
 	best_label.text = "Best: %d rounds" % best_rounds
+	longest_label.text = "Longest shot: %d m" % int(run.best_shot)
 	var names := PackedStringArray()
 	for id in run.perks:
 		names.append(str(RoguePerks.get_def(id).get("name", id)))

@@ -16,6 +16,7 @@ var offer: Array[String] = []
 var rerolls: int = 1
 var size_id: String = "normal"
 var weather: String = "calm"
+var best_shot: float = 0.0
 
 
 func start(new_seed: int) -> void:
@@ -24,6 +25,7 @@ func start(new_seed: int) -> void:
 	lives = START_LIVES
 	rounds_cleared = 0
 	shots = 0
+	best_shot = 0.0
 	rerolls = 1
 	size_id = "normal"
 	weather = RogueWeather.for_round(1, new_seed)
@@ -62,6 +64,7 @@ func is_over() -> bool:
 ## Scores a finished shot against the goal. Returns {"met", "lives", "round", "over", "goal", "offer"}.
 func finish_shot(result: Dictionary) -> Dictionary:
 	shots += 1
+	best_shot = maxf(best_shot, float(result.get("distance", 0.0)))
 	var met := RogueGoals.check(goal, result)
 	var ratio := RogueGoals.progress_ratio(goal, result)
 	var boss_beaten := met and str(goal.get("type", "")) == "boss"
