@@ -97,6 +97,7 @@ func to_dict() -> Dictionary:
 		"shake_on": shake_on,
 		"challenge_day": challenge_day,
 		"best_combo": best_combo,
+		"rogue_rounds_total": rogue_rounds_total,
 	}
 
 
