@@ -131,7 +131,8 @@ func _on_bounced(impact_speed: float) -> void:
 		audio.play_sfx("bounce")
 	if impact_speed >= 8.0 and camera != null:
 		camera.shake(4.0, 0.2)
-	add_combo()
+	if impact_speed >= 8.0:
+		add_combo()
 	if effects != null and projectile_view != null:
 		effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
 	if projectile_view != null:
