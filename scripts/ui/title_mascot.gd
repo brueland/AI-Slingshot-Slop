@@ -9,6 +9,7 @@ const SIZE_PX: float = 40.0
 var texture: Texture2D
 var decor: ProjectileDecor
 var time: float = 0.0
+var poke_left: float = 0.0
 
 
 func _ready() -> void:
@@ -21,8 +22,30 @@ func _ready() -> void:
 	decor.position = center()
 
 
+## Clicking the mascot makes it jump (16 px, 0.4 s) and say "Hi!".
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		poke()
+
+
+func poke() -> void:
+	poke_left = 0.4
+	var hi := FloatingText.new()
+	hi.setup("Hi!", Color(0.7, 1.0, 0.7))
+	hi.position = center() + Vector2(24.0, -40.0)
+	add_child(hi)
+
+
+## How high the poke jump lifts the alien right now (negative is up, 0 when not poked).
+func poke_offset() -> float:
+	if poke_left <= 0.0:
+		return 0.0
+	return -sin((0.4 - poke_left) / 0.4 * PI) * 16.0
+
+
 func _process(delta: float) -> void:
 	time += delta
+	poke_left = maxf(0.0, poke_left - delta)
 	decor.position = center()
 	queue_redraw()
 
@@ -41,7 +64,7 @@ func hop_offset() -> float:
 
 ## Where the alien's center is inside this control right now.
 func center() -> Vector2:
-	return Vector2(size.x / 2.0, 66.0 + bob_offset() + hop_offset())
+	return Vector2(size.x / 2.0, 66.0 + bob_offset() + hop_offset() + poke_offset())
 
 
 func set_hat(id: String) -> void:
