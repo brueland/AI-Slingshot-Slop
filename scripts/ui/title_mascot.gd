@@ -14,6 +14,7 @@ var poke_left: float = 0.0
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(0, 100)
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	texture = load(TEXTURE)
 	decor = ProjectileDecor.new()
 	add_child(decor)

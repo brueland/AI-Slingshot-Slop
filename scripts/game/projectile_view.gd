@@ -29,6 +29,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	set_tier(tier)
 
 
