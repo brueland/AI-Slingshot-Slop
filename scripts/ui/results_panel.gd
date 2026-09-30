@@ -15,6 +15,7 @@ var coins_label: Label
 var milestones_label: Label
 var hats_label: Label
 var balloons_label: Label
+var air_label: Label
 var shot_map: ShotMap
 var gap_label: Label
 var continue_button: Button
@@ -50,6 +51,9 @@ func _ready():
 	
 	bounces_label = Label.new()
 	vbox.add_child(bounces_label)
+	
+	air_label = Label.new()
+	vbox.add_child(air_label)
 	
 	multiplier_label = Label.new()
 	vbox.add_child(multiplier_label)
@@ -103,6 +107,7 @@ func show_result(result: Dictionary, is_new_best: bool) -> void:
 	distance_label.text = "Distance: %d m" % result["distance_points"]
 	stars_label.text = "Stars: %d (+%d)" % [result["stars"], result["star_points"]]
 	bounces_label.text = "Bounces: %d (+%d)" % [result["bounces"], result["bounce_points"]]
+	air_label.text = "Air time: %.1f s" % float(result.get("air_time", 0.0))
 	multiplier_label.text = "Multiplier: x%.2f" % result["multiplier"]
 	total_label.text = "Total: %d" % result["total"]
 	coins_label.text = "Coins earned: +%d" % result["coins"]
