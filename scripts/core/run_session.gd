@@ -19,7 +19,7 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	stats.apply_to(sim)
 	sim.position = Vector2(0.0, stats.launch_height)
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
-	tracker = RunTracker.new(course)
+	tracker = RunTracker.new(course, stats.pickup_offset, stats.pickup_radius)
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
 
 

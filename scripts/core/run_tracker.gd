@@ -10,11 +10,15 @@ var items: Array = []
 var stars_collected: int = 0
 var springs_hit: int = 0
 var mud_hits: int = 0
+var pickup_offset: float = 0.0
+var pickup_radius: float = Balance.STAR_RADIUS
 var _used: Array[bool] = []
 
 
-func _init(course_items: Array = []) -> void:
+func _init(course_items: Array = [], p_pickup_offset: float = 0.0, p_pickup_radius: float = Balance.STAR_RADIUS) -> void:
 	items = course_items
+	pickup_offset = p_pickup_offset
+	pickup_radius = p_pickup_radius
 	_used.resize(items.size())
 	_used.fill(false)
 
@@ -40,8 +44,9 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 		match item["type"]:
 			"star":
 				var star: Vector2 = Vector2(x, item["y"])
-				var closest := Geometry2D.get_closest_point_to_segment(star, previous_position, sim.position)
-				if closest.distance_to(star) <= Balance.STAR_RADIUS:
+				var lift := Vector2(0.0, pickup_offset)
+				var closest := Geometry2D.get_closest_point_to_segment(star, previous_position + lift, sim.position + lift)
+				if closest.distance_to(star) <= pickup_radius:
 					_used[i] = true
 					stars_collected += 1
 					star_collected.emit(i)

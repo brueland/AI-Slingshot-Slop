@@ -12,6 +12,12 @@ var score_multiplier: float = 1.0
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounce_bonus: int = 0
 
+## Star pickups: a star is collected within pickup_radius of a point pickup_offset meters above the alien's
+## contact point. The defaults are the classic rule; the roguelike measures from the alien's body (see RogueSizes).
+var size_scale: float = 1.0
+var pickup_offset: float = 0.0
+var pickup_radius: float = Balance.STAR_RADIUS
+
 
 static func _level(levels: Dictionary, id: String) -> int:
 	return clampi(int(levels.get(id, 0)), 0, UpgradeCatalog.max_level(id))
