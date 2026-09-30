@@ -13,6 +13,7 @@ var bounces_label: Label
 var rogue_label: Label
 var daily_label: Label
 var hats_label: Label
+var combo_label: Label
 var chart: DistanceChart
 var close_button: Button
 
@@ -62,6 +63,8 @@ func _ready() -> void:
 	vbox.add_child(daily_label)
 	hats_label = Label.new()
 	vbox.add_child(hats_label)
+	combo_label = Label.new()
+	vbox.add_child(combo_label)
 	
 	var chart_label := Label.new()
 	chart_label.text = "Last 10 runs"
