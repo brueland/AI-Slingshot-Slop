@@ -20,4 +20,5 @@ Milestone 15: complete (roguelike depth: run history, replay a seed, perks and b
 Milestone 16: complete (meadow: hills, flowers where you bounce, cows, kites, shooting stars, tip of the day, distance to best)
 Milestone 17: complete (options and extras: screen shake option, classic daily challenge, best combo)
 Milestone 18: complete (final polish: hat trails, grazing sheep, mascot hop, height bar)
+Milestone 19: complete (variety: lucky rounds, weather on the HUD, roguelike total, best buy, glowing flags, victory confetti)
 
