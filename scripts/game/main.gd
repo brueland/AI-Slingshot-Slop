@@ -385,6 +385,16 @@ func set_shake(on: bool) -> void:
 	save_progress()
 
 
+## Wears a random unlocked hat (a different one when there is a choice). Returns its id.
+func choose_random_hat() -> String:
+	var options := Hats.unlocked(progress)
+	if options.size() > 1:
+		options.erase(progress.hat)
+	var id: String = options[randi() % options.size()]
+	choose_hat(id)
+	return id
+
+
 func choose_hat(id: String) -> bool:
 	if not Hats.is_unlocked(id, progress):
 		return false

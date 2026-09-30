@@ -4,12 +4,14 @@ extends PanelContainer
 
 signal hat_chosen(id: String)
 signal closed
+signal surprise_pressed
 
 var title_label: Label
 var hat_buttons: Dictionary = {}
 var close_button: Button
 var preview: TitleMascot
 var worn: String = "none"
+var surprise_button: Button
 
 
 func _ready() -> void:
@@ -34,6 +36,10 @@ func _ready() -> void:
 		button.mouse_exited.connect(func(): preview_hat(worn))
 		box.add_child(button)
 		hat_buttons[id] = button
+	surprise_button = Button.new()
+	surprise_button.text = "Surprise me!"
+	surprise_button.pressed.connect(func(): surprise_pressed.emit())
+	box.add_child(surprise_button)
 	close_button = Button.new()
 	close_button.text = "Done"
 	close_button.pressed.connect(func(): closed.emit())

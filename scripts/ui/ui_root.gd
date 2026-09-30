@@ -171,6 +171,7 @@ func wire(main: Node) -> void:
 	rogue_over_panel.replay_pressed.connect(Callable(main, "replay_rogue_seed"))
 	title_panel.wardrobe_pressed.connect(func(): wardrobe_panel.show_hats(main.progress))
 	wardrobe_panel.hat_chosen.connect(Callable(main, "choose_hat"))
+	wardrobe_panel.surprise_pressed.connect(Callable(main, "choose_random_hat"))
 	wardrobe_panel.closed.connect(wardrobe_panel.hide)
 	title_panel.reset_pressed.connect(Callable(main, "reset_progress"))
 	title_panel.options_pressed.connect(Callable(main, "open_options"))
