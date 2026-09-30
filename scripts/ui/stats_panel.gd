@@ -94,6 +94,7 @@ func show_stats(progress: Progress) -> void:
 	bounces_label.text = "Bounces: %d" % int(progress.lifetime["bounces"])
 	rogue_label.text = "Best roguelike run: %d rounds" % progress.best_rogue_round
 	daily_label.text = "Daily runs played: %d" % progress.daily_best.size()
+	combo_label.text = "Best combo: x%d" % progress.best_combo
 	hats_label.text = "Hats: %d / %d" % [Hats.unlocked(progress).size() - 1, Hats.LIST.size() - 1]
 	
 	chart.set_values(progress.recent_distances)
