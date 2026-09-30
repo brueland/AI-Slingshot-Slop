@@ -103,6 +103,7 @@ func _draw_hat() -> void:
 
 
 func _draw() -> void:
+	AlienFace.smooth = scale.x < 2.0
 	AlienFace.draw(self, shown_face(), look)
 	_draw_hat()
 	_draw_mood()
