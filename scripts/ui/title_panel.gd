@@ -31,6 +31,7 @@ var help_button: Button
 var achievements_button: Button
 var start_button: Button
 var mode_overlay: Control
+var bottom_bar: HBoxContainer
 
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -117,8 +118,7 @@ func _ready():
 	box.add_child(reset_button)
 	
 	_build_mode_chooser()
-	_pair(wardrobe_button, stats_button)
-	_pair(options_button, credits_button)
+	_build_layout()
 	show_progress(0.0, 0)
 
 func _on_play_pressed():
@@ -140,16 +140,6 @@ func _on_reset_pressed():
 func show_greeting(text: String) -> void:
 	greeting_label.text = text
 	greeting_label.visible = text != ""
-
-## Puts two buttons side by side in one row, where the first one was (keeps the title short enough).
-func _pair(left: Button, right: Button) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	box.add_child(row)
-	box.move_child(row, left.get_index())
-	for button in [left, right]:
-		button.reparent(row)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	return row
 
 func set_mascot_hat(id: String) -> void:
 	mascot.set_hat(id)
@@ -209,3 +199,44 @@ func _build_mode_chooser() -> void:
 	back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	back.pressed.connect(mode_overlay.hide)
 	list.add_child(back)
+
+## The title's layout: no box, but the mascot and the logo up top, the big PLAY button in the middle, the other
+## buttons in a bar along the bottom (above the tip lines), and Reset progress small in the top-right corner.
+func _build_layout() -> void:
+	add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	custom_minimum_size = Vector2(1280, 720)
+	box.add_theme_constant_override("separation", 8)
+	var top_space := Control.new()
+	top_space.custom_minimum_size = Vector2(0, 24)
+	box.add_child(top_space)
+	box.move_child(top_space, 0)
+	for label in [title_label, greeting_label, best_label, rogue_best_label]:
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var spacer := Control.new()
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	box.add_child(spacer)
+	bottom_bar = HBoxContainer.new()
+	bottom_bar.alignment = BoxContainer.ALIGNMENT_CENTER
+	bottom_bar.add_theme_constant_override("separation", 12)
+	box.add_child(bottom_bar)
+	var old_row := help_button.get_parent()
+	for button in [wardrobe_button, stats_button, achievements_button, help_button, options_button, credits_button]:
+		button.reparent(bottom_bar)
+		button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	old_row.queue_free()
+	var bottom_space := Control.new()
+	bottom_space.custom_minimum_size = Vector2(0, 92)
+	box.add_child(bottom_space)
+	var corner := Control.new()
+	corner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(corner)
+	move_child(corner, box.get_index() + 1)
+	reset_button.reparent(corner)
+	reset_button.add_theme_font_size_override("font_size", 16)
+	reset_button.flat = true
+	reset_button.modulate = Color(1, 1, 1, 0.8)
+	reset_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	reset_button.offset_left = -190
+	reset_button.offset_right = -16
+	reset_button.offset_top = 16
+	reset_button.offset_bottom = 56
