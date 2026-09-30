@@ -94,6 +94,7 @@ func refresh(main: Node) -> void:
 	var rogue_mode: bool = main.mode == "rogue"
 	var progress: Progress = main.progress
 	hud.visible = state == "AIM" or state == "FLIGHT"
+	hud.show_goal_progress("", false)
 	if hud.visible and rogue_mode:
 		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
 		hud.show_perks(RoguePerks.summary(main.rogue.perks))

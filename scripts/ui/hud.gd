@@ -19,6 +19,7 @@ var perks_label: Label
 var boss_label: Label
 var lucky_label: Label
 var weather_label: Label
+var goal_progress_label: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -77,6 +78,12 @@ func _ready() -> void:
 	right_container.add_child(goal_label)
 	goal_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_label.add_theme_font_size_override("font_size", 22)
+	
+	goal_progress_label = Label.new()
+	goal_progress_label.add_theme_font_size_override("font_size", 20)
+	goal_progress_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	goal_progress_label.hide()
+	right_container.add_child(goal_progress_label)
 	
 	perks_label = Label.new()
 	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -185,6 +192,13 @@ func update_progress(best: float, coins: int) -> void:
 		goal_label.text = "All milestones reached!"
 	else:
 		goal_label.text = "Next: %s at %d m" % [next["name"], int(next["distance"])]
+
+
+## Roguelike: the live goal readout under the goal ("" hides it); green once the goal is met.
+func show_goal_progress(text: String, met: bool) -> void:
+	goal_progress_label.text = text
+	goal_progress_label.visible = text != ""
+	goal_progress_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5) if met else Color.WHITE)
 
 
 ## Roguelike: the right column shows the round, lives and the current goal instead of best/coins/next.
