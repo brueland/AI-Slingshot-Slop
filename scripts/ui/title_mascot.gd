@@ -31,9 +31,17 @@ func bob_offset() -> float:
 	return sin(time * 3.0) * BOB_PX
 
 
+## Every 4 seconds the alien does a little 12 px hop that lasts 0.4 s (0 the rest of the time; negative is up).
+func hop_offset() -> float:
+	var t := fmod(time, 4.0)
+	if t >= 0.4:
+		return 0.0
+	return -sin(t / 0.4 * PI) * 12.0
+
+
 ## Where the alien's center is inside this control right now.
 func center() -> Vector2:
-	return Vector2(size.x / 2.0, 66.0 + bob_offset())
+	return Vector2(size.x / 2.0, 66.0 + bob_offset() + hop_offset())
 
 
 func set_hat(id: String) -> void:
