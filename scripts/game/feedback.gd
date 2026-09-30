@@ -154,6 +154,8 @@ func _on_bounced(impact_speed: float) -> void:
 		camera.shake(4.0, 0.2)
 	if impact_speed >= 8.0:
 		add_combo()
+		if projectile_view != null:
+			projectile_view.ouch()
 	if effects != null and projectile_view != null:
 		effects.spawn_dust(projectile_view.position + Vector2(0, 12), impact_speed)
 	if projectile_view != null:

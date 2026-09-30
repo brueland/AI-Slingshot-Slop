@@ -346,6 +346,7 @@ func _update_ui() -> void:
 func _update_aim() -> void:
 	if not slingshot.dragging:
 		trajectory.clear()
+		projectile_view.decor.set_face("happy", Vector2(0.5, 0.0))
 		return
 	
 	var stats := session.stats
@@ -354,6 +355,7 @@ func _update_aim() -> void:
 	
 	# Move projectile into the pouch
 	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
+	projectile_view.decor.set_face("focus", -slingshot.pull.normalized())
 
 
 
