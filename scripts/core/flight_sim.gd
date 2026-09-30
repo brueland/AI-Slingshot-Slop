@@ -13,6 +13,8 @@ var restitution: float = Balance.BASE_RESTITUTION
 var boost_charges: int = 0
 var bounce_count: int = 0
 var max_height: float = 0.0
+## Seconds spent in the air this flight (sliding along the ground does not count).
+var air_time: float = 0.0
 var stopped: bool = false
 var start_x: float = 0.0
 
@@ -31,6 +33,7 @@ func launch(start: Vector2, launch_velocity: Vector2) -> void:
 	velocity = launch_velocity
 	start_x = start.x
 	max_height = start.y
+	air_time = 0.0
 	bounce_count = 0
 	stopped = false
 
@@ -71,6 +74,7 @@ func step(dt: float) -> void:
 	if is_airborne():
 		var accel := Vector2(0.0, -gravity) - velocity * velocity.length() * drag
 		velocity += accel * dt
+		air_time += dt
 		position += velocity * dt
 		max_height = maxf(max_height, position.y)
 		if position.y <= 0.0:
