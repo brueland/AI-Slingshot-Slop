@@ -7,9 +7,10 @@ const RADIUS_PX: float = 14.0
 var shadow_scale: float = 1.0
 
 
-func update_from(world_pos: Vector2) -> void:
-	position = WorldView.world_to_screen(Vector2(world_pos.x, 0.0))
-	shadow_scale = clampf(1.0 - world_pos.y / 30.0, 0.3, 1.0)
+## `ground`: the ground's height under the alien (lower in a landing zone's dip).
+func update_from(world_pos: Vector2, ground: float = 0.0) -> void:
+	position = WorldView.world_to_screen(Vector2(world_pos.x, ground))
+	shadow_scale = clampf(1.0 - (world_pos.y - ground) / 30.0, 0.3, 1.0)
 	queue_redraw()
 
 
