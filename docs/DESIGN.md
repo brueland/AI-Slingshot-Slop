@@ -209,7 +209,8 @@ Only the typed constants of section 3 (`const GRAVITY: float = 15.0`, ints for B
 
 ### scripts/core/player_stats.gd: `class_name PlayerStats extends RefCounted`
 - Vars: `max_speed: float`, `launch_height: float`, `guide_points: int`, `drag: float`, `restitution: float`,
-  `boost_charges: int`, `score_multiplier: float`, `star_value: int`, `bounce_bonus: int`.
+  `boost_charges: int`, `score_multiplier: float`, `star_value: int`, `bounce_bonus: int`,
+  `boss: BossFight` (the roguelike boss a shot is fired at, null otherwise; milestone 31).
 - `static func from_levels(levels: Dictionary) -> PlayerStats` (section 4 formulas; missing ids = level 0; levels clamped to 0..max_level).
 - `apply_to(sim: FlightSim) -> void`: copies drag, restitution and boost_charges into the sim.
 
@@ -250,7 +251,8 @@ Only the typed constants of section 3 (`const GRAVITY: float = 15.0`, ints for B
   mud: if `sim.position.y <= 0` and `x <= sim.position.x <= x + MUD_WIDTH`: `velocity.x *= MUD_FACTOR`. Each item triggers once.
 
 ### scripts/core/run_session.gd: `class_name RunSession extends RefCounted`
-- Vars: `stats: PlayerStats`, `sim: FlightSim`, `tracker: RunTracker`, `course: Array`, `launched: bool`, `elapsed: float`.
+- Vars: `stats: PlayerStats`, `sim: FlightSim`, `tracker: RunTracker`, `course: Array`, `launched: bool`, `elapsed: float`,
+  `boss: BossFight` (a copy of `stats.boss`; its hits are checked every step and `result()` adds `boss_hp`, `boss_damage`).
 - `_init(player_stats: PlayerStats, course_seed: int)`, `launch_from_pull(pull: Vector2) -> Vector2`,
   `step(dt: float) -> void`, `boost() -> bool`, `release_boost()`, `is_finished() -> bool`, `result() -> Dictionary`
   (Scoring keys plus `distance, stars, bounces, max_height`).
@@ -318,3 +320,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 28 New look | 214–222, 223c | Fredoka and Lilita One fonts, juicy springy buttons, title redesign with a mode chooser, HUD panels and progress bar, pause menu row, results and shop in columns |
 | 29 Crisp and fair | 224–229, 230c | Star pickups match the drawn alien (all sizes), 256 px alien pictures, 20 m landing zones, a STOP HERE marker on the field, a sharp face on the big alien |
 | 30 Rocket and dips | 231–236, 237c | The rocket fires while Space is held (0.5 s per tank), rocket gauge on the HUD, flame while it burns, landing zones in a dip that catches near misses |
+| 31 Boss fights | 238–243, 244c | Every 10th roguelike round: the Grumblor, a giant with targets on and around its body; 4 shots to knock out its HP, results for every hit, +1 life for beating it |

@@ -13,10 +13,12 @@ const ANGLES := [45.0, 35.0, 55.0, 25.0, 65.0, 15.0, 75.0, 30.0, 40.0, 50.0, 60.
 const SIZE_ORDER := {
 	"distance": ["small", "normal", "big"], "zone": ["normal", "small", "big"], "height": ["normal", "small", "big"],
 	"bounces": ["normal", "small", "big"], "stars": ["big", "normal", "small"],
+	"fight": ["big", "normal", "small"],
 }
 const PREFER := {
 	"distance": ["power", "heavy", "aero", "feather"], "height": ["power", "heavy", "height", "feather"],
 	"zone": ["steady", "aero", "power"], "bounces": ["bounce", "power", "height"], "stars": ["power", "heavy", "aero"],
+	"fight": ["power", "heavy", "aero"],
 }
 
 
