@@ -33,3 +33,7 @@ const PIXELS_PER_METER: float = 16.0
 const PROJECTILE_RADIUS: float = 0.75
 ## The alien is drawn this much bigger than PROJECTILE_RADIUS; star pickups use the drawn body.
 const LOOK_SCALE: float = 1.5
+## Roguelike landing zones sit in a dip: the floor between the zone's edges is DIP_DEPTH lower, with a DIP_SLOPE-wide
+## slope outside each edge. The slopes are too steep to rest on, so a shot that stops on one rolls into the zone.
+const DIP_DEPTH: float = 0.75
+const DIP_SLOPE: float = 1.5

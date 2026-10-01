@@ -21,6 +21,8 @@ var max_height: float = 0.0
 var air_time: float = 0.0
 var stopped: bool = false
 var start_x: float = 0.0
+## Dips in the ground as (start, end) in meters (see Balance.DIP_DEPTH); roguelike landing zones get one.
+var dips: Array[Vector2] = []
 
 
 ## The boost key went down: the rocket fires until the key is released (see step). True when it starts firing.
@@ -45,7 +47,7 @@ func launch(start: Vector2, launch_velocity: Vector2) -> void:
 
 
 func is_airborne() -> bool:
-	return position.y > 0.0 or velocity.y > 0.0
+	return position.y > ground_height(position.x) or velocity.y > 0.0
 
 
 func distance() -> float:
@@ -53,7 +55,7 @@ func distance() -> float:
 
 
 func _touch_ground() -> void:
-	position.y = 0.0
+	position.y = ground_height(position.x)
 	var rebound := -velocity.y * restitution
 	if rebound >= Balance.MIN_BOUNCE_SPEED:
 		velocity.y = rebound
@@ -65,11 +67,12 @@ func _touch_ground() -> void:
 
 
 func _slide(dt: float) -> void:
-	position.y = 0.0
 	velocity.y = 0.0
+	velocity.x -= gravity * ground_slope(position.x) * dt
 	velocity.x = move_toward(velocity.x, 0.0, Balance.SLIDE_FRICTION * dt)
 	position.x += velocity.x * dt
-	if absf(velocity.x) <= Balance.STOP_SPEED:
+	position.y = ground_height(position.x)
+	if absf(velocity.x) <= Balance.STOP_SPEED and absf(gravity * ground_slope(position.x)) <= Balance.SLIDE_FRICTION:
 		velocity = Vector2.ZERO
 		stopped = true
 
@@ -87,7 +90,7 @@ func step(dt: float) -> void:
 		air_time += dt
 		position += velocity * dt
 		max_height = maxf(max_height, position.y)
-		if position.y <= 0.0:
+		if position.y <= ground_height(position.x):
 			_touch_ground()
 	else:
 		_slide(dt)
@@ -113,3 +116,22 @@ func is_boosting() -> bool:
 ## Rocket seconds a flight starts with: one Balance.BOOST_TANK_SECONDS tank per boost charge.
 func boost_capacity() -> float:
 	return boost_charges * Balance.BOOST_TANK_SECONDS
+
+
+## The ground's height at x: 0, or lower in a dip (a flat floor DIP_DEPTH down, straight slopes outside it).
+func ground_height(x: float) -> float:
+	var h := 0.0
+	for dip in dips:
+		var down := clampf(minf(x - (dip.x - Balance.DIP_SLOPE), (dip.y + Balance.DIP_SLOPE) - x) / Balance.DIP_SLOPE, 0.0, 1.0)
+		h = minf(h, -Balance.DIP_DEPTH * down)
+	return h
+
+
+## How steep the ground is at x (rise per meter): negative on the slope down into a dip, positive on the way out.
+func ground_slope(x: float) -> float:
+	for dip in dips:
+		if x > dip.x - Balance.DIP_SLOPE and x < dip.x:
+			return -Balance.DIP_DEPTH / Balance.DIP_SLOPE
+		if x > dip.y and x < dip.y + Balance.DIP_SLOPE:
+			return Balance.DIP_DEPTH / Balance.DIP_SLOPE
+	return 0.0
