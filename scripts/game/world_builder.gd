@@ -31,6 +31,8 @@ static func build(main: Node) -> void:
 	main.add_child(SkyBalloons.new())
 	main.zone_marker = ZoneMarker.new()
 	main.add_child(main.zone_marker)
+	var boss_view := BossView.new()
+	main.add_child(boss_view)
 	main.birds = Birds.new()
 	main.add_child(main.birds)
 	main.ufo = Ufo.new()
@@ -60,6 +62,7 @@ static func build(main: Node) -> void:
 	main.add_child(main.effects)
 	main.feedback = Feedback.new()
 	main.add_child(main.feedback)
+	main.feedback.boss_view = boss_view
 	main.feedback.flowers = main.flowers
 	main.feedback.cows = main.cows
 	main.weather_fx = WeatherFx.new()

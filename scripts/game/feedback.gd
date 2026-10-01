@@ -15,6 +15,7 @@ var sim: FlightSim
 var balloon_view: BalloonView
 var flowers: Flowers
 var cows: Cows
+var boss_view: BossView
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 var combo: int = 0
@@ -68,6 +69,10 @@ func watch(session: RunSession) -> void:
 		session.sim.boosted.connect(_on_boosted)
 	if session.balloons != null:
 		session.balloons.popped.connect(_on_balloon_popped)
+	if boss_view != null:
+		boss_view.show_fight(session.boss)
+	if session.boss != null:
+		session.boss.target_hit.connect(_on_boss_hit)
 
 
 func _process(delta: float) -> void:
@@ -239,3 +244,17 @@ func tick_rocket(delta: float) -> void:
 	if flame_left <= 0.0:
 		effects.spawn_flame(projectile_view.position)
 		flame_left = FLAME_EVERY
+
+
+## The alien hit one of the boss's targets: a "-3!" popup, a burst, a shake and a flash on the boss.
+func _on_boss_hit(index: int, damage: int) -> void:
+	_say("-%d!" % damage, Color(1.0, 0.35, 0.3))
+	if boss_view != null:
+		boss_view.flash(index)
+	if effects != null and projectile_view != null:
+		effects.spawn_burst(projectile_view.position)
+	if camera != null:
+		camera.shake(5.0, 0.2)
+	if audio != null:
+		audio.play_sfx("spring")
+	add_combo()
