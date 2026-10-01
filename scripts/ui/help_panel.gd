@@ -7,7 +7,7 @@ signal closed
 const LINES: Array[String] = [
 	"Drag the alien back, aim, and let go to launch it.",
 	"Or use the arrow keys: Up/Down for the angle, Left/Right for the power, Enter to launch.",
-	"Press Space in the air to use a boost.",
+	"Hold Space in the air to fire the rocket: the longer you hold it, the more push.",
 	"Press R to repeat your last shot. Press Esc to pause.",
 	"Classic: fly as far as you can, earn coins and buy upgrades. Reach 1000 m to win!",
 	"Roguelike: meet a new goal every round and pick a perk after each shot. Three misses and the run is over.",
