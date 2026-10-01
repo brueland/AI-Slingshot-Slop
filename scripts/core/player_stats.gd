@@ -11,6 +11,8 @@ var boost_charges: int = 0
 var score_multiplier: float = 1.0
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounce_bonus: int = 0
+## The roguelike boss this shot is fired at (null when there is none); RunSession fights a copy.
+var boss: BossFight = null
 
 ## Star pickups: a star is collected within pickup_radius of a point pickup_offset meters above the alien's
 ## contact point: the center of the alien as it is drawn, and its drawn radius plus RogueSizes.STAR_REACH.

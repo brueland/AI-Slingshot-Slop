@@ -6,6 +6,8 @@ var stats: PlayerStats
 var sim: FlightSim
 var tracker: RunTracker
 var balloons: Balloons
+## A copy of stats.boss for this shot (null without a boss fight).
+var boss: BossFight = null
 var course: Array = []
 var launched: bool = false
 var elapsed: float = 0.0
@@ -21,6 +23,8 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
 	tracker = RunTracker.new(course, stats.pickup_offset, stats.pickup_radius)
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
+	if stats.boss != null:
+		boss = stats.boss.copy()
 
 
 func launch_from_pull(pull: Vector2) -> Vector2:
@@ -41,6 +45,8 @@ func step(dt: float) -> void:
 	sim.step(dt)
 	tracker.after_step(sim, previous)
 	balloons.after_step(sim, previous)
+	if boss != null:
+		boss.after_step(sim, previous, stats.pickup_offset)
 	elapsed += dt
 	
 	if elapsed >= Balance.MAX_RUN_SECONDS:
@@ -68,6 +74,9 @@ func result() -> Dictionary:
 	r["max_height"] = sim.max_height
 	r["balloons"] = balloons.popped_count
 	r["air_time"] = sim.air_time
+	if boss != null:
+		r["boss_hp"] = boss.hp
+		r["boss_damage"] = boss.damage
 	return r
 
 
