@@ -248,7 +248,7 @@ func advance(dt: float) -> void:
 		session.step(dt)
 		projectile_view.sync_from(session.sim)
 		trail.add_trail_point(projectile_view.position)
-		shadow.update_from(session.sim.position)
+		shadow.update_from(session.sim.position, session.sim.ground_height(session.sim.position.x))
 		camera.follow(projectile_view.position, dt)
 		hud.update_flight(session.sim.distance(), session.sim.position.y, session.tracker.stars_collected, session.sim.boost_fuel, session.sim.boost_capacity())
 		hud.show_speed(session.sim.velocity.length())
