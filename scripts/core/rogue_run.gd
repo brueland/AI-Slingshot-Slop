@@ -17,6 +17,8 @@ var rerolls: int = 1
 var size_id: String = "normal"
 var weather: String = "calm"
 var best_shot: float = 0.0
+## The boss fight of this round (null when the round is not a fight).
+var fight: BossFight = null
 
 
 func start(new_seed: int) -> void:
@@ -32,11 +34,14 @@ func start(new_seed: int) -> void:
 	perks.clear()
 	offer.clear()
 	goal = RogueGoals.make_goal(1, run_seed)
+	fight = null
 
 
 func stats() -> PlayerStats:
 	var s := RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
-	return RogueWeather.apply(s, weather)
+	s = RogueWeather.apply(s, weather)
+	s.boss = fight
+	return s
 
 
 ## The course seed for this round: a new course every round, and the same course again when retrying after a
@@ -67,7 +72,9 @@ func finish_shot(result: Dictionary) -> Dictionary:
 	best_shot = maxf(best_shot, float(result.get("distance", 0.0)))
 	var met := RogueGoals.check(goal, result)
 	var ratio := RogueGoals.progress_ratio(goal, result)
-	var boss_beaten := met and str(goal.get("type", "")) == "boss"
+	var fighting := fight != null and str(goal.get("type", "")) == "fight"
+	var shots_left := 0
+	var boss_beaten := met and str(goal.get("type", "")) in ["boss", "fight"]
 	var lucky := met and RogueGoals.is_lucky_round(round_number, run_seed)
 	if lucky:
 		rerolls += 1
@@ -81,13 +88,26 @@ func finish_shot(result: Dictionary) -> Dictionary:
 		goal = RogueGoals.make_goal(round_number, run_seed)
 		if RogueGoals.is_boss_round(round_number):
 			goal = RogueGoals.make_boss_goal(round_number, run_seed)
+		fight = null
+		if RogueGoals.is_fight_round(round_number):
+			fight = BossFight.make(round_number)
+			goal = fight.goal()
 		weather = RogueWeather.for_round(round_number, run_seed)
+	elif fighting and fight.shots_left > 1:
+		fight.hp = int(result.get("boss_hp", fight.hp))
+		fight.shots_left -= 1
+		shots_left = fight.shots_left
+		goal = fight.goal()
 	else:
 		lives -= 1
+		if fighting:
+			fight.restart()
+			goal = fight.goal()
 	offer.clear()
 	if not is_over():
 		offer = RoguePerks.offer(run_seed * 100 + shots, perks)
-	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten, "lucky": lucky, "ratio": ratio}
+	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten, "lucky": lucky, "ratio": ratio,
+		"fight": fighting, "boss_damage": int(result.get("boss_damage", 0)), "boss_hp": int(result.get("boss_hp", 0)), "shots_left": shots_left}
 
 
 ## Swaps the offer for a different one. One reroll per run, plus one for every 5 rounds cleared.
