@@ -5,7 +5,7 @@ extends Control
 signal menu_pressed
 
 const HINT_AIM: String = "Drag the alien back, aim, and let go!"
-const HINT_BOOST: String = "Press Space in the air to boost!"
+const HINT_BOOST: String = "Hold Space in the air to fire the rocket!"
 const HINT_REPEAT: String = "Press R to repeat your last shot"
 
 var distance_label: Label
@@ -26,6 +26,7 @@ var course_bar: CourseBar
 var menu_button: Button
 var speed_label: Label
 var goal_bar: ProgressBar
+var rocket_bar: RocketGauge
 ## The next milestone's distance (0 when every milestone is reached).
 var next_target: float = 0.0
 
@@ -66,6 +67,8 @@ func _ready() -> void:
 	left_container.add_child(boosts_label)
 	boosts_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	boosts_label.add_theme_font_size_override("font_size", 22)
+	rocket_bar = RocketGauge.new()
+	left_container.add_child(rocket_bar)
 	
 	speed_label = Label.new()
 	left_container.add_child(speed_label)
@@ -240,11 +243,13 @@ func show_boss(on: bool) -> void:
 func hide_hint() -> void:
 	hint_label.hide()
 
-func update_flight(distance: float, height: float, stars: int, boosts: int) -> void:
+## `rocket`: seconds of rocket left; `rocket_max`: a full tank (0 = no rocket).
+func update_flight(distance: float, height: float, stars: int, rocket: float, rocket_max: float = 0.0) -> void:
 	distance_label.text = "Distance: %d m" % floori(maxf(distance, 0.0))
 	height_label.text = "Height: %d m" % floori(maxf(height, 0.0))
 	stars_label.text = "Stars: %d" % stars
-	boosts_label.text = "Boosts: %d" % boosts
+	boosts_label.text = "Rocket: none" if rocket_max <= 0.0 and rocket <= 0.0 else "Rocket: %.1f s" % maxf(rocket, 0.0)
+	rocket_bar.show_fuel(rocket, rocket_max)
 	altitude_bar.set_height(height)
 	course_bar.set_distance(distance)
 	if next_target > 0.0:
