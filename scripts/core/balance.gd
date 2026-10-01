@@ -14,6 +14,10 @@ const MIN_BOUNCE_SPEED: float = 2.0
 const SLIDE_FRICTION: float = 6.0
 const STOP_SPEED: float = 0.1
 const BOOST_SPEED: float = 12.0
+## The rocket fires while the boost key is held: BOOST_THRUST m/s of push per second, and each rocket tank (upgrade
+## level or Rocket perk) burns for BOOST_TANK_SECONDS per flight. A full tank adds BOOST_SPEED, like the old boost.
+const BOOST_THRUST: float = 24.0
+const BOOST_TANK_SECONDS: float = 0.5
 const BASE_GUIDE_POINTS: int = 6
 const BASE_STAR_VALUE: int = 10
 const STAR_RADIUS: float = 1.5

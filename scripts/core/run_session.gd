@@ -69,3 +69,8 @@ func result() -> Dictionary:
 	r["balloons"] = balloons.popped_count
 	r["air_time"] = sim.air_time
 	return r
+
+
+## The boost key went up.
+func release_boost() -> void:
+	sim.release_boost()
