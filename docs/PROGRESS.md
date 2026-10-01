@@ -32,4 +32,5 @@ Milestone 27: complete (faces and sky: bigger alien, cartoon faces, faces in fli
 Milestone 28: complete (new look: game fonts, juicy springy buttons, title redesign with a mode chooser, HUD panels and progress bar, pause row, results and shop in columns)
 Milestone 29: complete (crisp and fair: pickups match the drawn alien, sharp alien pictures, 20 m landing zones, landing zone marker, a sharp face on the big alien)
 Milestone 30: complete (rocket and dips: the rocket fires while Space is held, rocket gauge on the HUD, flame while it burns, landing zones in a dip that catches near misses)
+Milestone 31: complete (boss fights: every 10th roguelike round the Grumblor stands on the field with targets on and around its body, 4 shots to knock out its HP, results for every hit, +1 life for beating it)
 
