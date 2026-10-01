@@ -23,11 +23,15 @@ var best_combo_run: int = 0
 var sheep_woken_run: int = 0
 ## sim.air_time when the current hop began (the launch or the last bounce).
 var hop_start: float = 0.0
+## Seconds until the next flame puff while the rocket fires.
+var flame_left: float = 0.0
 
 ## Lively moments (stars, springs, balloons, hard bounces) this close together make a combo.
 const COMBO_WINDOW: float = 1.2
 ## A missed roguelike goal at least this close (0-1) gets a "So close!".
 const CLOSE_RATIO: float = 0.85
+## While the rocket fires, a puff of flame this often (seconds).
+const FLAME_EVERY: float = 0.06
 ## A single hop at least this long (seconds in the air) gets a "Hang time!" popup when it lands.
 const HANG_SECONDS: float = 3.0
 
@@ -68,6 +72,7 @@ func watch(session: RunSession) -> void:
 
 func _process(delta: float) -> void:
 	tick_combo(delta)
+	tick_rocket(delta)
 
 
 func tick_combo(delta: float) -> void:
@@ -223,3 +228,14 @@ func _on_balloon_popped(index: int) -> void:
 	pop.position = projectile_view.position + Vector2(-16.0, -44.0)
 	if popups != null:
 		popups.add_child(pop)
+
+
+## While the rocket fires, a puff of flame behind the alien every FLAME_EVERY seconds.
+func tick_rocket(delta: float) -> void:
+	if sim == null or effects == null or projectile_view == null or not sim.is_boosting():
+		flame_left = 0.0
+		return
+	flame_left -= delta
+	if flame_left <= 0.0:
+		effects.spawn_flame(projectile_view.position)
+		flame_left = FLAME_EVERY

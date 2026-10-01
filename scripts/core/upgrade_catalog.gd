@@ -17,7 +17,7 @@ const UPGRADES: Dictionary = {
 	"bounce": {"name": "Bouncy Shell", "category": "projectile", "max_level": 5, "base_cost": 100, "growth": 1.8,
 		"per_level": 0.08, "description": "+8% bounce factor per level"},
 	"boosts": {"name": "Rocket Boosts", "category": "projectile", "max_level": 3, "base_cost": 300, "growth": 2.2,
-		"per_level": 1, "description": "1 boost charge per level"},
+		"per_level": 1, "description": "+0.5 s of rocket per level (hold Space in the air)"},
 	"multiplier": {"name": "Score Multiplier", "category": "score", "max_level": 5, "base_cost": 200, "growth": 1.9,
 		"per_level": 0.25, "description": "+25% score per level"},
 	"star_value": {"name": "Star Polish", "category": "score", "max_level": 5, "base_cost": 80, "growth": 1.7,

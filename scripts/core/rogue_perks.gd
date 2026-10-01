@@ -7,7 +7,7 @@ const LIST: Array = [
 	{"id": "height", "name": "Taller Frame", "description": "+1.5 m launch height"},
 	{"id": "aero", "name": "Sleek Shell", "description": "-20% air drag"},
 	{"id": "bounce", "name": "Rubber Coat", "description": "+0.07 bounciness"},
-	{"id": "boost", "name": "Rocket", "description": "+1 mid-air boost"},
+	{"id": "boost", "name": "Rocket", "description": "+0.5 s of rocket (hold Space)"},
 	{"id": "heavy", "name": "Heavy Core", "description": "+30% launch speed, -0.1 bounciness"},
 	{"id": "feather", "name": "Feather Shell", "description": "-40% air drag, -10% launch speed"},
 	{"id": "steady", "name": "Steady Hand", "description": "Shows the line of your last shot"},
