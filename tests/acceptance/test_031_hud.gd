@@ -32,7 +32,7 @@ func test_update_flight() -> void:
 	assert_eq(h.distance_label.text, "Distance: 123 m")
 	assert_eq(h.height_label.text, "Height: 45 m")
 	assert_eq(h.stars_label.text, "Stars: 3")
-	assert_eq(h.boosts_label.text, "Boosts: 1")
+	assert_eq(h.boosts_label.text, "Rocket: 1.0 s", "seconds of rocket left (task 233)")
 	h.update_flight(-2.0, -0.5, 0, 0)
 	assert_eq(h.distance_label.text, "Distance: 0 m", "never negative")
 	assert_eq(h.height_label.text, "Height: 0 m")

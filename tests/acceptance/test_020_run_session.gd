@@ -76,7 +76,8 @@ func test_boost_only_after_launch() -> void:
 	s.launch_from_pull(FULL_PULL_45)
 	s.step(1.0 / 60.0)
 	assert_true(s.boost())
-	assert_eq(s.sim.boost_charges, 1)
+	assert_true(s.sim.is_boosting(), "the rocket fires while the key is held (task 231)")
+	assert_eq(s.sim.boost_charges, 2, "charges are rocket tanks now")
 
 
 func test_runs_are_force_stopped_after_max_run_seconds() -> void:

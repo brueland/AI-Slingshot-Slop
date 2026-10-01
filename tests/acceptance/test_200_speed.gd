@@ -35,7 +35,7 @@ func test_speed() -> void:
 	main.start_game()
 	var label = main.hud.speed_label
 	assert_eq(label.text, "Speed: 0 m/s")
-	assert_eq(label.get_index(), main.hud.boosts_label.get_index() + 1, "right under the boosts")
+	assert_eq(label.get_index(), main.hud.boosts_label.get_index() + 2, "under the rocket and its gauge (task 233)")
 	main.launch_with_pull(PULL)
 	for i in 10:
 		main.advance(1.0 / 60.0)

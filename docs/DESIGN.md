@@ -17,7 +17,7 @@ TITLE --Play--> AIM --release slingshot--> FLIGHT --projectile stops--> RESULTS 
 |---|---|
 | TITLE | Game name, best distance, **Play**, **Options**, **Credits**, **Reset progress** |
 | AIM | Slingshot with the projectile. Drag the pouch back with the mouse; a dotted trajectory preview shows the arc. Release to launch. |
-| FLIGHT | Camera follows the projectile. **Space** spends a boost charge (if any). HUD shows distance, height, stars, boosts. |
+| FLIGHT | Camera follows the projectile. Holding **Space** fires the rocket while it has fuel (0.5 s per rocket tank, milestone 30). HUD shows distance, height, stars, rocket left. |
 | RESULTS | Distance, stars, bounces, multiplier, total score, coins earned, milestones reached. **Continue**. |
 | SHOP | Coins and 9 upgrades in 3 groups (Slingshot, Projectile, Score). Buy any affordable upgrade. **Launch!** |
 | VICTORY | "You reached 1000 m in N runs!" **Continue** goes to the shop. |
@@ -77,7 +77,11 @@ repeated. Classic: unlocked by Aim Guide level 1+. Roguelike: unlocked by the St
 | MIN_BOUNCE_SPEED | 2.0 | m/s; slower rebounds turn into sliding |
 | SLIDE_FRICTION | 6.0 | m/s² deceleration while sliding |
 | STOP_SPEED | 0.1 | m/s; slower than this = stopped |
-| BOOST_SPEED | 12.0 | m/s added by one boost, direction (1, 1) normalized |
+| BOOST_SPEED | 12.0 | m/s a full rocket tank adds (BOOST_THRUST × BOOST_TANK_SECONDS), direction (1, 1) normalized |
+| BOOST_THRUST | 24.0 | m/s² of push while the rocket fires (Space held) |
+| BOOST_TANK_SECONDS | 0.5 | seconds of rocket per tank (boost charge) per flight |
+| DIP_DEPTH | 0.75 | m; a roguelike landing zone's floor sits this much lower |
+| DIP_SLOPE | 1.5 | m; the slope outside each zone edge (too steep to rest on, so near misses roll in) |
 | BASE_GUIDE_POINTS | 6 | trajectory preview dots, no upgrades (int) |
 | BASE_STAR_VALUE | 10 | points per star, no upgrades (int) |
 | STAR_RADIUS | 1.5 | m, star pickup radius |
@@ -106,7 +110,7 @@ Cost to buy the next level when the current level is `L`: `roundi(base_cost * po
 | guide | Aim Guide | launcher | 5 | 25 | 1.5 | 6 | guide_points = BASE_GUIDE_POINTS + 6·L |
 | aero | Aerodynamics | projectile | 5 | 120 | 1.8 | 0.18 | drag = BASE_DRAG × (1 − 0.18·L) |
 | bounce | Bouncy Shell | projectile | 5 | 100 | 1.8 | 0.08 | restitution = BASE_RESTITUTION + 0.08·L |
-| boosts | Rocket Boosts | projectile | 3 | 300 | 2.2 | 1 | boost_charges = L |
+| boosts | Rocket Boosts | projectile | 3 | 300 | 2.2 | 1 | boost_charges = L (0.5 s of rocket each) |
 | multiplier | Score Multiplier | score | 5 | 200 | 1.9 | 0.25 | score_multiplier = 1 + 0.25·L |
 | star_value | Star Polish | score | 5 | 80 | 1.7 | 5 | star_value = BASE_STAR_VALUE + 5·L |
 | bounce_bonus | Style Points | score | 5 | 60 | 1.7 | 3 | bounce_bonus = 3·L points per bounce |
@@ -182,14 +186,19 @@ Only the typed constants of section 3 (`const GRAVITY: float = 15.0`, ints for B
 ### scripts/core/flight_sim.gd: `class_name FlightSim extends RefCounted`
 - Signals: `bounced(impact_speed: float)`, `boosted`.
 - Vars: `position: Vector2`, `velocity: Vector2`, `gravity: float = Balance.GRAVITY`, `drag: float = Balance.BASE_DRAG`,
-  `restitution: float = Balance.BASE_RESTITUTION`, `boost_charges: int = 0`, `bounce_count: int = 0`,
-  `max_height: float = 0.0`, `stopped: bool = false`, `start_x: float = 0.0`.
+  `restitution: float = Balance.BASE_RESTITUTION`, `boost_charges: int = 0` (rocket tanks), `boost_fuel: float`,
+  `boost_held: bool`, `bounce_count: int = 0`, `max_height: float = 0.0`, `stopped: bool = false`, `start_x: float = 0.0`,
+  `dips: Array[Vector2]` (landing-zone dips, (start, end) in meters).
 - `launch(start: Vector2, launch_velocity: Vector2) -> void`: set position/velocity, `start_x = start.x`,
   `max_height = start.y`, `bounce_count = 0`, `stopped = false`.
 - `is_airborne() -> bool`, `distance() -> float` (= position.x − start_x), `step(dt: float) -> void` (section 7),
   `simulate(dt: float, max_steps: int) -> int` (step until stopped or max_steps; returns steps taken),
-  `boost() -> bool` (only if not stopped, airborne and boost_charges > 0: `velocity += Vector2(1, 1).normalized() * BOOST_SPEED`,
-  `boost_charges -= 1`, emit `boosted`, return true).
+  `boost() -> bool` (the boost key went down: only if not stopped, not already held, airborne and boost_fuel > 0:
+  `boost_held = true`, emit `boosted`, return true), `release_boost()`, `is_boosting() -> bool`,
+  `boost_capacity() -> float` (boost_charges × BOOST_TANK_SECONDS; `launch` fills `boost_fuel` with it). While
+  `is_boosting()`, `step` pushes BOOST_THRUST m/s² along (1, 1) and burns fuel.
+- `ground_height(x) -> float` / `ground_slope(x) -> float`: the ground is at 0 except in `dips` (a floor DIP_DEPTH
+  down, DIP_SLOPE-wide slopes outside it); landing, sliding and stopping use it, and nothing stops on a slope.
 
 ### scripts/core/upgrade_catalog.gd: `class_name UpgradeCatalog extends RefCounted`
 - `const UPGRADES: Dictionary` (section 4; keys in the table's order; each value has `name, category, max_level, base_cost, growth, per_level, description`).
@@ -243,7 +252,7 @@ Only the typed constants of section 3 (`const GRAVITY: float = 15.0`, ints for B
 ### scripts/core/run_session.gd: `class_name RunSession extends RefCounted`
 - Vars: `stats: PlayerStats`, `sim: FlightSim`, `tracker: RunTracker`, `course: Array`, `launched: bool`, `elapsed: float`.
 - `_init(player_stats: PlayerStats, course_seed: int)`, `launch_from_pull(pull: Vector2) -> Vector2`,
-  `step(dt: float) -> void`, `boost() -> bool`, `is_finished() -> bool`, `result() -> Dictionary`
+  `step(dt: float) -> void`, `boost() -> bool`, `release_boost()`, `is_finished() -> bool`, `result() -> Dictionary`
   (Scoring keys plus `distance, stars, bounces, max_height`).
 
 ### scripts/game/main.gd (attached to scenes/main.tscn)
@@ -308,3 +317,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 27 Faces and sky | 205–212, 213c | Alien drawn 1.5x, cartoon faces (happy, focus, wee, scared, wow, ouch, dizzy, sleepy), mascot eyes follow the mouse, sky gradient up to space, title buttons in pairs |
 | 28 New look | 214–222, 223c | Fredoka and Lilita One fonts, juicy springy buttons, title redesign with a mode chooser, HUD panels and progress bar, pause menu row, results and shop in columns |
 | 29 Crisp and fair | 224–229, 230c | Star pickups match the drawn alien (all sizes), 256 px alien pictures, 20 m landing zones, a STOP HERE marker on the field, a sharp face on the big alien |
+| 30 Rocket and dips | 231–236, 237c | The rocket fires while Space is held (0.5 s per tank), rocket gauge on the HUD, flame while it burns, landing zones in a dip that catches near misses |

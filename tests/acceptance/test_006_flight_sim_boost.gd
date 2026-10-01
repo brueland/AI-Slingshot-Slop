@@ -1,5 +1,6 @@
 extends GutTest
 # Task 006: FlightSim.boost(): spend a boost charge in the air (docs/DESIGN.md section 9, FlightSim).
+# Updated by task 231: boost() fires the rocket, which burns BOOST_THRUST m/s per second while the key is held.
 
 const PATH := "res://scripts/core/flight_sim.gd"
 
@@ -28,11 +29,17 @@ func test_boost_in_the_air() -> void:
 	sim.boost_charges = 2
 	sim.launch(Vector2(0, 5), Vector2(10, -2))
 	assert_true(sim.boost())
-	var k := 12.0 / sqrt(2.0)
-	assert_almost_eq(sim.velocity.x, 10.0 + k, 0.0001)
-	assert_almost_eq(sim.velocity.y, -2.0 + k, 0.0001)
-	assert_eq(sim.boost_charges, 1)
 	assert_signal_emitted(sim, "boosted")
+	assert_eq(sim.velocity, Vector2(10, -2), "the push comes with the next steps")
+	var plain = _sim()
+	plain.launch(Vector2(0, 5), Vector2(10, -2))
+	sim.step(0.1)
+	plain.step(0.1)
+	var k := 24.0 * 0.1 / sqrt(2.0)
+	assert_almost_eq(sim.velocity.x - plain.velocity.x, k, 0.05)
+	assert_almost_eq(sim.velocity.y - plain.velocity.y, k, 0.05)
+	assert_eq(sim.boost_charges, 2, "charges are rocket tanks: the fuel burns instead")
+	assert_almost_eq(float(sim.boost_fuel), 0.9, 0.0001)
 
 
 func test_no_boost_on_the_ground_or_when_stopped() -> void:

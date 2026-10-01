@@ -45,11 +45,11 @@ func test_boost_key_spends_a_boost_in_flight() -> void:
 	main.progress.levels = {"boosts": 1}
 	main.start_game()
 	main._unhandled_input(_action("boost"))
-	assert_eq(main.session.sim.boost_charges, 1, "no boosting while aiming")
+	assert_false(main.session.sim.boost_held, "no boosting while aiming")
 	main.launch_with_pull(FULL_PULL_45)
 	main.advance(1.0 / 60.0)
 	main._unhandled_input(_action("boost"))
-	assert_eq(main.session.sim.boost_charges, 0)
+	assert_true(main.session.sim.is_boosting(), "Space fires the rocket in flight (task 231)")
 
 
 func test_escape_pauses_and_resumes_the_flight() -> void:

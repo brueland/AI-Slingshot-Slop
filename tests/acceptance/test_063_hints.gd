@@ -7,7 +7,7 @@ const SCENE := "res://scenes/main.tscn"
 const SAVE := "user://test_063_save.json"
 const FULL_PULL_45 := Vector2(-84.852814, 84.852814)
 const HINT_AIM := "Drag the alien back, aim, and let go!"
-const HINT_BOOST := "Press Space in the air to boost!"
+const HINT_BOOST := "Hold Space in the air to fire the rocket!"
 
 
 func after_each() -> void:
