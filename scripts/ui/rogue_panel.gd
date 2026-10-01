@@ -82,7 +82,9 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 		title_label.text = "Lucky! Goal met, +1 reroll"
 	if outcome.get("boss_beaten", false):
 		title_label.text = "Boss beaten! +1 life"
-	goal_label.modulate = Color(1.0, 0.6, 0.6) if run.goal.get("type", "") == "boss" else Color.WHITE
+	if outcome.get("fight", false) and not outcome.get("met", false):
+		_show_fight_shot(outcome, run)
+	goal_label.modulate = Color(1.0, 0.6, 0.6) if run.goal.get("type", "") in ["boss", "fight"] else Color.WHITE
 	var weather := RogueWeather.get_def(run.weather)
 	weather_label.text = "Weather: %s - %s" % [weather["name"], weather["description"]]
 	perk_ids.assign(run.offer)
@@ -114,6 +116,17 @@ func _show_size() -> void:
 	for id in size_buttons:
 		var size_button: Button = size_buttons[id]
 		size_button.set_pressed_no_signal(id == current_run.size_id)
+
+
+## The title after a boss fight shot that didn't beat it: the damage, the HP and shots left, or out of shots.
+func _show_fight_shot(outcome: Dictionary, run: RogueRun) -> void:
+	var shots := int(outcome.get("shots_left", 0))
+	if shots <= 0:
+		title_label.text = "Out of shots! The boss heals. Lives left: %d" % run.lives
+		return
+	var dealt := int(outcome.get("boss_damage", 0))
+	var hit := "Boss hit for %d!" % dealt if dealt > 0 else "No hit!"
+	title_label.text = "%s %d HP left, %d shot%s to go" % [hit, int(outcome.get("boss_hp", 0)), shots, "" if shots == 1 else "s"]
 
 
 func _on_size(id: String) -> void:

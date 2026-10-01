@@ -106,7 +106,7 @@ func refresh(main: Node) -> void:
 	if hud.visible and rogue_mode:
 		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
 		hud.show_perks(RoguePerks.summary(main.rogue.perks))
-		hud.show_boss(str(main.rogue.goal.get("type", "")) == "boss")
+		hud.show_boss(str(main.rogue.goal.get("type", "")) in ["boss", "fight"])
 		hud.show_lucky(RogueGoals.is_lucky_round(main.rogue.round_number, main.rogue.run_seed))
 		var weather: Dictionary = RogueWeather.get_def(main.rogue.weather)
 		hud.show_weather("" if main.rogue.weather == "calm" else str(weather.get("name", "")))
