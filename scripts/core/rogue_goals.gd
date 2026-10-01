@@ -11,6 +11,9 @@ const STARS_FROM_ROUND: int = 4
 ## Boss rounds: from BOSS_FROM_ROUND on, every BOSS_EVERY rounds, two goals at once.
 const BOSS_FROM_ROUND: int = 12
 const BOSS_EVERY: int = 6
+## Boss fights (BossFight): from FIGHT_FROM_ROUND on, every FIGHT_EVERY rounds.
+const FIGHT_FROM_ROUND: int = 10
+const FIGHT_EVERY: int = 10
 
 
 static func target_for(type: String, round_number: int) -> float:
@@ -42,7 +45,7 @@ static func make_goal(round_number: int, run_seed: int) -> Dictionary:
 
 ## Lucky rounds: from round 4, about one round in eight (never a boss round); meeting one gives a reroll.
 static func is_lucky_round(round_number: int, run_seed: int) -> bool:
-	if round_number < 4 or is_boss_round(round_number):
+	if round_number < 4 or is_boss_round(round_number) or is_fight_round(round_number):
 		return false
 	return posmod(run_seed * 13 + round_number * 29, 8) == 0
 
@@ -82,6 +85,8 @@ static func progress_ratio(goal: Dictionary, result: Dictionary) -> float:
 			if d > target:
 				return clampf((target + ZONE_WIDTH) / d, 0.0, 0.99)
 			return _ratio(d, target)
+		"fight":
+			return 1.0 - _ratio(float(result.get("boss_hp", target)), target)
 		"boss":
 			var parts: Array = goal.get("parts", [])
 			var lowest := 0.0 if parts.is_empty() else 1.0
@@ -111,6 +116,8 @@ static func progress_text(goal: Dictionary, result: Dictionary) -> String:
 			return "%d/%d stars" % [int(result.get("stars", 0)), n]
 		"zone":
 			return "%d m (stop at %d-%d m)" % [int(float(result.get("distance", 0.0))), n, n + int(ZONE_WIDTH)]
+		"fight":
+			return "Boss HP %d/%d" % [int(result.get("boss_hp", n)), n]
 		"boss":
 			var texts := PackedStringArray()
 			for part in goal.get("parts", []):
@@ -132,6 +139,8 @@ static func describe(type: String, target: float) -> String:
 			return "Collect %d star%s" % [n, "" if n == 1 else "s"]
 		"zone":
 			return "Stop between %d and %d m" % [n, n + int(ZONE_WIDTH)]
+		"fight":
+			return "Beat the boss (%d HP)" % n
 		"boss":
 			# Boss goals are handled separately in the make_boss_goal function
 			return ""
@@ -152,6 +161,8 @@ static func check(goal: Dictionary, result: Dictionary) -> bool:
 		"zone":
 			var d := float(result.get("distance", 0.0))
 			return d >= target and d <= target + ZONE_WIDTH
+		"fight":
+			return result.has("boss_hp") and int(result["boss_hp"]) <= 0
 		"boss":
 			var parts: Array = goal.get("parts", [])
 			for part in parts:
@@ -159,3 +170,8 @@ static func check(goal: Dictionary, result: Dictionary) -> bool:
 					return false
 			return not parts.is_empty()
 	return false
+
+
+## Boss fight rounds: round 10 and every 10th round after it (a fight takes the place of a boss goal).
+static func is_fight_round(round_number: int) -> bool:
+	return round_number >= FIGHT_FROM_ROUND and round_number % FIGHT_EVERY == 0
