@@ -71,7 +71,7 @@ func test_second_run_is_wired_to_the_new_session() -> void:
 	main.continue_to_shop()
 	main.leave_shop()
 	assert_eq(main.state_name(), "AIM")
-	assert_eq(main.session.course, load("res://scripts/core/course_generator.gd").generate(2, 2000.0))
+	assert_eq(main.session.course, RunSession.new(main.progress.stats(), 2).course, "seed 2, on the hills of the best distance")
 	assert_eq(main.course_view.item_count(), main.session.course.size())
 	main.session.tracker.star_collected.emit(0)
 	assert_false(main.course_view.sprites[0].visible, "the new run's tracker hides stars in the new course")
