@@ -1,6 +1,6 @@
 # Progress log
 
-Checkpoint tasks (010c, 020c, 030c, 040c, 050c, 060c, 070c, 080c, 090c, 100c, 105c, 113c, 120c, 129c, 136c, 144c, 151c, 156c, 164c, 171c, 177c, 184c, 190c, 195c, 201c, 204c, 213c, 223c, 230c, 237c, 244c, 248c, 251c, 256c) add one line here when their milestone's integration tests passes.
+Checkpoint tasks (010c, 020c, 030c, 040c, 050c, 060c, 070c, 080c, 090c, 100c, 105c, 113c, 120c, 129c, 136c, 144c, 151c, 156c, 164c, 171c, 177c, 184c, 190c, 195c, 201c, 204c, 213c, 223c, 230c, 237c, 244c, 248c, 251c, 256c, 260c) add one line here when their milestone's integration tests passes.
 
 Milestone 1: complete (core simulation: balance, launch math, flight sim, upgrades, stats, scoring)
 Milestone 2: complete (progression: coins, milestones, saving, course, tracker, run session)

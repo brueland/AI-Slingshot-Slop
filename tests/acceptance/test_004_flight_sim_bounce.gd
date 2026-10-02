@@ -20,16 +20,16 @@ func test_hard_landing_bounces() -> void:
 	watch_signals(sim)
 	sim.launch(Vector2(0, 0.05), Vector2(5, -10))
 	sim.step(0.01)
-	# vy = -10 - 15 * 0.01 = -10.15, rebound = 10.15 * 0.35 = 3.5525 >= 2
+	# vy = -10 - 15 * 0.01 = -10.15, rebound = 10.15 * 0.45 = 4.5675 >= 2 (bouncier since task 257)
 	assert_almost_eq(sim.position.y, 0.0, 0.00001, "clamped to the ground")
-	assert_almost_eq(sim.velocity.y, 3.5525, 0.0001, "bounces up with restitution")
-	assert_almost_eq(sim.velocity.x, 4.25, 0.0001, "keeps 85% of horizontal speed")
+	assert_almost_eq(sim.velocity.y, 4.5675, 0.0001, "bounces up with restitution")
+	assert_almost_eq(sim.velocity.x, 4.5, 0.0001, "keeps 90% of horizontal speed")
 	assert_eq(sim.bounce_count, 1)
 	assert_false(sim.stopped)
 	assert_signal_emitted(sim, "bounced")
 	var params = get_signal_parameters(sim, "bounced")
 	if params != null:
-		assert_almost_eq(float(params[0]), 3.5525, 0.0001, "bounced(impact_speed) carries the rebound speed")
+		assert_almost_eq(float(params[0]), 4.5675, 0.0001, "bounced(impact_speed) carries the rebound speed")
 
 
 func test_soft_landing_settles_without_bounce() -> void:
@@ -39,7 +39,7 @@ func test_soft_landing_settles_without_bounce() -> void:
 	sim.drag = 0.0
 	sim.launch(Vector2(0, 0.01), Vector2(5, -3))
 	sim.step(0.01)
-	# rebound = 3.15 * 0.35 = 1.1025 < 2: no bounce, vertical speed becomes 0
+	# rebound = 3.15 * 0.45 = 1.4175 < 2: no bounce, vertical speed becomes 0
 	assert_almost_eq(sim.position.y, 0.0, 0.00001)
 	assert_almost_eq(sim.velocity.y, 0.0, 0.00001)
 	assert_almost_eq(sim.velocity.x, 5.0, 0.0001, "no bounce friction when it does not bounce")

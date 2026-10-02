@@ -324,3 +324,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 32 Late-run HUD and grab | 245–247, 248c | Perks as colored boxes with counts, goal lines wrap so the right panel stays on screen, grab the alien anywhere on it (big size too) |
 | 33 Endless meadow | 249–250, 251c | The ground and distance markers never end, seamless far hills, scenery to 8000 m |
 | 34 Star power | 252–255, 256c | Every roguelike star counts for the run and gives a small random boost (speed, glide, bounce, lift), gold boxes on the HUD, results per shot |
+| 35 Bouncier | 257–259, 260c | More bounce (45% of the landing speed, 90% of the forward speed kept), springs and balloons count a touch of the alien's body, UFO tractor beams pull the alien up |
