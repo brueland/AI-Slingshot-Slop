@@ -27,6 +27,10 @@ var last_pull: Vector2 = Vector2.ZERO
 var key_angle: float = 45.0
 var key_power: float = 0.8
 var key_aiming: bool = false
+## The alien's drawn radius in pixels as it rests on the pouch (bigger for the roguelike's big size).
+var ball_radius_px: float = Balance.PROJECTILE_RADIUS * Balance.LOOK_SCALE * Balance.PIXELS_PER_METER
+## Where the drag started, from the anchor: the pull follows the hand from there.
+var grab_offset: Vector2 = Vector2.ZERO
 var show_last_aim: bool = false:
 	set(value):
 		show_last_aim = value
@@ -40,6 +44,7 @@ func _ready():
 
 func apply_stats(stats: PlayerStats, power_level: int) -> void:
 	frame_height_px = stats.launch_height * Balance.PIXELS_PER_METER
+	ball_radius_px = stats.pickup_offset * Balance.PIXELS_PER_METER
 	band_color = BAND_COLORS[clampi(floori(power_level / 4.0), 0, BAND_COLORS.size() - 1)]
 	queue_redraw()
 
@@ -65,8 +70,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func begin_drag(point: Vector2) -> bool:
-	if not enabled or point.distance_to(global_position) > GRAB_RADIUS:
+	if not enabled or (point.distance_to(global_position) > GRAB_RADIUS and not on_ball(point)):
 		return false
+	grab_offset = point - global_position
 	dragging = true
 	pull = Vector2.ZERO
 	queue_redraw()
@@ -75,7 +81,7 @@ func begin_drag(point: Vector2) -> bool:
 
 func update_drag(point: Vector2) -> void:
 	if dragging:
-		pull = LaunchMath.clamp_pull(point - global_position, max_pull)
+		pull = LaunchMath.clamp_pull(point - grab_offset - global_position, max_pull)
 		queue_redraw()
 
 
@@ -193,3 +199,8 @@ func _draw() -> void:
 		var bar := Rect2(-30.0, -48.0, 60.0, 8.0)
 		draw_rect(bar, Color(0, 0, 0, 0.5))
 		draw_rect(Rect2(bar.position, Vector2(bar.size.x * ratio, bar.size.y)), power_color(ratio))
+
+
+	## Is `point` on the alien resting on the pouch (its circle sits right above the anchor)?
+	func on_ball(point: Vector2) -> bool:
+		return point.distance_to(global_position + Vector2(0.0, -ball_radius_px)) <= ball_radius_px + 6.0
