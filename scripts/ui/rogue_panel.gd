@@ -35,6 +35,10 @@ func _ready() -> void:
 	close_label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.4))
 	close_label.hide()
 	box.add_child(close_label)
+	stars_label = Label.new()
+	stars_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.3))
+	stars_label.hide()
+	box.add_child(stars_label)
 	round_label = Label.new()
 	box.add_child(round_label)
 	goal_label = Label.new()
@@ -104,6 +108,11 @@ func show_outcome(outcome: Dictionary, run: RogueRun) -> void:
 	reroll_button.disabled = run.rerolls <= 0
 	current_run = run
 	_show_size()
+	
+	# Handle stars label
+	var gained: Array = outcome.get("stars_gained", [])
+	stars_label.text = "+%d star%s: %s (%d this run)" % [gained.size(), "" if gained.size() == 1 else "s", StarBoosts.summary(gained), run.stars_total]
+	stars_label.visible = not gained.is_empty()
 
 
 func _on_pick(index: int) -> void:
