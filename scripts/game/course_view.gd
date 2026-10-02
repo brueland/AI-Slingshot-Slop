@@ -59,11 +59,11 @@ func build(items: Array) -> void:
 			sprite.scale = Vector2(0.5, 0.5)
 			star_indices.append(i)
 		elif item["type"] == "spring":
-			sprite.position = WorldView.world_to_screen(Vector2(item["x"], 0))
+			sprite.position = WorldView.ground_point(item["x"])
 			sprite.offset = Vector2(0, -35)
 			sprite.scale = Vector2(0.6, 0.6)
 		elif item["type"] == "mud":
-			sprite.position = WorldView.world_to_screen(Vector2(item["x"] + Balance.MUD_WIDTH / 2.0, 0))
+			sprite.position = WorldView.ground_point(item["x"] + Balance.MUD_WIDTH / 2.0)
 			sprite.scale = Vector2(Balance.MUD_WIDTH * 16 / 70, 0.3)
 		
 		add_child(sprite)
@@ -81,11 +81,12 @@ func item_count() -> int:
 
 func set_best_marker(distance: float) -> void:
 	for k in flags.size():
+		flags[k].position = WorldView.ground_point(float(Milestones.LIST[k]["distance"]))
 		flags[k].modulate = Color(1.0, 0.9, 0.4) if float(Milestones.LIST[k]["distance"]) <= distance else Color.WHITE
 	if distance <= 0.0:
 		best_marker.hide()
 		return
-	best_marker.position = WorldView.world_to_screen(Vector2(distance, 0.0))
+	best_marker.position = WorldView.ground_point(distance)
 	best_label.text = "Best: %d m" % floori(distance)
 	best_marker.show()
 

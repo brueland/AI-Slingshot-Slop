@@ -8,6 +8,8 @@ const HIDE := Color(0.98, 0.98, 0.96)
 const SPOTS := Color(0.15, 0.15, 0.15)
 
 var xs: Array[float] = []
+## The terrain the cows were drawn on (WorldView.terrain_version).
+var seen_terrain: int = -1
 
 
 ## Cow positions (meters) for a seed: one every 120-260 m, starting after 60 m.
@@ -42,7 +44,13 @@ func react(world_x: float) -> int:
 
 
 func cow_position(index: int) -> Vector2:
-	return WorldView.world_to_screen(Vector2(xs[index], 0.0))
+	return WorldView.ground_point(xs[index])
+
+
+func _process(_delta: float) -> void:
+	if seen_terrain != WorldView.terrain_version:
+		seen_terrain = WorldView.terrain_version
+		queue_redraw()
 
 
 func _draw() -> void:

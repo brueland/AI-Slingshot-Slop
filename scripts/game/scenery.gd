@@ -12,6 +12,8 @@ const SEED: int = 7
 const LENGTH: float = 8000.0
 
 var sprites: Array[Sprite2D] = []
+## The terrain the sprites stand on (WorldView.terrain_version); they move when it changes.
+var seen_terrain: int = -1
 
 
 static func layout(seed: int, length: float) -> Array:
@@ -50,3 +52,12 @@ func build(seed: int, length: float) -> void:
 		
 		add_child(sprite)
 		sprites.append(sprite)
+
+
+## Puts the rocks and plants on the current shot's hills when they change.
+func _process(_delta: float) -> void:
+	if seen_terrain == WorldView.terrain_version:
+		return
+	seen_terrain = WorldView.terrain_version
+	for sprite in sprites:
+		sprite.position.y = WorldView.ground_point(WorldView.screen_to_world(sprite.position).x).y
