@@ -19,6 +19,9 @@ var weather: String = "calm"
 var best_shot: float = 0.0
 ## The boss fight of this round (null when the round is not a fight).
 var fight: BossFight = null
+## Stars collected this run, and the boosts they gave (boost id -> how many; see StarBoosts).
+var stars_total: int = 0
+var star_boosts: Dictionary = {}
 
 
 func start(new_seed: int) -> void:
@@ -35,11 +38,13 @@ func start(new_seed: int) -> void:
 	offer.clear()
 	goal = RogueGoals.make_goal(1, run_seed)
 	fight = null
+	stars_total = 0
+	star_boosts.clear()
 
 
 func stats() -> PlayerStats:
 	var s := RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
-	s = RogueWeather.apply(s, weather)
+	s = RogueWeather.apply(StarBoosts.apply(s, star_boosts), weather)
 	s.boss = fight
 	return s
 
@@ -70,6 +75,12 @@ func is_over() -> bool:
 func finish_shot(result: Dictionary) -> Dictionary:
 	shots += 1
 	best_shot = maxf(best_shot, float(result.get("distance", 0.0)))
+	var stars_gained: Array[String] = []
+	for i in int(result.get("stars", 0)):
+		stars_total += 1
+		var boost := StarBoosts.roll(run_seed, stars_total)
+		star_boosts[boost] = int(star_boosts.get(boost, 0)) + 1
+		stars_gained.append(boost)
 	var met := RogueGoals.check(goal, result)
 	var ratio := RogueGoals.progress_ratio(goal, result)
 	var fighting := fight != null and str(goal.get("type", "")) == "fight"
@@ -107,7 +118,8 @@ func finish_shot(result: Dictionary) -> Dictionary:
 	if not is_over():
 		offer = RoguePerks.offer(run_seed * 100 + shots, perks)
 	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten, "lucky": lucky, "ratio": ratio,
-		"fight": fighting, "boss_damage": int(result.get("boss_damage", 0)), "boss_hp": int(result.get("boss_hp", 0)), "shots_left": shots_left}
+		"fight": fighting, "boss_damage": int(result.get("boss_damage", 0)), "boss_hp": int(result.get("boss_hp", 0)), "shots_left": shots_left,
+		"stars_gained": stars_gained, "stars_total": stars_total}
 
 
 ## Swaps the offer for a different one. One reroll per run, plus one for every 5 rounds cleared.
