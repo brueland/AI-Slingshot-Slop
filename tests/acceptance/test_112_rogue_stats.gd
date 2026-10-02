@@ -22,7 +22,7 @@ func test_rogue_stats() -> void:
 	main.title_panel.stats_button.pressed.emit()
 	assert_eq(panel.rogue_label.text, "Best roguelike run: 0 rounds")
 	assert_eq(panel.daily_label.text, "Daily runs played: 0")
-	assert_eq(panel.hats_label.text, "Hats: 0 / 6")
+	assert_eq(panel.hats_label.text, "Hats: 0 / 9", "three balloon hats since task 275")
 	main.progress.best_rogue_round = 7
 	main.progress.daily_best = {"2026-09-28": 3, "2026-09-29": 5}
 	main.progress.total_runs = 1
@@ -30,6 +30,6 @@ func test_rogue_stats() -> void:
 	panel.show_stats(main.progress)
 	assert_eq(panel.rogue_label.text, "Best roguelike run: 7 rounds")
 	assert_eq(panel.daily_label.text, "Daily runs played: 2")
-	assert_eq(panel.hats_label.text, "Hats: 3 / 6", "party, propeller and wizard")
+	assert_eq(panel.hats_label.text, "Hats: 3 / 9", "party, propeller and wizard")
 	await wait_process_frames(3)
 	assert_true(main.get_viewport().get_visible_rect().encloses(panel.get_global_rect()), "the stats still fit on screen")

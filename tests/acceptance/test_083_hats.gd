@@ -19,7 +19,7 @@ func test_list() -> void:
 		return
 	var ids := ["none", "party", "propeller", "chef", "top_hat", "wizard", "crown"]
 	var names := ["No hat", "Party Hat", "Propeller Cap", "Chef's Toque", "Top Hat", "Wizard Hat", "Crown"]
-	assert_eq(h.LIST.size(), 7)
+	assert_eq(h.LIST.size(), 10, "three balloon hats since task 275")
 	for i in mini(h.LIST.size(), 7):
 		assert_eq(h.LIST[i]["id"], ids[i])
 		assert_eq(h.LIST[i]["name"], names[i])

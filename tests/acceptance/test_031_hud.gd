@@ -47,4 +47,4 @@ func test_update_progress_and_next_goal() -> void:
 	assert_eq(h.coins_label.text, "Coins: 1234")
 	assert_eq(h.goal_label.text, "Next: Half-K Hero at 500 m")
 	h.update_progress(1200.0, 0)
-	assert_eq(h.goal_label.text, "All milestones reached!")
+	assert_eq(h.goal_label.text, "Next: Cloud Surfer at 2000 m", "milestones go on (task 273)")

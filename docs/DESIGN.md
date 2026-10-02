@@ -327,3 +327,7 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 35 Bouncier | 257–259, 260c | More bounce (45% of the landing speed, 90% of the forward speed kept), springs and balloons count a touch of the alien's body, UFO tractor beams pull the alien up |
 | 36 Rolling hills | 261–267, 268c | Gentle hills that grow with the roguelike rounds and the classic best distance, bounces off slopes, everything stands on the hills |
 | 37 Steady ghost | 269–270, 271c | Steady Hand shows the last shot's whole path; the last-aim line only while aiming |
+| 38 No limits | 272–273, 274c | Classic upgrades go to level 25 (softer gains past the old caps), endless milestones every 1000 m |
+| 39 Treasures | 275–280, 281c | Hats on balloons for the Wardrobe, purple special stars with special perks (Star Magnet, Super Ball, Jet Pack) |
+| 40 Space | 282–283, 284c | A satellite, a ringed planet and a moon, comets, asteroids and an astronaut high above the meadow |
+| 41 Wrong way | 285–287, 288c | WRONG WAY signs behind the slingshot and a giant brick wall that bonks the alien back |

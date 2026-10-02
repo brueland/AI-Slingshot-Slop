@@ -8,15 +8,15 @@ const ORDER := ["power", "height", "guide", "aero", "bounce", "boosts", "multipl
 
 # id: [name, category, max_level, base_cost, growth, per_level]
 const TABLE := {
-	"power": ["Band Power", "launcher", 10, 80, 1.7, 0.25],
-	"height": ["Tall Frame", "launcher", 5, 60, 1.7, 1.5],
-	"guide": ["Aim Guide", "launcher", 5, 25, 1.5, 6],
-	"aero": ["Aerodynamics", "projectile", 5, 120, 1.8, 0.18],
-	"bounce": ["Bouncy Shell", "projectile", 5, 100, 1.8, 0.08],
-	"boosts": ["Rocket Boosts", "projectile", 3, 300, 2.2, 1],
-	"multiplier": ["Score Multiplier", "score", 5, 200, 1.9, 0.25],
-	"star_value": ["Star Polish", "score", 5, 80, 1.7, 5],
-	"bounce_bonus": ["Style Points", "score", 5, 60, 1.7, 3],
+	"power": ["Band Power", "launcher", 25, 80, 1.7, 0.25],
+	"height": ["Tall Frame", "launcher", 25, 60, 1.7, 1.5],
+	"guide": ["Aim Guide", "launcher", 25, 25, 1.5, 6],
+	"aero": ["Aerodynamics", "projectile", 25, 120, 1.8, 0.18],
+	"bounce": ["Bouncy Shell", "projectile", 25, 100, 1.8, 0.08],
+	"boosts": ["Rocket Boosts", "projectile", 25, 300, 2.2, 1],
+	"multiplier": ["Score Multiplier", "score", 25, 200, 1.9, 0.25],
+	"star_value": ["Star Polish", "score", 25, 80, 1.7, 5],
+	"bounce_bonus": ["Style Points", "score", 25, 60, 1.7, 3],
 }
 
 
@@ -80,4 +80,4 @@ func test_lookups_for_unknown_ids() -> void:
 	assert_false(cat.is_valid("laser"))
 	assert_eq(cat.get_def("laser"), {})
 	assert_eq(cat.max_level("laser"), 0)
-	assert_eq(cat.max_level("boosts"), 3)
+	assert_eq(cat.max_level("boosts"), 25, "no real cap since task 272")

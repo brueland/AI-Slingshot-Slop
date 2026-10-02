@@ -41,7 +41,7 @@ const PATH := "res://scripts/game/world_view.gd"
 
 func test_span() -> void:
 	var wv = load(PATH)
-	assert_eq(wv.span_around(0.0), Vector2(-105.0, 730.0), "from just behind the slingshot")
+	assert_eq(wv.span_around(0.0), Vector2(-175.0, 660.0), "from behind the brick wall (task 286)")
 	assert_eq(wv.span_around(3000.0), Vector2(2590.0, 3425.0), "400 m on each side, on a 35 m step")
 	var r: Rect2 = wv.ground_rect(2590.0, 3425.0)
 	assert_eq(r.position, Vector2(2590.0 * 16.0, 0.0))
