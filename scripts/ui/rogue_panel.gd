@@ -17,6 +17,8 @@ var size_buttons: Dictionary = {}
 var current_run: RogueRun
 var weather_label: Label
 var close_label: Label
+## What this shot's stars gave (hidden without stars).
+var stars_label: Label
 
 
 func _ready() -> void:
