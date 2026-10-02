@@ -12,6 +12,8 @@ const SEED_OFFSET: int = 500
 var points: Array[Vector2] = []
 var used: Array[bool] = []
 var popped_count: int = 0
+## The alien's body: a ball of this radius whose center is this far above its contact point (0 = just the point).
+var body: float = 0.0
 
 
 ## Balloon centers (world meters) for a course seed: one every 60-140 m after 60 m, 5-14 m high.
@@ -40,10 +42,11 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 		if used[i]:
 			continue
 		var p := points[i]
-		if p.x < previous_position.x - 2.0 or p.x > sim.position.x + 2.0:
+		if p.x < previous_position.x - 2.0 - body or p.x > sim.position.x + 2.0 + body:
 			continue
-		var closest := Geometry2D.get_closest_point_to_segment(p, previous_position, sim.position)
-		if closest.distance_to(p) <= RADIUS:
+		var lift := Vector2(0.0, body)
+		var closest := Geometry2D.get_closest_point_to_segment(p, previous_position + lift, sim.position + lift)
+		if closest.distance_to(p) <= RADIUS + body:
 			used[i] = true
 			popped_count += 1
 			sim.velocity.y = maxf(sim.velocity.y, LIFT_SPEED)

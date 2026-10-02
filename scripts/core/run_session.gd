@@ -23,6 +23,7 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
 	tracker = RunTracker.new(course, stats.pickup_offset, stats.pickup_radius)
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
+	balloons.body = stats.pickup_offset
 	if stats.boss != null:
 		boss = stats.boss.copy()
 

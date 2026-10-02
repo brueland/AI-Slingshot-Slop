@@ -6,6 +6,9 @@ signal star_collected(index: int)
 signal spring_hit(index: int)
 signal mud_hit(index: int)
 
+## A spring fires when the alien comes this low over it (meters above the ground), not only on the ground.
+const SPRING_TOP: float = 0.6
+
 var items: Array = []
 var stars_collected: int = 0
 var springs_hit: int = 0
@@ -51,7 +54,9 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 					stars_collected += 1
 					star_collected.emit(i)
 			"spring":
-				if sim.position.y <= 0.0 and absf(sim.position.x - x) <= Balance.SPRING_HALF_WIDTH:
+				# the alien's side touching the spring counts: its body reaches 0.8 x pickup_offset to each side
+				var reach := Balance.SPRING_HALF_WIDTH + pickup_offset * 0.8
+				if sim.position.y <= sim.ground_height(x) + SPRING_TOP and absf(sim.position.x - x) <= reach:
 					_used[i] = true
 					sim.velocity.y = maxf(sim.velocity.y, Balance.SPRING_SPEED)
 					sim.velocity.x += Balance.SPRING_PUSH
