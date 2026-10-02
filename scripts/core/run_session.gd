@@ -43,6 +43,8 @@ func step(dt: float) -> void:
 		return
 	
 	var previous := sim.position
+	if sim.is_airborne() and TractorBeams.inside(sim.position + Vector2(0.0, stats.pickup_offset)):
+		sim.velocity.y += TractorBeams.PULL * dt
 	sim.step(dt)
 	tracker.after_step(sim, previous)
 	balloons.after_step(sim, previous)

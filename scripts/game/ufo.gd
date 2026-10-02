@@ -58,8 +58,12 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	for i in SPOTS_M.size():
 		var p := ufo_position(i)
-		if greeted[i]:
-			draw_colored_polygon(PackedVector2Array([p + Vector2(-10, 4), p + Vector2(10, 4), p + Vector2(34, 90), p + Vector2(-34, 90)]), Color(1.0, 1.0, 0.6, 0.25))
+		# the tractor beam down to the ground (TractorBeams pulls the alien up inside it); brighter after hello
+		var foot := WorldView.world_to_screen(Vector2(TractorBeams.SPOTS_M[i], 0.0))
+		var top := TractorBeams.TOP_HALF_WIDTH * Balance.PIXELS_PER_METER
+		var bottom := TractorBeams.BOTTOM_HALF_WIDTH * Balance.PIXELS_PER_METER
+		draw_colored_polygon(PackedVector2Array([p + Vector2(-top, 4), p + Vector2(top, 4), foot + Vector2(bottom, 0), foot + Vector2(-bottom, 0)]),
+			Color(1.0, 1.0, 0.6, 0.25 if greeted[i] else 0.12))
 		draw_circle(p + Vector2(0, -6), 9.0, Color(0.6, 0.85, 1.0, 0.9))
 		draw_colored_polygon(BalloonView.ellipse(p, 26.0, 7.0), Color(0.55, 0.55, 0.65))
 		for k in 3:
