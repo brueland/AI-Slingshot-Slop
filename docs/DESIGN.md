@@ -326,3 +326,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 34 Star power | 252–255, 256c | Every roguelike star counts for the run and gives a small random boost (speed, glide, bounce, lift), gold boxes on the HUD, results per shot |
 | 35 Bouncier | 257–259, 260c | More bounce (45% of the landing speed, 90% of the forward speed kept), springs and balloons count a touch of the alien's body, UFO tractor beams pull the alien up |
 | 36 Rolling hills | 261–267, 268c | Gentle hills that grow with the roguelike rounds and the classic best distance, bounces off slopes, everything stands on the hills |
+| 37 Steady ghost | 269–270, 271c | Steady Hand shows the last shot's whole path; the last-aim line only while aiming |
