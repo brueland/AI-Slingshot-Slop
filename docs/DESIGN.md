@@ -322,3 +322,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 30 Rocket and dips | 231–236, 237c | The rocket fires while Space is held (0.5 s per tank), rocket gauge on the HUD, flame while it burns, landing zones in a dip that catches near misses |
 | 31 Boss fights | 238–243, 244c | Every 10th roguelike round: the Grumblor, a giant with targets on and around its body; 4 shots to knock out its HP, results for every hit, +1 life for beating it |
 | 32 Late-run HUD and grab | 245–247, 248c | Perks as colored boxes with counts, goal lines wrap so the right panel stays on screen, grab the alien anywhere on it (big size too) |
+| 33 Endless meadow | 249–250, 251c | The ground and distance markers never end, seamless far hills, scenery to 8000 m |
