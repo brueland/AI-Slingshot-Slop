@@ -13,6 +13,10 @@ var star_value: int = Balance.BASE_STAR_VALUE
 var bounce_bonus: int = 0
 ## The roguelike boss this shot is fired at (null when there is none); RunSession fights a copy.
 var boss: BossFight = null
+## The rolling hills' height for this shot (meters; 0 = flat ground; see Terrain), and stretches kept flat
+## (landing zones).
+var hills: float = 0.0
+var flat_spans: Array[Vector2] = []
 
 ## Star pickups: a star is collected within pickup_radius of a point pickup_offset meters above the alien's
 ## contact point: the center of the alien as it is drawn, and its drawn radius plus RogueSizes.STAR_REACH.
