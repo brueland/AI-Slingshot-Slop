@@ -105,7 +105,7 @@ func refresh(main: Node) -> void:
 	hud.show_goal_progress("", false)
 	if hud.visible and rogue_mode:
 		hud.show_rogue(main.rogue.goal["text"], main.rogue.round_number, main.rogue.lives)
-		hud.show_perks(main.rogue.perks)
+		hud.show_perks(main.rogue.perks, main.rogue.stars_total, main.rogue.star_boosts)
 		hud.show_boss(str(main.rogue.goal.get("type", "")) in ["boss", "fight"])
 		hud.show_lucky(RogueGoals.is_lucky_round(main.rogue.round_number, main.rogue.run_seed))
 		var weather: Dictionary = RogueWeather.get_def(main.rogue.weather)

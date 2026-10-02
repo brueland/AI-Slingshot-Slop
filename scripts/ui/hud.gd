@@ -219,9 +219,9 @@ func show_hint(text: String) -> void:
 	hint_label.text = text
 	hint_label.show()
 
-## Roguelike: the perks taken so far as boxes with counts, under the goal (hidden when there are none).
-func show_perks(perk_ids: Array) -> void:
-	perk_chips.show_perks(perk_ids)
+## Roguelike: the perks taken so far as boxes with counts, under the goal, then the run's stars and star boosts.
+func show_perks(perk_ids: Array, stars: int = 0, boosts: Dictionary = {}) -> void:
+	perk_chips.show_perks(perk_ids, stars, boosts)
 
 
 ## Roguelike: the round's weather under the perks (hidden when `weather_name` is empty).

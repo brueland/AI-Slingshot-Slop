@@ -9,10 +9,15 @@ const COLORS := {
 	"bounce": Color(0.24, 0.58, 0.3), "boost": Color(0.84, 0.38, 0.1), "heavy": Color(0.4, 0.4, 0.5),
 	"feather": Color(0.34, 0.42, 0.78), "steady": Color(0.52, 0.33, 0.72),
 }
+## The gold of the star boxes.
+const STAR_COLOR := Color(0.7, 0.55, 0.08)
 
 ## Perk id -> times picked, and the ids in the order they were first taken.
 var counts: Dictionary = {}
 var order: Array[String] = []
+## The run's stars and their boosts (boost id -> how many), shown after the perks in gold.
+var star_count: int = 0
+var boost_counts: Dictionary = {}
 
 
 func _init() -> void:
@@ -23,8 +28,9 @@ func _init() -> void:
 	hide()
 
 
-## Shows a box for every perk in `perk_ids`; a perk picked again raises its count instead of adding a box.
-func show_perks(perk_ids: Array) -> void:
+## Shows a box for every perk in `perk_ids` (a perk picked again raises its count instead of adding a box), then
+## gold boxes for the run's `stars` and their `boosts` (boost id -> how many).
+func show_perks(perk_ids: Array, stars: int = 0, boosts: Dictionary = {}) -> void:
 	counts.clear()
 	order.clear()
 	for id in perk_ids:
@@ -36,7 +42,14 @@ func show_perks(perk_ids: Array) -> void:
 		child.queue_free()
 	for id in order:
 		add_child(_chip(id, counts[id]))
-	visible = not order.is_empty()
+	star_count = stars
+	boost_counts = boosts.duplicate()
+	if stars > 0:
+		add_child(_box("Stars", str(stars), STAR_COLOR))
+	for boost in StarBoosts.LIST:
+		if int(boosts.get(boost["id"], 0)) > 0:
+			add_child(_box(boost["name"], "x%d" % int(boosts[boost["id"]]), STAR_COLOR))
+	visible = not order.is_empty() or stars > 0
 
 
 ## What the boxes show, e.g. ["Stronger Bands x5", "Rocket x1"].
@@ -44,22 +57,32 @@ func chip_texts() -> Array[String]:
 	var out: Array[String] = []
 	for id in order:
 		out.append("%s x%d" % [RoguePerks.get_def(id).get("name", id), counts[id]])
+	if star_count > 0:
+		out.append("Stars %d" % star_count)
+	for boost in StarBoosts.LIST:
+		if int(boost_counts.get(boost["id"], 0)) > 0:
+			out.append("%s x%d" % [boost["name"], int(boost_counts[boost["id"]])])
 	return out
 
 
 func _chip(id: String, count: int) -> PanelContainer:
+	return _box(str(RoguePerks.get_def(id).get("name", id)), "x%d" % count, COLORS.get(id, Color(0.4, 0.4, 0.4)))
+
+
+## A colored box with `text` and a dark badge with `badge_text`.
+func _box(text: String, badge_text: String, color: Color) -> PanelContainer:
 	var box := PanelContainer.new()
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_theme_stylebox_override("panel", _style(COLORS.get(id, Color(0.4, 0.4, 0.4)), 6, 7.0, 3.0))
+	box.add_theme_stylebox_override("panel", _style(color, 6, 7.0, 3.0))
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_theme_constant_override("separation", 5)
 	box.add_child(row)
-	row.add_child(_label(str(RoguePerks.get_def(id).get("name", id)), Color.WHITE))
+	row.add_child(_label(text, Color.WHITE))
 	var badge := PanelContainer.new()
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	badge.add_theme_stylebox_override("panel", _style(Color(0.0, 0.0, 0.0, 0.35), 5, 4.0, 4.0))
-	badge.add_child(_label("x%d" % count, Color(1.0, 0.86, 0.3)))
+	badge.add_child(_label(badge_text, Color(1.0, 0.86, 0.3)))
 	row.add_child(badge)
 	return box
 
