@@ -35,8 +35,10 @@ func test_roguelike_depth_with_real_frames() -> void:
 	assert_true(main.rogue_outcome.get("met"), "round 1 is met")
 	main.ui_layer.rogue_panel.perk_buttons[0].pressed.emit()
 	await wait_process_frames(2)
-	assert_true(main.hud.perks_label.visible, "the HUD lists the perk")
+	assert_true(main.hud.perk_chips.visible, "the HUD shows the perk (boxes since task 246)")
 	main.rogue.lives = 1
+	# a goal the tiny shot surely misses (a daily round 2 can be "Bounce 1 time", which it would meet)
+	main.rogue.goal = {"type": "distance", "target": 500.0, "round": 2, "text": "Fly at least 500 m"}
 	main.launch_with_pull(Vector2(-12, 0))
 	_fly(main)
 	var over = main.ui_layer.rogue_over_panel
@@ -47,7 +49,7 @@ func test_roguelike_depth_with_real_frames() -> void:
 	assert_true(main.get_viewport().get_visible_rect().encloses(over.get_global_rect()), "the run-over panel fits")
 	over.replay_button.pressed.emit()
 	assert_eq(main.rogue.run_seed, run_seed, "the same seed again")
-	assert_false(main.hud.perks_label.visible, "a new run has no perks")
+	assert_false(main.hud.perk_chips.visible, "a new run has no perks")
 	main.rogue.round_number = 11
 	main.rogue.goal = {"type": "distance", "target": 10.0, "round": 11, "text": "Fly at least 10 m"}
 	main.launch_with_pull(Vector2(-84.852814, 84.852814))

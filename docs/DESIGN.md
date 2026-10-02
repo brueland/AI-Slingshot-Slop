@@ -321,3 +321,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 29 Crisp and fair | 224–229, 230c | Star pickups match the drawn alien (all sizes), 256 px alien pictures, 20 m landing zones, a STOP HERE marker on the field, a sharp face on the big alien |
 | 30 Rocket and dips | 231–236, 237c | The rocket fires while Space is held (0.5 s per tank), rocket gauge on the HUD, flame while it burns, landing zones in a dip that catches near misses |
 | 31 Boss fights | 238–243, 244c | Every 10th roguelike round: the Grumblor, a giant with targets on and around its body; 4 shots to knock out its HP, results for every hit, +1 life for beating it |
+| 32 Late-run HUD and grab | 245–247, 248c | Perks as colored boxes with counts, goal lines wrap so the right panel stays on screen, grab the alien anywhere on it (big size too) |

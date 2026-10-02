@@ -42,7 +42,7 @@ func test_summary() -> void:
 func test_hud_perks() -> void:
 	var main = _main()
 	main.start_rogue(7)
-	assert_false(main.hud.perks_label.visible, "no perks yet")
+	assert_false(main.hud.perk_chips.visible, "no perks yet")
 	main.launch_with_pull(Vector2(-84.852814, 84.852814))
 	for i in 20000:
 		if main.state_name() != "FLIGHT":
@@ -50,8 +50,8 @@ func test_hud_perks() -> void:
 		main.advance(1.0 / 60.0)
 	main.rogue.offer.assign(["power", "aero", "boost"])
 	main.choose_rogue_perk("power")
-	assert_true(main.hud.perks_label.visible)
-	assert_eq(main.hud.perks_label.text, "Perks: Stronger Bands")
+	assert_true(main.hud.perk_chips.visible)
+	assert_eq(main.hud.perk_chips.chip_texts(), ["Stronger Bands x1"], "a box per perk (task 246)")
 	main.go_to_title()
 	main.start_game()
-	assert_false(main.hud.perks_label.visible, "classic has no perks")
+	assert_false(main.hud.perk_chips.visible, "classic has no perks")
