@@ -18,7 +18,7 @@ func test_defaults() -> void:
 		return
 	assert_almost_eq(sim.gravity, 15.0, 0.0001)
 	assert_almost_eq(sim.drag, 0.002, 0.000001)
-	assert_almost_eq(sim.restitution, 0.35, 0.0001)
+	assert_almost_eq(sim.restitution, 0.45, 0.0001, "bouncier since task 257")
 	assert_eq(sim.boost_charges, 0)
 	assert_eq(sim.bounce_count, 0)
 	assert_false(sim.stopped)
