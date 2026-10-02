@@ -35,4 +35,5 @@ Milestone 30: complete (rocket and dips: the rocket fires while Space is held, r
 Milestone 31: complete (boss fights: every 10th roguelike round the Grumblor stands on the field with targets on and around its body, 4 shots to knock out its HP, results for every hit, +1 life for beating it)
 Milestone 32: complete (late-run HUD and grab: perks as boxes with counts, goal lines wrap so the right panel stays on screen, grab the alien anywhere on it)
 Milestone 33: complete (endless meadow: the ground and distance markers never end, seamless far hills, scenery to 8000 m)
+Milestone 34: complete (star power: every roguelike star counts for the run and gives a small random boost, shown on the HUD and after each shot)
 
