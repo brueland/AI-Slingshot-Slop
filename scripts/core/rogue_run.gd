@@ -22,6 +22,8 @@ var fight: BossFight = null
 ## Stars collected this run, and the boosts they gave (boost id -> how many; see StarBoosts).
 var stars_total: int = 0
 var star_boosts: Dictionary = {}
+## The flight path of the last shot (world meters), for Steady Hand's ghost.
+var last_path: PackedVector2Array = PackedVector2Array()
 
 
 func start(new_seed: int) -> void:
@@ -40,6 +42,7 @@ func start(new_seed: int) -> void:
 	fight = null
 	stars_total = 0
 	star_boosts.clear()
+	last_path = PackedVector2Array()
 
 
 func stats() -> PlayerStats:
@@ -78,6 +81,7 @@ func is_over() -> bool:
 func finish_shot(result: Dictionary) -> Dictionary:
 	shots += 1
 	best_shot = maxf(best_shot, float(result.get("distance", 0.0)))
+	last_path = result.get("path", PackedVector2Array())
 	var stars_gained: Array[String] = []
 	for i in int(result.get("stars", 0)):
 		stars_total += 1

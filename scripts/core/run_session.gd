@@ -85,6 +85,7 @@ func result() -> Dictionary:
 	r["max_height"] = sim.max_height
 	r["balloons"] = balloons.popped_count
 	r["air_time"] = sim.air_time
+	r["path"] = path
 	if boss != null:
 		r["boss_hp"] = boss.hp
 		r["boss_damage"] = boss.damage
