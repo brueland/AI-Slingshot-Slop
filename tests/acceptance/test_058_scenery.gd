@@ -69,4 +69,4 @@ func test_main_builds_scenery_between_ground_and_course() -> void:
 		return
 	assert_gt(scenery.get_index(), main.world_view.get_index(), "in front of the ground")
 	assert_lt(scenery.get_index(), main.course_view.get_index(), "behind stars, springs and mud")
-	assert_eq(scenery.sprites.size(), load(PATH).layout(7, 2000.0).size(), "built once for the whole course")
+	assert_eq(scenery.sprites.size(), load(PATH).layout(7, 8000.0).size(), "built once, past the course too (task 250)")
