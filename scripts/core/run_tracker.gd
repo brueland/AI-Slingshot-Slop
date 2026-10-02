@@ -64,7 +64,7 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 					springs_hit += 1
 					spring_hit.emit(i)
 			"mud":
-				if sim.position.y <= 0.0 and sim.position.x >= x and sim.position.x <= x + Balance.MUD_WIDTH:
+				if sim.position.y <= sim.ground_height(sim.position.x) + 0.01 and sim.position.x >= x and sim.position.x <= x + Balance.MUD_WIDTH:
 					_used[i] = true
 					sim.velocity.x *= Balance.MUD_FACTOR
 					mud_hits += 1

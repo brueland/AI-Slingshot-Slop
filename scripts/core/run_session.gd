@@ -26,6 +26,14 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	balloons.body = stats.pickup_offset
 	if stats.boss != null:
 		boss = stats.boss.copy()
+	sim.hills = stats.hills
+	sim.hill_phase = float(course_seed % 997) * 0.731
+	sim.flat_spans = stats.flat_spans.duplicate()
+	if boss != null:
+		sim.flat_spans.append(Vector2(boss.x - 10.0, boss.x + 10.0))
+	# course items sit on the hills (springs, mud) or float over them (stars)
+	for item in course:
+		item["y"] = float(item["y"]) + sim.terrain_height(float(item["x"]))
 
 
 func launch_from_pull(pull: Vector2) -> Vector2:
