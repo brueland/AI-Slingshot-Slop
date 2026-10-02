@@ -330,3 +330,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 38 No limits | 272–273, 274c | Classic upgrades go to level 25 (softer gains past the old caps), endless milestones every 1000 m |
 | 39 Treasures | 275–280, 281c | Hats on balloons for the Wardrobe, purple special stars with special perks (Star Magnet, Super Ball, Jet Pack) |
 | 40 Space | 282–283, 284c | A satellite, a ringed planet and a moon, comets, asteroids and an astronaut high above the meadow |
+| 41 Wrong way | 285–287, 288c | WRONG WAY signs behind the slingshot and a giant brick wall that bonks the alien back |
