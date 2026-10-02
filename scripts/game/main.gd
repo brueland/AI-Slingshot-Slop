@@ -359,7 +359,7 @@ func _update_aim() -> void:
 	trajectory.update_preview(Vector2(0.0, stats.launch_height), v, stats.drag, stats.guide_points)
 	
 	# Move projectile into the pouch
-	projectile_view.position = slingshot.pouch_position() + Vector2(0, -12)
+	projectile_view.position = slingshot.pouch_position() + Vector2(0, -slingshot.ball_radius_px)
 	projectile_view.decor.set_face("focus", -slingshot.pull.normalized())
 
 
