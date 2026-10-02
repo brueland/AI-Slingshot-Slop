@@ -11,7 +11,7 @@ var time: float = 0.0
 ## Screen position of kite `index` right now.
 func kite_position(index: int) -> Vector2:
 	var sway := Vector2(4.0 + sin(time * 0.8 + index) * 1.5, 13.0 + index * 2.0 + sin(time * 1.3 + index) * 0.8)
-	return WorldView.world_to_screen(Vector2(ANCHORS_M[index], 0.0) + sway)
+	return WorldView.ground_point(ANCHORS_M[index]) + WorldView.world_to_screen(sway)
 
 
 func advance(delta: float) -> void:
@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	for i in ANCHORS_M.size():
 		var k := kite_position(i)
-		var base := WorldView.world_to_screen(Vector2(ANCHORS_M[i], 0.0))
+		var base := WorldView.ground_point(ANCHORS_M[i])
 		draw_line(base, k + Vector2(0, 14), Color(1, 1, 1, 0.5), 1.0)
 		draw_colored_polygon(PackedVector2Array([k + Vector2(0, -14), k + Vector2(10, 0), k + Vector2(0, 14), k + Vector2(-10, 0)]), COLORS[i])
 		draw_line(k + Vector2(0, 14), k + Vector2(-6, 26), COLORS[i], 1.5)

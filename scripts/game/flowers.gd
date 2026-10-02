@@ -8,6 +8,8 @@ const COLORS: Array[Color] = [Color(1.0, 0.5, 0.7), Color(1.0, 0.85, 0.3), Color
 
 var xs: Array[float] = []
 var ages: Array[float] = []
+## The terrain the flowers were drawn on (WorldView.terrain_version).
+var seen_terrain: int = -1
 
 
 func grow_at(world_x: float) -> void:
@@ -30,7 +32,8 @@ func advance(delta: float) -> void:
 		if ages[i] < GROW_SECONDS:
 			ages[i] += delta
 			growing = true
-	if growing:
+	if growing or seen_terrain != WorldView.terrain_version:
+		seen_terrain = WorldView.terrain_version
 		queue_redraw()
 
 
@@ -41,7 +44,7 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	for i in xs.size():
 		var g := growth(i)
-		var base := WorldView.world_to_screen(Vector2(xs[i], 0.0))
+		var base := WorldView.ground_point(xs[i])
 		var top := base + Vector2(0.0, -14.0 * g)
 		draw_line(base, top, Color(0.3, 0.6, 0.3), 2.0)
 		var color := COLORS[i % COLORS.size()]

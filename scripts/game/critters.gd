@@ -62,7 +62,7 @@ func hop_offset(index: int) -> float:
 
 ## Screen position of sheep `index`'s feet.
 func sheep_position(index: int) -> Vector2:
-	return WorldView.world_to_screen(Vector2(xs[index], 0.0)) - Vector2(0.0, hop_offset(index))
+	return WorldView.ground_point(xs[index]) - Vector2(0.0, hop_offset(index))
 
 
 ## How far sheep `index` has lowered its head to graze right now (0-3 px).
