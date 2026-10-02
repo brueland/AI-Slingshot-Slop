@@ -12,7 +12,7 @@ static func outline(base: float, height: float, phase: float) -> PackedVector2Ar
 	var out := PackedVector2Array()
 	var x := -WIDTH / 2.0
 	while x <= WIDTH / 2.0:
-		out.append(Vector2(x, -base - height * (0.5 + 0.5 * sin(x / 170.0 + phase))))
+		out.append(Vector2(x, -base - height * (0.5 + 0.5 * sin(x * TAU * 2.0 / WIDTH + phase))))
 		x += 60.0
 	return out
 

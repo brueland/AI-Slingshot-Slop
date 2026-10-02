@@ -8,6 +8,8 @@ const TEXTURES: Array[String] = [
 	"res://assets/sprites/cactus.png",
 ]
 const SEED: int = 7
+## The meadow's rocks and plants go on this far (meters), well past the 2000 m course.
+const LENGTH: float = 8000.0
 
 var sprites: Array[Sprite2D] = []
 

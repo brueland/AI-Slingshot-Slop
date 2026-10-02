@@ -16,7 +16,7 @@ static func build(main: Node) -> void:
 	main.add_child(main.world_view)
 	main.scenery = Scenery.new()
 	main.add_child(main.scenery)
-	main.scenery.build(Scenery.SEED, Balance.COURSE_LENGTH)
+	main.scenery.build(Scenery.SEED, Scenery.LENGTH)
 	main.critters = Critters.new()
 	main.add_child(main.critters)
 	main.critters.build(Critters.SEED, Balance.COURSE_LENGTH)
