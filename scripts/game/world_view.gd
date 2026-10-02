@@ -10,6 +10,7 @@ const DRAW_SPAN_M: float = 400.0
 const SNAP_M: float = 35.0
 
 var ground_texture: Texture2D
+var dirt_texture: Texture2D
 ## The stretch of ground drawn now (meters).
 var drawn_from_m: float = -105.0
 var drawn_to_m: float = 730.0
@@ -72,7 +73,7 @@ func _draw():
 
 ## The stretch to draw (meters) when the middle of the view is at `center_m`: DRAW_SPAN_M on each side, starting
 ## on a multiple of SNAP_M, and never more than 105 m behind the slingshot.
-static func span_around(center_m: float) -> Vector2:
+func span_around(center_m: float) -> Vector2:
 	var from := maxf(floorf((center_m - DRAW_SPAN_M) / SNAP_M) * SNAP_M, -105.0)
 	return Vector2(from, from + 2.0 * DRAW_SPAN_M + SNAP_M)
 
