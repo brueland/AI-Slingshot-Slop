@@ -37,4 +37,5 @@ Milestone 32: complete (late-run HUD and grab: perks as boxes with counts, goal 
 Milestone 33: complete (endless meadow: the ground and distance markers never end, seamless far hills, scenery to 8000 m)
 Milestone 34: complete (star power: every roguelike star counts for the run and gives a small random boost, shown on the HUD and after each shot)
 Milestone 35: complete (bouncier: more bounce, springs and balloons count a touch of the alien's body, UFO tractor beams pull the alien up)
+Milestone 36: complete (rolling hills: gentle hills that grow with the rounds and the best distance, bounces off slopes, everything stands on the hills)
 
