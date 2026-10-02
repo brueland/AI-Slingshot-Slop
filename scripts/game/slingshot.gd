@@ -201,6 +201,6 @@ func _draw() -> void:
 		draw_rect(Rect2(bar.position, Vector2(bar.size.x * ratio, bar.size.y)), power_color(ratio))
 
 
-	## Is `point` on the alien resting on the pouch (its circle sits right above the anchor)?
-	func on_ball(point: Vector2) -> bool:
-		return point.distance_to(global_position + Vector2(0.0, -ball_radius_px)) <= ball_radius_px + 6.0
+## Is `point` on the alien resting on the pouch (its circle sits right above the anchor)?
+func on_ball(point: Vector2) -> bool:
+	return point.distance_to(global_position + Vector2(0.0, -ball_radius_px)) <= ball_radius_px + 6.0
