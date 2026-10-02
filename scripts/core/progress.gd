@@ -77,7 +77,9 @@ func buy(id: String) -> bool:
 
 
 func stats() -> PlayerStats:
-	return PlayerStats.from_levels(levels)
+	var s := PlayerStats.from_levels(levels)
+	s.hills = Terrain.for_best_distance(best_distance)
+	return s
 
 
 func to_dict() -> Dictionary:

@@ -46,6 +46,9 @@ func stats() -> PlayerStats:
 	var s := RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
 	s = RogueWeather.apply(StarBoosts.apply(s, star_boosts), weather)
 	s.boss = fight
+	s.hills = Terrain.for_round(round_number)
+	for zone in ZoneMarker.zones_for(goal):
+		s.flat_spans.append(Vector2(zone.x - Balance.DIP_SLOPE, zone.y + Balance.DIP_SLOPE))
 	return s
 
 
