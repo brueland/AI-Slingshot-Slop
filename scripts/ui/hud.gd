@@ -17,7 +17,7 @@ var coins_label: Label
 var goal_label: Label
 var hint_label: Label
 var altitude_bar: AltitudeBar
-var perks_label: Label
+var perk_chips: PerkChips
 var boss_label: Label
 var lucky_label: Label
 var weather_label: Label
@@ -106,9 +106,13 @@ func _ready() -> void:
 	right_container.add_child(goal_label)
 	goal_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_label.add_theme_font_size_override("font_size", 22)
+	goal_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	goal_label.custom_minimum_size = Vector2(300, 0)
 	
 	goal_progress_label = Label.new()
 	goal_progress_label.add_theme_font_size_override("font_size", 20)
+	goal_progress_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	goal_progress_label.custom_minimum_size = Vector2(300, 0)
 	goal_progress_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	goal_progress_label.hide()
 	right_container.add_child(goal_progress_label)
@@ -121,13 +125,8 @@ func _ready() -> void:
 	goal_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	right_container.add_child(goal_bar)
 	
-	perks_label = Label.new()
-	perks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	perks_label.custom_minimum_size = Vector2(300, 0)
-	perks_label.add_theme_font_size_override("font_size", 16)
-	perks_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	perks_label.hide()
-	right_container.add_child(perks_label)
+	perk_chips = PerkChips.new()
+	right_container.add_child(perk_chips)
 	
 	weather_label = Label.new()
 	weather_label.add_theme_font_size_override("font_size", 18)
@@ -220,10 +219,9 @@ func show_hint(text: String) -> void:
 	hint_label.text = text
 	hint_label.show()
 
-## Roguelike: the perks taken so far, under the goal (hidden when `text` is empty).
-func show_perks(text: String) -> void:
-	perks_label.text = "Perks: " + text
-	perks_label.visible = text != ""
+## Roguelike: the perks taken so far as boxes with counts, under the goal (hidden when there are none).
+func show_perks(perk_ids: Array) -> void:
+	perk_chips.show_perks(perk_ids)
 
 
 ## Roguelike: the round's weather under the perks (hidden when `weather_name` is empty).
