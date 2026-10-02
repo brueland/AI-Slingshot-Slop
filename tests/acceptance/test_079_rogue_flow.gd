@@ -70,7 +70,7 @@ func test_a_shot_is_scored_and_a_perk_starts_the_next() -> void:
 	assert_true(main.choose_rogue_perk(pick))
 	assert_eq(main.state_name(), "AIM")
 	assert_true(main.rogue.has_perk(pick))
-	assert_eq(main.session.course, load("res://scripts/core/course_generator.gd").generate(7002, 2000.0),
+	assert_eq(main.session.course, RunSession.new(main.rogue.stats(), 7002).course,
 		"a new course for the next shot")
 	assert_almost_eq(main.session.stats.max_speed, main.rogue.stats().max_speed, 0.0001, "with the perk applied")
 

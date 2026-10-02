@@ -39,7 +39,7 @@ func test_parts_exist() -> void:
 	assert_eq(panel.theme, main.ui_theme)
 	assert_false(panel.visible)
 	assert_eq(panel.title_label.text, "Wardrobe")
-	assert_eq(panel.hat_buttons.size(), 7)
+	assert_eq(panel.hat_buttons.size(), 10, "three balloon hats since task 275")
 	assert_eq(panel.close_button.text, "Done")
 
 
