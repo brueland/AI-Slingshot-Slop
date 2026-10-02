@@ -36,12 +36,12 @@ func test_refresh_shows_level_price_and_affordability() -> void:
 	var s = _shop()
 	if s == null:
 		return
-	s.refresh(_progress(100, {"power": 1, "boosts": 3}))
-	assert_eq(s.buttons["power"].text, "Band Power  Lv 1/10  136 coins")
+	s.refresh(_progress(100, {"power": 1, "boosts": 25}))
+	assert_eq(s.buttons["power"].text, "Band Power  Lv 1  136 coins")
 	assert_true(s.buttons["power"].disabled, "136 > 100 coins")
-	assert_eq(s.buttons["height"].text, "Tall Frame  Lv 0/5  60 coins")
+	assert_eq(s.buttons["height"].text, "Tall Frame  Lv 0  60 coins")
 	assert_false(s.buttons["height"].disabled)
-	assert_eq(s.buttons["boosts"].text, "Rocket Boosts  Lv 3/3  MAX")
+	assert_eq(s.buttons["boosts"].text, "Rocket Boosts  Lv 25  MAX")
 	assert_true(s.buttons["boosts"].disabled)
 	assert_ne(s.buttons["height"].tooltip_text, "", "the tooltip shows the description")
 

@@ -81,7 +81,7 @@ func test_buttons_drive_the_loop() -> void:
 	main.progress.add_coins(1000)
 	main.shop_panel.buttons["power"].pressed.emit()
 	assert_eq(main.progress.level_of("power"), 1)
-	assert_eq(main.shop_panel.buttons["power"].text, "Band Power  Lv 1/10  136 coins", "refreshed after buying")
+	assert_eq(main.shop_panel.buttons["power"].text, "Band Power  Lv 1  136 coins", "refreshed after buying")
 	main.shop_panel.launch_button.pressed.emit()
 	assert_eq(main.state_name(), "AIM")
 	assert_false(main.shop_panel.visible)

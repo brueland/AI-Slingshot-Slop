@@ -53,7 +53,7 @@ func test_levels_are_clamped_and_unknown_ids_ignored() -> void:
 	if ps == null:
 		return
 	var s = ps.from_levels({"power": 99, "boosts": -3, "laser": 5})
-	assert_almost_eq(s.max_speed, 77.0, 0.0001, "power clamps to max level 10: 22 * 3.5")
+	assert_almost_eq(s.max_speed, 159.5, 0.0001, "power clamps to max level 25: 22 * 7.25 (task 272)")
 	assert_eq(s.boost_charges, 0, "negative levels clamp to 0")
 
 

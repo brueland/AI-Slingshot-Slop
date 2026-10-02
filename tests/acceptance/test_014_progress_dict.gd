@@ -79,7 +79,7 @@ func test_from_dict_repairs_bad_values() -> void:
 	var q = script.from_dict({"coins": -5, "levels": {"power": 99, "laser": 2, "aero": 3.0, "bounce": -1},
 		"best_distance": -3.0, "total_runs": -2})
 	assert_eq(q.coins, 0, "negative coins become 0")
-	assert_eq(q.level_of("power"), 10, "clamped to max level")
+	assert_eq(q.level_of("power"), 25, "clamped to max level (25 since task 272)")
 	assert_false(q.levels.has("laser"), "unknown upgrade ids are dropped")
 	assert_eq(q.level_of("aero"), 3)
 	assert_eq(q.level_of("bounce"), 0)

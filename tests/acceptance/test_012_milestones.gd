@@ -41,7 +41,7 @@ func test_newly_reached() -> void:
 	assert_eq(_names(ms.newly_reached(99.9, 100.0)), ["Century"], "reaching exactly 100 counts")
 	assert_eq(_names(ms.newly_reached(100.0, 240.0)), [], "100 was already reached")
 	assert_eq(_names(ms.newly_reached(500.0, 499.0)), [], "a shorter run reaches nothing")
-	assert_eq(_names(ms.newly_reached(0.0, 5000.0)).size(), 5)
+	assert_eq(_names(ms.newly_reached(0.0, 5000.0)).size(), 9, "the five, then one every 1000 m (task 273)")
 
 
 func test_next_milestone() -> void:
@@ -51,4 +51,4 @@ func test_next_milestone() -> void:
 	assert_eq(ms.next_milestone(0.0).get("name"), "First Flight")
 	assert_eq(ms.next_milestone(100.0).get("name"), "Sky Sprinter")
 	assert_eq(ms.next_milestone(999.0).get("name"), "Moon Shot")
-	assert_eq(ms.next_milestone(1000.0), {}, "all reached")
+	assert_eq(ms.next_milestone(1000.0).get("name"), "Cloud Surfer", "milestones go on (task 273)")

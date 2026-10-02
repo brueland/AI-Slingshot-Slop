@@ -327,3 +327,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 35 Bouncier | 257–259, 260c | More bounce (45% of the landing speed, 90% of the forward speed kept), springs and balloons count a touch of the alien's body, UFO tractor beams pull the alien up |
 | 36 Rolling hills | 261–267, 268c | Gentle hills that grow with the roguelike rounds and the classic best distance, bounces off slopes, everything stands on the hills |
 | 37 Steady ghost | 269–270, 271c | Steady Hand shows the last shot's whole path; the last-aim line only while aiming |
+| 38 No limits | 272–273, 274c | Classic upgrades go to level 25 (softer gains past the old caps), endless milestones every 1000 m |

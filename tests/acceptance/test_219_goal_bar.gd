@@ -43,7 +43,7 @@ func test_goal_bar() -> void:
 	hud.update_flight(25.0, 3.0, 0, 0)
 	assert_almost_eq(hud.goal_bar.value, 0.5, 0.001, "this flight's distance toward the next milestone")
 	hud.update_progress(5000.0, 0)
-	assert_eq(hud.goal_bar.value, 1.0, "every milestone reached")
+	assert_almost_eq(hud.goal_bar.value, 5000.0 / 6000.0, 0.001, "on the way to the next endless milestone (task 273)")
 	hud.show_goal_progress("5/10 m", false, 0.5)
 	assert_almost_eq(hud.goal_bar.value, 0.5, 0.001)
 	hud.show_goal_progress("", false)

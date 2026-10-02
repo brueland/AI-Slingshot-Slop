@@ -57,9 +57,9 @@ func test_cannot_buy_unknown_or_maxed_upgrades() -> void:
 		return
 	p.add_coins(999999)
 	assert_false(p.buy("laser"))
-	p.levels["boosts"] = 3
+	p.levels["boosts"] = 25
 	assert_eq(p.next_cost("boosts"), -1)
-	assert_false(p.can_buy("boosts"), "boosts is maxed at 3")
+	assert_false(p.can_buy("boosts"), "boosts is maxed at 25")
 	assert_false(p.buy("boosts"))
 	assert_eq(p.coins, 999999)
 

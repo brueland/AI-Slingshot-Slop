@@ -29,8 +29,8 @@ func test_maxed_unknown_and_negative_levels_cost_minus_one() -> void:
 	var cat = _cat()
 	if cat == null:
 		return
-	assert_eq(cat.cost("boosts", 3), -1, "boosts max level is 3")
-	assert_eq(cat.cost("power", 10), -1)
+	assert_eq(cat.cost("boosts", 25), -1, "level 25 is the last (task 272)")
+	assert_eq(cat.cost("power", 25), -1)
 	assert_eq(cat.cost("power", -1), -1)
 	assert_eq(cat.cost("laser", 0), -1)
 
@@ -53,7 +53,8 @@ func test_is_maxed() -> void:
 	var cat = _cat()
 	if cat == null:
 		return
-	assert_true(cat.is_maxed("boosts", 3))
-	assert_true(cat.is_maxed("boosts", 4))
+	assert_true(cat.is_maxed("boosts", 25))
+	assert_true(cat.is_maxed("boosts", 26))
+	assert_false(cat.is_maxed("boosts", 3), "no longer maxed at 3")
 	assert_false(cat.is_maxed("boosts", 2))
 	assert_false(cat.is_maxed("power", 0))
