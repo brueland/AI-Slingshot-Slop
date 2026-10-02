@@ -92,5 +92,5 @@ func test_shop_loop() -> void:
 	assert_eq(main.state_name(), "AIM")
 	assert_false(main.session.launched, "a fresh session for the next run")
 	assert_almost_eq(main.session.stats.max_speed, 27.5, 0.0001, "the new session uses the upgraded stats")
-	assert_eq(main.session.course, load("res://scripts/core/course_generator.gd").generate(2, 2000.0),
+	assert_eq(main.session.course, RunSession.new(main.progress.stats(), 2).course,
 		"the second run's seed is 2")
