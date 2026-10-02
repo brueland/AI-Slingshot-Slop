@@ -179,6 +179,7 @@ func _begin_aim() -> void:
 	if mode == "rogue":
 		session = RunSession.new(rogue.stats(), rogue.shot_seed())
 		session.sim.dips = ZoneMarker.zones_for(rogue.goal)
+		world_view.show_terrain(session.sim)
 	else:
 		session = RunSession.new(progress.stats(), progress.total_runs + 1)
 		world_view.show_terrain(session.sim)
