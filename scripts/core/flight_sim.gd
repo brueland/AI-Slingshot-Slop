@@ -23,6 +23,11 @@ var stopped: bool = false
 var start_x: float = 0.0
 ## Dips in the ground as (start, end) in meters (see Balance.DIP_DEPTH); roguelike landing zones get one.
 var dips: Array[Vector2] = []
+## Rolling hills (see Terrain): their height in meters (0 = flat), where along their waves this course starts, and
+## stretches kept flat (landing zones, the boss).
+var hills: float = 0.0
+var hill_phase: float = 0.0
+var flat_spans: Array[Vector2] = []
 
 
 ## The boost key went down: the rocket fires until the key is released (see step). True when it starts firing.
@@ -56,10 +61,13 @@ func distance() -> float:
 
 func _touch_ground() -> void:
 	position.y = ground_height(position.x)
-	var rebound := -velocity.y * restitution
+	# bounce off the ground's slope: the speed into the ground turns around (times restitution), the speed along it
+	# keeps BOUNCE_FRICTION. On flat ground that is the plain vertical bounce.
+	var normal := Vector2(-ground_slope(position.x), 1.0).normalized()
+	var along := Vector2(normal.y, -normal.x)
+	var rebound := -velocity.dot(normal) * restitution
 	if rebound >= Balance.MIN_BOUNCE_SPEED:
-		velocity.y = rebound
-		velocity.x *= Balance.BOUNCE_FRICTION
+		velocity = normal * rebound + along * velocity.dot(along) * Balance.BOUNCE_FRICTION
 		bounce_count += 1
 		bounced.emit(rebound)
 	else:
@@ -120,7 +128,7 @@ func boost_capacity() -> float:
 
 ## The ground's height at x: 0, or lower in a dip (a flat floor DIP_DEPTH down, straight slopes outside it).
 func ground_height(x: float) -> float:
-	var h := 0.0
+	var h := terrain_height(x)
 	for dip in dips:
 		var down := clampf(minf(x - (dip.x - Balance.DIP_SLOPE), (dip.y + Balance.DIP_SLOPE) - x) / Balance.DIP_SLOPE, 0.0, 1.0)
 		h = minf(h, -Balance.DIP_DEPTH * down)
@@ -134,4 +142,23 @@ func ground_slope(x: float) -> float:
 			return -Balance.DIP_DEPTH / Balance.DIP_SLOPE
 		if x > dip.y and x < dip.y + Balance.DIP_SLOPE:
 			return Balance.DIP_DEPTH / Balance.DIP_SLOPE
-	return 0.0
+	return terrain_slope(x)
+
+
+## The rolling hills' height at x (meters): two gentle waves `hills` high, flat near the slingshot (the hills grow
+## in from 30 to 50 m) and around the flat spans and dips (growing back in over 15 m).
+func terrain_height(x: float) -> float:
+	if hills <= 0.0:
+		return 0.0
+	var wave := 0.6 * sin(x * TAU / 120.0 + hill_phase) + 0.4 * sin(x * TAU / 47.0 + hill_phase * 2.1)
+	var flat := clampf((x - 30.0) / 20.0, 0.0, 1.0)
+	for span in flat_spans:
+		flat = minf(flat, clampf(maxf(span.x - x, x - span.y) / 15.0, 0.0, 1.0))
+	for dip in dips:
+		flat = minf(flat, clampf(maxf(dip.x - Balance.DIP_SLOPE - x, x - dip.y - Balance.DIP_SLOPE) / 15.0, 0.0, 1.0))
+	return hills * wave * flat
+
+
+## How steep the hills are at x (rise per meter).
+func terrain_slope(x: float) -> float:
+	return (terrain_height(x + 0.05) - terrain_height(x - 0.05)) / 0.1
