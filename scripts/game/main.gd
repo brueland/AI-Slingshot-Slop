@@ -181,6 +181,7 @@ func _begin_aim() -> void:
 		session.sim.dips = ZoneMarker.zones_for(rogue.goal)
 	else:
 		session = RunSession.new(progress.stats(), progress.total_runs + 1)
+		world_view.show_terrain(session.sim)
 	
 	# Set up views for the new session
 	course_view.build(session.course)
