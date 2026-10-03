@@ -14,6 +14,7 @@ static func build(main: Node) -> void:
 	main.add_child(main.fader)
 	main.world_view = WorldView.new()
 	main.add_child(main.world_view)
+	main.add_child(WrongWay.new())
 	main.scenery = Scenery.new()
 	main.add_child(main.scenery)
 	main.scenery.build(Scenery.SEED, Scenery.LENGTH)
