@@ -57,6 +57,15 @@ func _ready() -> void:
 	stars_layer.add_child(star_field)
 	add_child(stars_layer)
 	
+	# Things in space: their own slow layer (not in `layers`), in front of the stars
+	space_layer = Parallax2D.new()
+	space_layer.scroll_scale = Vector2(0.06, 0.03)
+	space_layer.repeat_size = Vector2(1800, 0)
+	space_layer.repeat_times = 3
+	space = SpaceDecor.new()
+	space_layer.add_child(space)
+	add_child(space_layer)
+	
 	# Hills: a separate layer (not in `layers`) that scrolls slower than the world
 	hills_layer = Parallax2D.new()
 	hills_layer.scroll_scale = Vector2(0.3, 1.0)
@@ -72,3 +81,5 @@ func set_altitude(height_m: float) -> void:
 	layers[1].modulate.a = 1.0 - clampf((height_m - CLOUDS_FADE_START_M) / (CLOUDS_GONE_M - CLOUDS_FADE_START_M), 0.0, 1.0)
 	if star_field != null:
 		star_field.set_height(height_m)
+	if space != null:
+		space.set_height(height_m)
