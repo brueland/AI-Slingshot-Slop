@@ -40,4 +40,5 @@ Milestone 35: complete (bouncier: more bounce, springs and balloons count a touc
 Milestone 36: complete (rolling hills: gentle hills that grow with the rounds and the best distance, bounces off slopes, everything stands on the hills)
 Milestone 37: complete (steady ghost: Steady Hand shows the last shot's path while aiming, and the aim line is only drawn while aiming)
 Milestone 38: complete (no limits: classic upgrades go to level 25, endless milestones every 1000 m)
+Milestone 39: complete (treasures: hats on balloons for the Wardrobe, purple special stars with special perks for the roguelike)
 
