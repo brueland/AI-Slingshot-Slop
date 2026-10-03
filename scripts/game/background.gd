@@ -13,6 +13,9 @@ var star_field: StarField
 var hills_layer: Parallax2D
 var hills: Hills
 var sky_gradient: SkyGradient
+## Things in space (a satellite, planets, comets...), in their own slow layer.
+var space_layer: Parallax2D
+var space: SpaceDecor
 
 func _ready() -> void:
 	z_index = -10
