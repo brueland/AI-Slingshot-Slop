@@ -21,6 +21,7 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	stats.apply_to(sim)
 	sim.position = Vector2(0.0, stats.launch_height)
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
+	SpecialStars.mark(course, course_seed)
 	tracker = RunTracker.new(course, stats.pickup_offset, stats.pickup_radius)
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
 	balloons.body = stats.pickup_offset
@@ -88,6 +89,7 @@ func result() -> Dictionary:
 	r["air_time"] = sim.air_time
 	r["path"] = path
 	r["found"] = balloons.found_hats.duplicate()
+	r["found"].append_array(tracker.found_specials)
 	if boss != null:
 		r["boss_hp"] = boss.hp
 		r["boss_damage"] = boss.damage

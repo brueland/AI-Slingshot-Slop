@@ -13,6 +13,8 @@ var items: Array = []
 var stars_collected: int = 0
 var springs_hit: int = 0
 var mud_hits: int = 0
+## The special perks of the special stars collected this shot (see SpecialStars).
+var found_specials: Array[String] = []
 var pickup_offset: float = 0.0
 var pickup_radius: float = Balance.STAR_RADIUS
 var _used: Array[bool] = []
@@ -52,6 +54,8 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 				if closest.distance_to(star) <= pickup_radius:
 					_used[i] = true
 					stars_collected += 1
+					if item.has("special"):
+						found_specials.append(str(item["special"]))
 					star_collected.emit(i)
 			"spring":
 				# the alien's side touching the spring counts: its body reaches 0.8 x pickup_offset to each side
