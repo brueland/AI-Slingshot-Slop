@@ -61,6 +61,9 @@ func build(items: Array) -> void:
 			sprite.position = WorldView.world_to_screen(Vector2(item["x"], item["y"]))
 			sprite.scale = Vector2(0.5, 0.5)
 			star_indices.append(i)
+			if item.has("special"):
+				sprite.modulate = Color(0.85, 0.45, 1.0)
+				sprite.scale = Vector2(0.75, 0.75)
 		elif item["type"] == "spring":
 			sprite.position = WorldView.ground_point(item["x"])
 			sprite.offset = Vector2(0, -35)

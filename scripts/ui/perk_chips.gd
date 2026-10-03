@@ -8,6 +8,7 @@ const COLORS := {
 	"power": Color(0.75, 0.27, 0.24), "height": Color(0.78, 0.48, 0.14), "aero": Color(0.18, 0.52, 0.72),
 	"bounce": Color(0.24, 0.58, 0.3), "boost": Color(0.84, 0.38, 0.1), "heavy": Color(0.4, 0.4, 0.5),
 	"feather": Color(0.34, 0.42, 0.78), "steady": Color(0.52, 0.33, 0.72),
+	"magnet": Color(0.6, 0.28, 0.78), "super_ball": Color(0.82, 0.3, 0.55), "jet_pack": Color(0.3, 0.32, 0.72),
 }
 ## The gold of the star boxes.
 const STAR_COLOR := Color(0.7, 0.55, 0.08)

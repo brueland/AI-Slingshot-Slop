@@ -13,6 +13,8 @@ var hud: Hud
 var critters: Critters
 var sim: FlightSim
 var balloon_view: BalloonView
+## The shot being watched (its course and balloons say what was found).
+var shot: RunSession
 var flowers: Flowers
 var cows: Cows
 var boss_view: BossView
@@ -49,6 +51,7 @@ func setup(p_audio: AudioManager, p_effects: Effects, p_camera: CameraRig, p_cou
 
 
 func watch(session: RunSession) -> void:
+	shot = session
 	star_value = session.stats.star_value
 	sim = session.sim
 	bounces_seen = 0
@@ -130,6 +133,8 @@ func celebrate(result: Dictionary) -> String:
 
 
 func _on_star_collected(index: int) -> void:
+	if shot != null and index < shot.course.size() and shot.course[index].has("special"):
+		_say("%s found!" % SpecialStars.get_def(str(shot.course[index]["special"])).get("name", ""), Color(0.85, 0.5, 1.0))
 	if audio != null:
 		audio.play_sfx("star")
 	add_combo()
@@ -220,6 +225,8 @@ func _on_mud_hit(_index: int) -> void:
 
 
 func _on_balloon_popped(index: int) -> void:
+	if shot != null and index < shot.balloons.hats.size() and shot.balloons.hats[index] != "":
+		_say("%s found!" % Hats.get_def(shot.balloons.hats[index]).get("name", ""), Color(1.0, 0.8, 0.3))
 	if audio != null:
 		audio.play_sfx("spring")
 	if projectile_view != null:
