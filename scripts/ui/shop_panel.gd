@@ -87,9 +87,9 @@ func refresh(progress: Progress) -> void:
 		var cost := progress.next_cost(id)
 		
 		if cost < 0:
-			buttons[id].text = "%s  Lv %d/%d  MAX" % [d["name"], level, int(d["max_level"])]
+			buttons[id].text = "%s  Lv %d  MAX" % [d["name"], level]
 		else:
-			buttons[id].text = "%s  Lv %d/%d  %d coins" % [d["name"], level, int(d["max_level"]), cost]
+			buttons[id].text = "%s  Lv %d  %d coins" % [d["name"], level, cost]
 		
 		buttons[id].disabled = not progress.can_buy(id)
 		buttons[id].tooltip_text = str(d["description"])
