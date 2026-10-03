@@ -190,7 +190,7 @@ func _begin_aim() -> void:
 	ufo.reset()
 	weather_fx.show_weather(rogue.weather if mode == "rogue" else "calm")
 	zone_marker.show_goal(rogue.goal if mode == "rogue" else {})
-	ghost.set_points(GhostPath.unpack(progress.best_path) if mode == "classic" else PackedVector2Array())
+	ghost.set_points(GhostPath.unpack(progress.best_path) if mode == "classic" else (rogue.last_path if rogue.has_perk("steady") else PackedVector2Array()))
 	course_view.set_best_marker(progress.best_distance)
 	feedback.watch(session)
 	var stats := session.stats

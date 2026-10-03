@@ -10,7 +10,7 @@ const LIST: Array = [
 	{"id": "boost", "name": "Rocket", "description": "+0.5 s of rocket (hold Space)"},
 	{"id": "heavy", "name": "Heavy Core", "description": "+30% launch speed, -0.1 bounciness"},
 	{"id": "feather", "name": "Feather Shell", "description": "-40% air drag, -10% launch speed"},
-	{"id": "steady", "name": "Steady Hand", "description": "Shows the line of your last shot"},
+	{"id": "steady", "name": "Steady Hand", "description": "Shows the line and the path of your last shot"},
 ]
 const MAX_RESTITUTION: float = 0.9
 const MIN_RESTITUTION: float = 0.1

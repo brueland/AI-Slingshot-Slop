@@ -19,7 +19,11 @@ const KEY_POWER_STEP: float = 0.05
 var max_pull: float = Balance.MAX_PULL_PX
 var pull: Vector2 = Vector2.ZERO
 var dragging: bool = false
-var enabled: bool = true
+## Only while enabled (aiming) is the slingshot grabbed and the last-aim line drawn.
+var enabled: bool = true:
+	set(value):
+		enabled = value
+		queue_redraw()
 var frame_height_px: float = Balance.BASE_LAUNCH_HEIGHT * Balance.PIXELS_PER_METER
 var band_color: Color = Color(0.35, 0.2, 0.1)
 var post_texture: Texture2D
@@ -165,6 +169,11 @@ func aim_line_points() -> PackedVector2Array:
 	return PackedVector2Array([last_pull, -last_pull * AIM_LINE_LENGTH])
 
 
+## The last-aim line as drawn: only while aiming (in flight it would slide across the screen with the world).
+func shown_aim_line() -> PackedVector2Array:
+	return aim_line_points() if enabled else PackedVector2Array()
+
+
 ## How hard the band is pulled, 0..1.
 func power_ratio() -> float:
 	if max_pull <= 0.0:
@@ -180,7 +189,7 @@ static func power_color(ratio: float) -> Color:
 
 
 func _draw() -> void:
-	var aim := aim_line_points()
+	var aim := shown_aim_line()
 	if aim.size() == 2:
 		draw_dashed_line(aim[0], aim[1], AIM_LINE_COLOR, 2.0, 8.0)
 		draw_circle(aim[0], 7.0, Color(1, 1, 1, 0.35))
