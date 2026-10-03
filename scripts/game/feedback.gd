@@ -70,6 +70,7 @@ func watch(session: RunSession) -> void:
 	if session.sim != null:
 		session.sim.bounced.connect(_on_bounced)
 		session.sim.boosted.connect(_on_boosted)
+		session.sim.wall_hit.connect(_on_wall_hit)
 	if session.balloons != null:
 		session.balloons.popped.connect(_on_balloon_popped)
 	if boss_view != null:
@@ -265,3 +266,14 @@ func _on_boss_hit(index: int, damage: int) -> void:
 	if audio != null:
 		audio.play_sfx("spring")
 	add_combo()
+
+
+## The alien hit the brick wall behind the slingshot: "Bonk!", a thud and a shake.
+func _on_wall_hit() -> void:
+	_say("Bonk!", Color(1.0, 0.5, 0.4))
+	if audio != null:
+		audio.play_sfx("bounce")
+	if camera != null:
+		camera.shake(6.0, 0.25)
+	if projectile_view != null:
+		projectile_view.set_mood("ouch", 0.8)
