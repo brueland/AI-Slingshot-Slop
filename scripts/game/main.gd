@@ -141,7 +141,7 @@ func start_rogue(run_seed: int = 0) -> void:
 	mode = "rogue"
 	daily_key = ""
 	rogue = RogueRun.new()
-	rogue.start(run_seed if run_seed > 0 else randi_range(1, 99999))
+	rogue.start(run_seed if run_seed > 0 else randi_range(1, 99999), progress.found)
 	_begin_aim()
 
 

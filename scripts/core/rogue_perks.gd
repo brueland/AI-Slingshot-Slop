@@ -36,7 +36,7 @@ static func get_def(id: String) -> Dictionary:
 	for p in LIST:
 		if p["id"] == id:
 			return p
-	return {}
+	return SpecialStars.get_def(id)
 
 
 ## A copy of `base` with every perk in `perk_ids` applied in order (the same perk can appear many times).
@@ -69,17 +69,22 @@ static func apply(base: PlayerStats, perk_ids: Array) -> PlayerStats:
 			"feather":
 				s.drag *= 0.6
 				s.max_speed *= 0.9
+			"super_ball":
+				s.restitution = minf(s.restitution + 0.15, MAX_RESTITUTION)
+			"jet_pack":
+				s.boost_charges += 2
 	return s
 
 
-## `count` different perk ids, chosen with a RandomNumberGenerator seeded with `offer_seed`.
-## "steady" is only offered until the player owns it.
-static func offer(offer_seed: int, owned: Array, count: int = 3) -> Array[String]:
+## `specials`: the special perks found so far (see SpecialStars); they can be offered too.
+static func offer(offer_seed: int, owned: Array, count: int = 3, specials: Array = []) -> Array[String]:
 	var pool: Array[String] = []
 	for p in LIST:
 		if p["id"] == "steady" and owned.has("steady"):
 			continue
 		pool.append(p["id"])
+	for id in specials:
+		pool.append(str(id))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = offer_seed
 	var out: Array[String] = []

@@ -24,9 +24,11 @@ var stars_total: int = 0
 var star_boosts: Dictionary = {}
 ## The flight path of the last shot (world meters), for Steady Hand's ghost.
 var last_path: PackedVector2Array = PackedVector2Array()
+## The special perks found (in earlier games and this run): they can be offered.
+var specials: Array[String] = []
 
 
-func start(new_seed: int) -> void:
+func start(new_seed: int, found: Array = []) -> void:
 	run_seed = new_seed
 	round_number = 1
 	lives = START_LIVES
@@ -43,6 +45,10 @@ func start(new_seed: int) -> void:
 	stars_total = 0
 	star_boosts.clear()
 	last_path = PackedVector2Array()
+	specials.clear()
+	for id in found:
+		if SpecialStars.is_perk(str(id)) and not specials.has(str(id)):
+			specials.append(str(id))
 
 
 func stats() -> PlayerStats:
@@ -52,6 +58,7 @@ func stats() -> PlayerStats:
 	s.hills = Terrain.for_round(round_number)
 	for zone in ZoneMarker.zones_for(goal):
 		s.flat_spans.append(Vector2(zone.x - Balance.DIP_SLOPE, zone.y + Balance.DIP_SLOPE))
+	s.pickup_radius += 1.5 * perks.count("magnet")
 	return s
 
 
@@ -88,6 +95,9 @@ func finish_shot(result: Dictionary) -> Dictionary:
 		var boost := StarBoosts.roll(run_seed, stars_total)
 		star_boosts[boost] = int(star_boosts.get(boost, 0)) + 1
 		stars_gained.append(boost)
+	for id in result.get("found", []):
+		if SpecialStars.is_perk(str(id)) and not specials.has(str(id)):
+			specials.append(str(id))
 	var met := RogueGoals.check(goal, result)
 	var ratio := RogueGoals.progress_ratio(goal, result)
 	var fighting := fight != null and str(goal.get("type", "")) == "fight"
@@ -123,7 +133,7 @@ func finish_shot(result: Dictionary) -> Dictionary:
 			goal = fight.goal()
 	offer.clear()
 	if not is_over():
-		offer = RoguePerks.offer(run_seed * 100 + shots, perks)
+		offer = RoguePerks.offer(run_seed * 100 + shots, perks, 3, specials)
 	return {"met": met, "lives": lives, "round": round_number, "over": is_over(), "goal": goal, "offer": offer.duplicate(), "boss_beaten": boss_beaten, "lucky": lucky, "ratio": ratio,
 		"fight": fighting, "boss_damage": int(result.get("boss_damage", 0)), "boss_hp": int(result.get("boss_hp", 0)), "shots_left": shots_left,
 		"stars_gained": stars_gained, "stars_total": stars_total}
@@ -136,7 +146,7 @@ func reroll() -> bool:
 	rerolls -= 1
 	var old := offer.duplicate()
 	for k in 10:
-		offer = RoguePerks.offer(run_seed * 100 + shots + 7777 * (k + 1), perks)
+		offer = RoguePerks.offer(run_seed * 100 + shots + 7777 * (k + 1), perks, 3, specials)
 		if offer != old:
 			break
 	return true
