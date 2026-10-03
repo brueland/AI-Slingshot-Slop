@@ -4,6 +4,8 @@ extends RefCounted
 
 signal bounced(impact_speed: float)
 signal boosted
+## The alien hit the brick wall behind the slingshot (Balance.WALL_X).
+signal wall_hit
 
 var position: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
@@ -102,6 +104,11 @@ func step(dt: float) -> void:
 			_touch_ground()
 	else:
 		_slide(dt)
+	if position.x < Balance.WALL_X:
+		position.x = Balance.WALL_X
+		if velocity.x < 0.0:
+			velocity.x = -velocity.x * restitution
+			wall_hit.emit()
 
 
 func simulate(dt: float, max_steps: int) -> int:

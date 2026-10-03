@@ -37,3 +37,5 @@ const LOOK_SCALE: float = 1.5
 ## slope outside each edge. The slopes are too steep to rest on, so a shot that stops on one rolls into the zone.
 const DIP_DEPTH: float = 0.75
 const DIP_SLOPE: float = 1.5
+## A giant brick wall stands this far behind the slingshot (meters); the alien bounces off it.
+const WALL_X: float = -120.0
