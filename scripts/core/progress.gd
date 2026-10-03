@@ -25,6 +25,8 @@ var rogue_rounds_total: int = 0
 var balloons_total: int = 0
 var sheep_woken: int = 0
 var best_air_time: float = 0.0
+## Things found in the world for good: balloon hats and special perks (ids).
+var found: Array[String] = []
 
 const ROGUE_HISTORY_SIZE: int = 5
 
@@ -106,6 +108,7 @@ func to_dict() -> Dictionary:
 		"balloons_total": balloons_total,
 		"sheep_woken": sheep_woken,
 		"best_air_time": best_air_time,
+		"found": found.duplicate(),
 	}
 
 
@@ -197,6 +200,11 @@ static func from_dict(data: Dictionary) -> Progress:
 	p.balloons_total = maxi(0, int(data.get("balloons_total", 0)))
 	p.sheep_woken = maxi(0, int(data.get("sheep_woken", 0)))
 	p.best_air_time = maxf(0.0, float(data.get("best_air_time", 0.0)))
+	var found_data = data.get("found")
+	if typeof(found_data) == TYPE_ARRAY:
+		for id in found_data:
+			if not p.found.has(str(id)):
+				p.found.append(str(id))
 	return p
 
 
@@ -220,3 +228,13 @@ func record_lifetime(result: Dictionary) -> void:
 	recent_distances.append(float(result.get("distance", 0.0)))
 	while recent_distances.size() > RECENT_RUNS:
 		recent_distances.pop_front()
+
+
+## Keeps what a shot found (its result's "found" ids); returns the ids that are new.
+func add_finds(result: Dictionary) -> Array[String]:
+	var new_ids: Array[String] = []
+	for id in result.get("found", []):
+		if not found.has(str(id)):
+			found.append(str(id))
+			new_ids.append(str(id))
+	return new_ids

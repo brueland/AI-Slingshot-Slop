@@ -286,6 +286,8 @@ func leave_shop() -> void:
 
 func _finish_run() -> void:
 	var hats_before := Hats.unlocked(progress)
+	if not progress.add_finds(session.result()).is_empty():
+		save_progress()
 	if mode == "rogue":
 		last_result = session.result()
 		rogue_outcome = rogue.finish_shot(last_result)

@@ -10,6 +10,9 @@ const LIST: Array = [
 	{"id": "top_hat", "name": "Top Hat", "hint": "Own 10 upgrade levels"},
 	{"id": "wizard", "name": "Wizard Hat", "hint": "Clear 5 roguelike rounds"},
 	{"id": "crown", "name": "Crown", "hint": "Reach 1000 m"},
+	{"id": "cowboy", "name": "Cowboy Hat", "hint": "Pop the balloon carrying it"},
+	{"id": "viking", "name": "Viking Helmet", "hint": "Pop the balloon carrying it"},
+	{"id": "beanie", "name": "Bobble Beanie", "hint": "Pop the balloon carrying it"},
 ]
 
 
@@ -39,6 +42,8 @@ static func is_unlocked(id: String, progress: Progress) -> bool:
 			return progress.best_rogue_round >= 5
 		"crown":
 			return progress.goal_reached
+		"cowboy", "viking", "beanie":
+			return progress.found.has(id)
 	return false
 
 
