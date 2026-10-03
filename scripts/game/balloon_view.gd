@@ -7,11 +7,14 @@ const COLORS: Array[Color] = [Color(0.95, 0.3, 0.35), Color(0.3, 0.6, 0.95), Col
 
 var points: Array[Vector2] = []
 var shown: Array[bool] = []
+## The hat each balloon carries ("" for none).
+var hats: Array[String] = []
 var bob: float = 0.0
 
 
 func build(balloons: Balloons) -> void:
 	points = balloons.points.duplicate()
+	hats = balloons.hats.duplicate()
 	shown.clear()
 	for i in points.size():
 		shown.append(true)
@@ -57,3 +60,20 @@ func _draw() -> void:
 		draw_colored_polygon(ellipse(c, 14.0, 18.0), color)
 		draw_colored_polygon(PackedVector2Array([c + Vector2(-3, 20), c + Vector2(3, 20), c + Vector2(0, 16)]), color.darkened(0.2))
 		draw_circle(c + Vector2(-5, -7), 3.5, Color(1, 1, 1, 0.45))
+		if i < hats.size() and hats[i] != "":
+			_draw_hat_tag(c + Vector2(3, 47), hats[i])
+
+
+## A small hat hanging from a balloon's string: popping the balloon finds it.
+func _draw_hat_tag(at: Vector2, id: String) -> void:
+	match id:
+		"cowboy":
+			draw_colored_polygon(ellipse(at, 11.0, 2.5), Color(0.55, 0.33, 0.15))
+			draw_rect(Rect2(at + Vector2(-5, -8), Vector2(10, 8)), Color(0.62, 0.38, 0.18))
+		"viking":
+			draw_circle(at + Vector2(0, -3), 6.0, Color(0.62, 0.64, 0.7))
+			draw_line(at + Vector2(-5, -5), at + Vector2(-10, -12), Color(0.98, 0.95, 0.85), 3.0)
+			draw_line(at + Vector2(5, -5), at + Vector2(10, -12), Color(0.98, 0.95, 0.85), 3.0)
+		_:
+			draw_circle(at + Vector2(0, -3), 6.0, Color(0.2, 0.7, 0.55))
+			draw_circle(at + Vector2(0, -10), 2.5, Color(0.95, 0.4, 0.4))

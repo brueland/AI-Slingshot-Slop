@@ -24,6 +24,7 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	tracker = RunTracker.new(course, stats.pickup_offset, stats.pickup_radius)
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
 	balloons.body = stats.pickup_offset
+	balloons.carry_hats(course_seed)
 	if stats.boss != null:
 		boss = stats.boss.copy()
 	sim.hills = stats.hills
@@ -86,6 +87,7 @@ func result() -> Dictionary:
 	r["balloons"] = balloons.popped_count
 	r["air_time"] = sim.air_time
 	r["path"] = path
+	r["found"] = balloons.found_hats.duplicate()
 	if boss != null:
 		r["boss_hp"] = boss.hp
 		r["boss_damage"] = boss.damage

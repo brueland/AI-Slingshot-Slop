@@ -14,6 +14,9 @@ var used: Array[bool] = []
 var popped_count: int = 0
 ## The alien's body: a ball of this radius whose center is this far above its contact point (0 = just the point).
 var body: float = 0.0
+## The hats some balloons carry ("" for none; see carry_hats), and the hats found by popping them this shot.
+var hats: Array[String] = []
+var found_hats: Array[String] = []
 
 
 ## Balloon centers (world meters) for a course seed: one every 60-140 m after 60 m, 5-14 m high.
@@ -49,6 +52,8 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 		if closest.distance_to(p) <= RADIUS + body:
 			used[i] = true
 			popped_count += 1
+			if i < hats.size() and hats[i] != "":
+				found_hats.append(hats[i])
 			sim.velocity.y = maxf(sim.velocity.y, LIFT_SPEED)
 			sim.stopped = false
 			popped.emit(i)
