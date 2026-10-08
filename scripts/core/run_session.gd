@@ -127,6 +127,10 @@ func extend_course() -> void:
 		course.append(item)
 	tracker.grow()
 	var first_balloon := balloons.points.size()
+	var more: Array[Vector2] = []
+	for p in Balloons.layout(chunk_seed, Balance.COURSE_LENGTH):
+		more.append(p + Vector2(course_end, 0.0))
+	balloons.add_points(more, chunk_seed)
 	course_end += Balance.COURSE_LENGTH
 	chunks += 1
 	extended.emit(first_item, first_balloon)
