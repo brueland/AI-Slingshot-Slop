@@ -9,10 +9,12 @@ const TEXTURES: Dictionary = {
 }
 const FLAG_TEXTURE: String = "res://assets/sprites/flag.png"
 const GOAL_FLAG_TEXTURE: String = "res://assets/sprites/goal_flag.png"
+## Milestone flags stand up to here (meters): further than the longest shot can fly in MAX_RUN_SECONDS.
+const FLAGS_TO_M: float = 30000.0
 
 var sprites: Array[Sprite2D] = []
 var flags: Array[Sprite2D] = []
-## The distance of each flag (the milestones up to Scenery.LENGTH).
+## The distance of each flag (the milestones up to FLAGS_TO_M).
 var flag_distances: Array[float] = []
 var best_marker: Sprite2D
 var best_label: Label
@@ -21,7 +23,7 @@ var time: float = 0.0
 
 
 func _ready():
-	for milestone in Milestones.up_to(Scenery.LENGTH):
+	for milestone in Milestones.up_to(FLAGS_TO_M):
 		var flag := Sprite2D.new()
 		flag_distances.append(float(milestone["distance"]))
 		flag.texture = load(FLAG_TEXTURE)
@@ -50,8 +52,12 @@ func _ready():
 
 func build(items: Array) -> void:
 	clear()
-	
-	for i in range(items.size()):
+	add_items(items, 0)
+
+
+## Adds sprites for `items` from index `first` on (a long shot's course grew: RunSession.extended).
+func add_items(items: Array, first: int) -> void:
+	for i in range(first, items.size()):
 		var item: Dictionary = items[i]
 		var sprite := Sprite2D.new()
 		sprite.name = "Item%d" % i
@@ -104,8 +110,10 @@ func _process(delta: float) -> void:
 ## Stars gently pulse and the milestone flags sway.
 func advance(delta: float) -> void:
 	time += delta
+	# only the stars on screen twinkle (a long shot's course has thousands)
+	var span := WorldView.visible_span(self, 5.0) * Balance.PIXELS_PER_METER
 	for i in star_indices:
-		if i < sprites.size():
+		if i < sprites.size() and sprites[i].position.x >= span.x and sprites[i].position.x <= span.y:
 			sprites[i].scale = Vector2(0.5, 0.5) * (1.0 + 0.1 * sin(time * 4.0 + i))
 	for k in flags.size():
 		flags[k].rotation = sin(time * 2.0 + k) * 0.06

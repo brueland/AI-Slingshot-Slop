@@ -73,6 +73,7 @@ func watch(session: RunSession) -> void:
 		session.sim.wall_hit.connect(_on_wall_hit)
 	if session.balloons != null:
 		session.balloons.popped.connect(_on_balloon_popped)
+	session.extended.connect(_on_course_extended)
 	if boss_view != null:
 		boss_view.show_fight(session.boss)
 	if session.boss != null:
@@ -266,6 +267,14 @@ func _on_boss_hit(index: int, damage: int) -> void:
 	if audio != null:
 		audio.play_sfx("spring")
 	add_combo()
+
+
+## A long shot's course grew: show its new stars, springs, mud and balloons.
+func _on_course_extended(first_item: int, _first_balloon: int) -> void:
+	if course_view != null:
+		course_view.add_items(shot.course, first_item)
+	if balloon_view != null:
+		balloon_view.grow(shot.balloons)
 
 
 ## The alien hit the brick wall behind the slingshot: "Bonk!", a thud and a shake.
