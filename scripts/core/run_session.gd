@@ -2,6 +2,12 @@ class_name RunSession
 extends RefCounted
 ## One shot from launch to stop, with course items and scoring. See docs/DESIGN.md section 9.
 
+## The course grew during the shot: course items from `first_item` and balloons from `first_balloon` on are new.
+signal extended(first_item: int, first_balloon: int)
+
+## When the alien gets this close (meters) to the end of the course, the next COURSE_LENGTH meters are added.
+const EXTEND_AHEAD_M: float = 300.0
+
 var stats: PlayerStats
 var sim: FlightSim
 var tracker: RunTracker
@@ -13,11 +19,17 @@ var launched: bool = false
 var elapsed: float = 0.0
 var path: PackedVector2Array = PackedVector2Array()
 var _steps: int = 0
+## The course goes on: it ends at `course_end` (meters) for now and grows in COURSE_LENGTH pieces (extend_course);
+## `layout_seed` is the course seed and `chunks` how many pieces there are.
+var course_end: float = Balance.COURSE_LENGTH
+var layout_seed: int = 0
+var chunks: int = 1
 
 
 func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	stats = player_stats
 	sim = FlightSim.new()
+	layout_seed = course_seed
 	stats.apply_to(sim)
 	sim.position = Vector2(0.0, stats.launch_height)
 	course = CourseGenerator.generate(course_seed, Balance.COURSE_LENGTH)
@@ -52,6 +64,8 @@ func step(dt: float) -> void:
 	if not launched or sim.stopped:
 		return
 	
+	if sim.position.x > course_end - EXTEND_AHEAD_M:
+		extend_course()
 	var previous := sim.position
 	if sim.is_airborne() and TractorBeams.inside(sim.position + Vector2(0.0, stats.pickup_offset)):
 		sim.velocity.y += TractorBeams.PULL * dt
@@ -99,3 +113,20 @@ func result() -> Dictionary:
 ## The boost key went up.
 func release_boost() -> void:
 	sim.release_boost()
+
+
+## Adds the next COURSE_LENGTH meters of course after `course_end`: stars, springs and mud from the next seed (on
+## the hills). RunTracker sees the new items; `extended` tells the views.
+func extend_course() -> void:
+	var chunk_seed := layout_seed * 7 + chunks * 104729
+	var first_item := course.size()
+	for item in CourseGenerator.generate(chunk_seed, Balance.COURSE_LENGTH):
+		var x: float = float(item["x"]) + course_end
+		item["x"] = x
+		item["y"] = float(item["y"]) + sim.terrain_height(x)
+		course.append(item)
+	tracker.grow()
+	var first_balloon := balloons.points.size()
+	course_end += Balance.COURSE_LENGTH
+	chunks += 1
+	extended.emit(first_item, first_balloon)
