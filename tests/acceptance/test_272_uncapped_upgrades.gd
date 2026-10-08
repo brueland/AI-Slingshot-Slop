@@ -6,8 +6,9 @@ extends GutTest
 
 func test_uncapped_upgrades() -> void:
 	for id in UpgradeCatalog.ids():
-		assert_eq(UpgradeCatalog.max_level(id), 25, id)
-		assert_gt(UpgradeCatalog.cost(id, 24), UpgradeCatalog.cost(id, 23), id + " keeps getting dearer")
+		assert_eq(UpgradeCatalog.max_level(id), {"guide": 12, "bounce": 8}.get(id, 25), id + " (task 297)")
+		var top: int = UpgradeCatalog.max_level(id)
+		assert_gt(UpgradeCatalog.cost(id, top - 1), UpgradeCatalog.cost(id, top - 2), id + " keeps getting dearer")
 	var five := PlayerStats.from_levels({"aero": 5, "bounce": 5})
 	var more := PlayerStats.from_levels({"aero": 8, "bounce": 6})
 	assert_almost_eq(five.drag, 0.002 * (1.0 - 0.9), 0.0000001, "the first 5 levels as before")

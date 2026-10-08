@@ -10,9 +10,9 @@ const ORDER := ["power", "height", "guide", "aero", "bounce", "boosts", "multipl
 const TABLE := {
 	"power": ["Band Power", "launcher", 25, 80, 1.7, 0.25],
 	"height": ["Tall Frame", "launcher", 25, 60, 1.7, 1.5],
-	"guide": ["Aim Guide", "launcher", 25, 25, 1.5, 6],
+	"guide": ["Aim Guide", "launcher", 12, 25, 1.5, 6],
 	"aero": ["Aerodynamics", "projectile", 25, 120, 1.8, 0.18],
-	"bounce": ["Bouncy Shell", "projectile", 25, 100, 1.8, 0.08],
+	"bounce": ["Bouncy Shell", "projectile", 8, 100, 1.8, 0.08],
 	"boosts": ["Rocket Boosts", "projectile", 25, 300, 2.2, 1],
 	"multiplier": ["Score Multiplier", "score", 25, 200, 1.9, 0.25],
 	"star_value": ["Star Polish", "score", 25, 80, 1.7, 5],

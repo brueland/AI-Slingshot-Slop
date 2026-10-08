@@ -22,8 +22,8 @@ func test_milestone_flags() -> void:
 	var cv = _cv()
 	if cv == null:
 		return
-	assert_eq(cv.flags.size(), 12, "one flag per milestone up to 8000 m (task 273)")
-	if cv.flags.size() == 12:
+	assert_eq(cv.flags.size(), 34, "one flag per milestone up to 30000 m (task 292)")
+	if cv.flags.size() == 34:
 		assert_eq(cv.flags[0].position.x, 50.0 * 16.0)
 		assert_eq(cv.flags[4].position.x, 1000.0 * 16.0)
 		assert_eq(cv.flags[0].texture.resource_path, "res://assets/sprites/flag.png")
@@ -70,4 +70,4 @@ func test_rebuild_replaces_the_old_sprites() -> void:
 	cv.build([ITEMS[1]])
 	assert_eq(cv.item_count(), 1)
 	assert_false(is_instance_valid(old) and old.is_inside_tree(), "old sprites are removed")
-	assert_eq(cv.flags.size(), 12, "flags stay")
+	assert_eq(cv.flags.size(), 34, "flags stay")

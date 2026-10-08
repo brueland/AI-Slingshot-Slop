@@ -53,5 +53,5 @@ func test_endless_milestones() -> void:
 	var reached: Array = p.record_run(2100.0, 0)
 	assert_eq(reached.size(), 6, "the five and Cloud Surfer")
 	var main = _main()
-	assert_eq(main.course_view.flags.size(), 12)
+	assert_eq(main.course_view.flags.size(), 34, "flags up to 30000 m since task 292")
 	assert_eq(main.course_view.flag_distances[5], 2000.0, "a flag at 2000 m")
