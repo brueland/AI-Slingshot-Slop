@@ -12,6 +12,8 @@ var stats: PlayerStats
 var sim: FlightSim
 var tracker: RunTracker
 var balloons: Balloons
+## Meteors and space stations high above the course (see SpaceThings).
+var space: SpaceThings = null
 ## A copy of stats.boss for this shot (null without a boss fight).
 var boss: BossFight = null
 var course: Array = []
@@ -38,6 +40,9 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	balloons = Balloons.new(Balloons.layout(course_seed, Balance.COURSE_LENGTH))
 	balloons.body = stats.pickup_offset
 	balloons.carry_hats(course_seed)
+	space = SpaceThings.new()
+	space.add(SpaceThings.layout(course_seed, Balance.COURSE_LENGTH), 0.0)
+	space.body = stats.pickup_offset
 	if stats.boss != null:
 		boss = stats.boss.copy()
 	sim.hills = stats.hills
@@ -72,6 +77,8 @@ func step(dt: float) -> void:
 	sim.step(dt)
 	tracker.after_step(sim, previous)
 	balloons.after_step(sim, previous)
+	if space != null:
+		space.after_step(sim, previous, dt)
 	if boss != null:
 		boss.after_step(sim, previous, stats.pickup_offset)
 	elapsed += dt
@@ -100,6 +107,8 @@ func result() -> Dictionary:
 	r["bounces"] = sim.bounce_count
 	r["max_height"] = sim.max_height
 	r["balloons"] = balloons.popped_count
+	if space != null:
+		r["meteors"] = space.meteor_used.count(true)
 	r["air_time"] = sim.air_time
 	r["path"] = path
 	r["found"] = balloons.found_hats.duplicate()
