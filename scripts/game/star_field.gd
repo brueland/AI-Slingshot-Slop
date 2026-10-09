@@ -54,10 +54,31 @@ static func shooting_position(s: Vector3) -> Vector2:
 	return Vector2(s.x, s.y) + Vector2(420.0, 180.0) * s.z
 
 
+## Every star as a small 8-sided disc with its own twinkle, all in one mesh: "points" (a center and 8 rim points
+## per star), "colors" (one per point) and "indices" (8 triangles per star).
+static func star_mesh(field: Array[Vector3], at_time: float) -> Dictionary:
+	var points := PackedVector2Array()
+	var colors := PackedColorArray()
+	var indices := PackedInt32Array()
+	for s in field:
+		var twinkle := 0.6 + 0.4 * sin(at_time * 2.0 + s.z)
+		var radius := 1.5 + 0.8 * twinkle
+		var color := Color(1.0, 1.0, 0.9, twinkle)
+		var center := points.size()
+		points.append(Vector2(s.x, s.y))
+		colors.append(color)
+		for k in 8:
+			points.append(Vector2(s.x, s.y) + Vector2.from_angle(TAU * k / 8.0) * radius)
+			colors.append(color)
+		for k in 8:
+			indices.append_array(PackedInt32Array([center, center + 1 + k, center + 1 + (k + 1) % 8]))
+	return {"points": points, "colors": colors, "indices": indices}
+
+
 func _draw() -> void:
-	for s in stars:
-		var twinkle := 0.6 + 0.4 * sin(time * 2.0 + s.z)
-		draw_circle(Vector2(s.x, s.y), 1.5 + 0.8 * twinkle, Color(1.0, 1.0, 0.9, twinkle))
+	# all the stars in one draw call (90 separate circles were hundreds of draw calls)
+	var mesh := star_mesh(stars, time)
+	RenderingServer.canvas_item_add_triangle_array(get_canvas_item(), mesh["indices"], mesh["points"], mesh["colors"])
 	for streak in shooting:
 		var head := shooting_position(streak)
 		draw_line(head, head - Vector2(60.0, 26.0), Color(1.0, 1.0, 0.9, 1.0 - streak.z), 2.0)
