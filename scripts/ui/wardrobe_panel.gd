@@ -12,6 +12,8 @@ var close_button: Button
 var preview: TitleMascot
 var worn: String = "none"
 var surprise_button: Button
+## What the shown hat gives (the worn one, or the one under the mouse).
+var bonus_label: Label
 
 
 func _ready() -> void:
@@ -27,6 +29,10 @@ func _ready() -> void:
 	box.add_child(title_label)
 	preview = TitleMascot.new()
 	box.add_child(preview)
+	bonus_label = Label.new()
+	bonus_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	bonus_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4))
+	box.add_child(bonus_label)
 	# the hats in two columns, so the panel fits the screen with every hat there is
 	var grid := GridContainer.new()
 	grid.columns = 2
@@ -67,6 +73,7 @@ func show_hats(progress: Progress) -> void:
 			button.text = entry["name"]
 	worn = progress.hat
 	preview.set_hat(progress.hat)
+	show_bonus(progress.hat)
 	show()
 
 
@@ -75,3 +82,10 @@ func preview_hat(id: String) -> void:
 	var button: Button = hat_buttons.get(id)
 	if button != null and not button.disabled:
 		preview.set_hat(id)
+		show_bonus(id)
+
+
+## Shows what hat `id` gives under the preview.
+func show_bonus(id: String) -> void:
+	var text := HatBonuses.text(id)
+	bonus_label.text = "%s: %s" % [Hats.get_def(id).get("name", ""), text] if text != "" else "No hat: no bonus"
