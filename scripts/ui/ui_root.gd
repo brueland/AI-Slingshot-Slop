@@ -163,6 +163,20 @@ func show_rogue_screens(active: bool, run: RogueRun, outcome: Dictionary, best_r
 		rogue_panel.show_outcome(outcome, run)
 
 
+## The perk screen's Menu button: the pause menu in its place (Resume brings the perk screen back).
+func open_results_menu() -> void:
+	rogue_panel.hide()
+	pause_menu.show()
+
+
+## Resume while not playing (the perk screen's menu; main.gd only pauses while aiming or flying): close the menu
+## and show the screens of the state again.
+func close_results_menu(main: Node) -> void:
+	if main.state_name() != "AIM" and main.state_name() != "FLIGHT":
+		pause_menu.hide()
+		refresh(main)
+
+
 ## Connects every screen's buttons to main.gd (`main` is the node running scripts/game/main.gd).
 func wire(main: Node) -> void:
 	results_panel.continue_pressed.connect(Callable(main, "continue_to_shop"))
@@ -174,6 +188,8 @@ func wire(main: Node) -> void:
 	title_panel.daily_pressed.connect(Callable(main, "start_daily"))
 	rogue_panel.perk_chosen.connect(Callable(main, "choose_rogue_perk"))
 	rogue_panel.reroll_pressed.connect(Callable(main, "reroll_perks"))
+	rogue_panel.menu_pressed.connect(open_results_menu)
+	pause_menu.resume_pressed.connect(close_results_menu.bind(main))
 	pause_menu.resume_pressed.connect(Callable(main, "toggle_pause"))
 	hud.menu_pressed.connect(Callable(main, "toggle_pause"))
 	pause_menu.quit_pressed.connect(Callable(main, "go_to_title"))
