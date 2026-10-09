@@ -16,6 +16,8 @@ var balloons: Balloons
 var space: SpaceThings = null
 ## The thick star cloud very high up (see StarCloud).
 var cloud: StarCloud
+## Trees along the meadow (see Trees).
+var trees: Trees
 ## A copy of stats.boss for this shot (null without a boss fight).
 var boss: BossFight = null
 var course: Array = []
@@ -58,6 +60,10 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	# course items sit on the hills (springs, mud) or float over them (stars)
 	for item in course:
 		item["y"] = float(item["y"]) + sim.terrain_height(float(item["x"]))
+	# trees keep clear of the landing zones and the boss (the flat spans)
+	trees = Trees.new()
+	trees.body = stats.pickup_offset
+	trees.add(Trees.layout(course_seed, Balance.COURSE_LENGTH), 0.0, sim.flat_spans)
 
 
 func launch_from_pull(pull: Vector2) -> Vector2:
@@ -85,6 +91,7 @@ func step(dt: float) -> void:
 	if space != null:
 		space.after_step(sim, previous, dt)
 		cloud.after_step(sim, previous)
+	trees.after_step(sim, previous)
 	if boss != null:
 		boss.after_step(sim, previous, stats.pickup_offset)
 	elapsed += dt
@@ -116,6 +123,7 @@ func result() -> Dictionary:
 	r["balloons"] = balloons.popped_count
 	if space != null:
 		r["meteors"] = space.meteor_used.count(true)
+	r["trees"] = trees.broken.count(true)
 	r["air_time"] = sim.air_time
 	r["path"] = path
 	r["found"] = balloons.found_hats.duplicate()
@@ -154,6 +162,7 @@ func extend_course() -> void:
 	balloons.add_points(more, chunk_seed)
 	if space != null:
 		space.add(SpaceThings.layout(chunk_seed, Balance.COURSE_LENGTH), course_end)
+	trees.add(Trees.layout(chunk_seed, Balance.COURSE_LENGTH), course_end, sim.flat_spans)
 	course_end += Balance.COURSE_LENGTH
 	chunks += 1
 	extended.emit(first_item, first_balloon)
