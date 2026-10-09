@@ -140,6 +140,8 @@ func extend_course() -> void:
 	for p in Balloons.layout(chunk_seed, Balance.COURSE_LENGTH):
 		more.append(p + Vector2(course_end, 0.0))
 	balloons.add_points(more, chunk_seed)
+	if space != null:
+		space.add(SpaceThings.layout(chunk_seed, Balance.COURSE_LENGTH), course_end)
 	course_end += Balance.COURSE_LENGTH
 	chunks += 1
 	extended.emit(first_item, first_balloon)
