@@ -53,7 +53,7 @@ func add(trees: Array[Vector2], offset_m: float, keep_clear: Array[Vector2] = []
 ## Breaks, or bounces the alien off, every standing tree it ran into between `previous_position` and now.
 func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 	var reach := HALF_WIDTH + body
-	for i in xs.size():
+	for i in range(xs.size()):
 		if broken[i]:
 			continue
 		var x := xs[i]
