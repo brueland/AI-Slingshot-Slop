@@ -1,6 +1,6 @@
 class_name Hats
 extends RefCounted
-## Cosmetic hats for the alien. Each one unlocks by playing; hats never change the physics.
+## Hats for the alien. Each one unlocks by playing and gives a small boost in its style (see HatBonuses).
 
 const LIST: Array = [
 	{"id": "none", "name": "No hat", "hint": ""},

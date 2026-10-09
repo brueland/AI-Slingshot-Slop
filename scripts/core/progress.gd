@@ -81,6 +81,7 @@ func buy(id: String) -> bool:
 func stats() -> PlayerStats:
 	var s := PlayerStats.from_levels(levels)
 	s.hills = Terrain.for_best_distance(best_distance)
+	HatBonuses.apply(s, hat)
 	return s
 
 
