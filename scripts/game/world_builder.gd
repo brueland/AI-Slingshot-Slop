@@ -14,7 +14,8 @@ static func build(main: Node) -> void:
 	main.add_child(main.fader)
 	main.world_view = WorldView.new()
 	main.add_child(main.world_view)
-	main.add_child(WrongWay.new())
+	var wrong_way := WrongWay.new()
+	main.add_child(wrong_way)
 	main.scenery = Scenery.new()
 	main.add_child(main.scenery)
 	main.scenery.build(Scenery.SEED, Scenery.LENGTH)
@@ -72,6 +73,7 @@ static func build(main: Node) -> void:
 	main.feedback.cows = main.cows
 	main.feedback.watchers.append(space_view)
 	main.feedback.watchers.append(tree_view)
+	main.feedback.watchers.append(wrong_way)
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
 	main.weather_fx.windsock = sock
