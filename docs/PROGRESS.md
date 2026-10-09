@@ -45,4 +45,5 @@ Milestone 40: complete (space: a satellite, a ringed planet and a moon, comets, 
 Milestone 41: complete (wrong way: WRONG WAY signs behind the slingshot and a giant brick wall that bonks the alien back)
 Milestone 42: complete (endless and smooth: the HUD box keeps its width, the course and the meadow go on forever, only what is on screen is drawn, the ground, the night stars and the flowers are one draw call each, the Wardrobe fits, a Menu button on the perk screen, no useless upgrade levels)
 Milestone 43: complete (space to play with: meteors boost the alien, space stations bounce it, a thick star cloud from 600 m up)
+Milestone 44: complete (trees and a secret: smash through trees or bounce off them; break the brick wall to find a thank-you sign)
 
