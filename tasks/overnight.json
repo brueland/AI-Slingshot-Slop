@@ -6,6 +6,7 @@
   "testImage": "selfhosted-llm/godot:4.7.2",
   "chain": true,
   "chainBranch": "ai/build",
+  "testTimeoutMinutes": 25,
   "agentHints": [
     "GDScript: indent with tabs, never spaces (Godot rejects mixed indentation).",
     "Use Godot 4 APIs only. Use static typing; where a type can't be inferred (an untyped value), write the type (var p: Vector2 = ...) instead of :=.",
