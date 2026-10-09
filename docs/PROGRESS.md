@@ -46,4 +46,5 @@ Milestone 41: complete (wrong way: WRONG WAY signs behind the slingshot and a gi
 Milestone 42: complete (endless and smooth: the HUD box keeps its width, the course and the meadow go on forever, only what is on screen is drawn, the ground, the night stars and the flowers are one draw call each, the Wardrobe fits, a Menu button on the perk screen, no useless upgrade levels)
 Milestone 43: complete (space to play with: meteors boost the alien, space stations bounce it, a thick star cloud from 600 m up)
 Milestone 44: complete (trees and a secret: smash through trees or bounce off them; break the brick wall to find a thank-you sign)
+Milestone 45: complete (hats that help: every hat gives a small boost, shown in the Wardrobe; new sheep and cow sprites)
 
