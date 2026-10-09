@@ -27,6 +27,10 @@ func _ready() -> void:
 	box.add_child(title_label)
 	preview = TitleMascot.new()
 	box.add_child(preview)
+	# the hats in two columns, so the panel fits the screen with every hat there is
+	var grid := GridContainer.new()
+	grid.columns = 2
+	box.add_child(grid)
 	for entry in Hats.LIST:
 		var id: String = entry["id"]
 		var button := Button.new()
@@ -34,7 +38,7 @@ func _ready() -> void:
 		button.pressed.connect(func(): hat_chosen.emit(id))
 		button.mouse_entered.connect(func(): preview_hat(id))
 		button.mouse_exited.connect(func(): preview_hat(worn))
-		box.add_child(button)
+		grid.add_child(button)
 		hat_buttons[id] = button
 	surprise_button = Button.new()
 	surprise_button.text = "Surprise me!"
