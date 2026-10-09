@@ -36,7 +36,7 @@ func react(world_x: float) -> int:
 	var best := -1
 	var best_distance := REACT_DISTANCE
 	for i in xs.size():
-		var d := absf(xs[i] - world_x)
+		var d := absf(WorldView.repeat_x(xs[i], Balance.COURSE_LENGTH, world_x) - world_x)
 		if d <= best_distance:
 			best = i
 			best_distance = d
@@ -48,14 +48,20 @@ func cow_position(index: int) -> Vector2:
 
 
 func _process(_delta: float) -> void:
-	if seen_terrain != WorldView.terrain_version:
-		seen_terrain = WorldView.terrain_version
-		queue_redraw()
+	seen_terrain = WorldView.terrain_version
+	# the view moves, so the cows on screen are redrawn every frame (only those: see _draw)
+	queue_redraw()
 
 
 func _draw() -> void:
+	# the herd repeats every COURSE_LENGTH meters; only the cows on screen are drawn
+	var span := WorldView.visible_span(self, 4.0)
+	var middle := (span.x + span.y) / 2.0
 	for i in xs.size():
-		var p := cow_position(i)
+		var x := WorldView.repeat_x(xs[i], Balance.COURSE_LENGTH, middle)
+		if x < span.x or x > span.y:
+			continue
+		var p := WorldView.ground_point(x)
 		for leg in [-12.0, -5.0, 6.0, 12.0]:
 			draw_line(p + Vector2(leg, -8), p + Vector2(leg, 0), SPOTS, 2.5)
 		draw_rect(Rect2(p + Vector2(-16, -24), Vector2(32, 16)), HIDE)
