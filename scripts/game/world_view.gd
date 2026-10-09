@@ -101,7 +101,7 @@ func _draw():
 ## on a multiple of SNAP_M, and never more than 280 m behind the slingshot (the brick wall is at 120 m, the secret
 ## behind it ends at 260 m).
 static func span_around(center_m: float) -> Vector2:
-	var from := maxf(floorf((center_m - DRAW_SPAN_M) / SNAP_M) * SNAP_M, -175.0)
+	var from := maxf(floorf((center_m - DRAW_SPAN_M) / SNAP_M) * SNAP_M, -280.0)
 	return Vector2(from, from + 2.0 * DRAW_SPAN_M + SNAP_M)
 
 
