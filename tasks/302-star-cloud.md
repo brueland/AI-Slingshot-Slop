@@ -74,11 +74,11 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 
 Edit 1 - SEARCH:
 ```gdscript
-var space: SpaceThings
+var space: SpaceThings = null
 ```
 REPLACE:
 ```gdscript
-var space: SpaceThings
+var space: SpaceThings = null
 ## The thick star cloud very high up (see StarCloud).
 var cloud: StarCloud
 ```
