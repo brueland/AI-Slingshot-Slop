@@ -1,6 +1,6 @@
 class_name Critters
 extends Node2D
-## Sheep grazing in the meadow (drawn with circles). A sheep hops when the alien lands next to it.
+## Sheep grazing in the meadow (drawn with sprites). A sheep hops when the alien lands next to it.
 
 const SEED: int = 11
 const HOP_SECONDS: float = 0.5
@@ -13,6 +13,12 @@ const BLACK_WOOL := Color(0.18, 0.17, 0.2)
 var xs: Array[float] = []
 var hop_left: Array[float] = []
 var time: float = 0.0
+## The flock's sprites (white and black, head up and grazing), drawn at SPRITE_SCALE with the feet at
+## SPRITE_FEET_X of their width.
+var textures: Dictionary = {"up": load("res://assets/sprites/sheep.png"), "graze": load("res://assets/sprites/sheep_graze.png"),
+	"black_up": load("res://assets/sprites/sheep_black.png"), "black_graze": load("res://assets/sprites/sheep_black_graze.png")}
+const SPRITE_SCALE: float = 0.4
+const SPRITE_FEET_X: float = 0.4
 ## The flock's layout repeats every `period` meters (the length it was built for), so the meadow never runs out.
 var period: float = Balance.COURSE_LENGTH
 
@@ -73,6 +79,12 @@ func head_bob(index: int) -> float:
 	return maxf(0.0, sin(time * 1.5 + index * 1.3)) * 3.0
 
 
+## The sprite for sheep `index` right now: black or white, grazing while its head is down.
+func sheep_texture(index: int) -> Texture2D:
+	var key := ("black_" if is_black(index) else "") + ("graze" if head_bob(index) > 1.5 else "up")
+	return textures[key]
+
+
 func _process(delta: float) -> void:
 	advance(delta)
 
@@ -98,12 +110,9 @@ func _draw() -> void:
 		if x < span.x or x > span.y:
 			continue
 		var p := WorldView.ground_point(x) - Vector2(0.0, hop_offset(i))
-		draw_line(p + Vector2(-6, -5), p + Vector2(-6, 0), FACE, 2.0)
-		draw_line(p + Vector2(6, -5), p + Vector2(6, 0), FACE, 2.0)
-		for o in [Vector2(-7, -11), Vector2(0, -14), Vector2(7, -11), Vector2(-3, -8), Vector2(4, -8)]:
-			draw_circle(p + o, 6.0, BLACK_WOOL if is_black(i) else WOOL)
-		draw_circle(p + Vector2(12, -13 + head_bob(i)), 4.0, FACE)
-		draw_circle(p + Vector2(13, -14 + head_bob(i)), 1.0, Color.WHITE)
+		var texture := sheep_texture(i)
+		var size := texture.get_size() * SPRITE_SCALE
+		draw_texture_rect(texture, Rect2(p - Vector2(size.x * SPRITE_FEET_X, size.y - 6.0 * SPRITE_SCALE), size), false)
 
 
 ## Every sheep whose index is 2 more than a multiple of 4 is a black sheep (a little grumpier).
