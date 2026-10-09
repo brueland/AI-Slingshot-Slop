@@ -25,6 +25,8 @@ static func build(main: Node) -> void:
 	main.add_child(main.flowers)
 	main.cows = Cows.new()
 	main.add_child(main.cows)
+	var tree_view := TreeView.new()
+	main.add_child(tree_view)
 	main.kites = Kites.new()
 	main.add_child(main.kites)
 	var sock := WindSock.new()
@@ -69,6 +71,7 @@ static func build(main: Node) -> void:
 	main.feedback.flowers = main.flowers
 	main.feedback.cows = main.cows
 	main.feedback.watchers.append(space_view)
+	main.feedback.watchers.append(tree_view)
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
 	main.weather_fx.windsock = sock
