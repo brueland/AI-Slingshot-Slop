@@ -5,6 +5,8 @@ extends RefCounted
 
 const START_LIVES: int = 3
 
+## The hat the alien wears in this run (its boost counts: HatBonuses).
+var hat: String = "none"
 var run_seed: int = 1
 var round_number: int = 1
 var lives: int = START_LIVES
@@ -28,8 +30,9 @@ var last_path: PackedVector2Array = PackedVector2Array()
 var specials: Array[String] = []
 
 
-func start(new_seed: int, found: Array = []) -> void:
+func start(new_seed: int, found: Array = [], worn_hat: String = "none") -> void:
 	run_seed = new_seed
+	hat = worn_hat
 	round_number = 1
 	lives = START_LIVES
 	rounds_cleared = 0
@@ -54,6 +57,7 @@ func start(new_seed: int, found: Array = []) -> void:
 func stats() -> PlayerStats:
 	var s := RogueSizes.apply(RoguePerks.apply(PlayerStats.from_levels({}), perks), size_id)
 	s = RogueWeather.apply(StarBoosts.apply(s, star_boosts), weather)
+	HatBonuses.apply(s, hat)
 	s.boss = fight
 	s.hills = Terrain.for_round(round_number)
 	for zone in ZoneMarker.zones_for(goal):
