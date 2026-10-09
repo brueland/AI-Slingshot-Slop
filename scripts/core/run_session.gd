@@ -14,6 +14,8 @@ var tracker: RunTracker
 var balloons: Balloons
 ## Meteors and space stations high above the course (see SpaceThings).
 var space: SpaceThings = null
+## The thick star cloud very high up (see StarCloud).
+var cloud: StarCloud
 ## A copy of stats.boss for this shot (null without a boss fight).
 var boss: BossFight = null
 var course: Array = []
@@ -43,6 +45,9 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	space = SpaceThings.new()
 	space.add(SpaceThings.layout(course_seed, Balance.COURSE_LENGTH), 0.0)
 	space.body = stats.pickup_offset
+	cloud = StarCloud.new()
+	cloud.pickup_offset = stats.pickup_offset
+	cloud.pickup_radius = stats.pickup_radius
 	if stats.boss != null:
 		boss = stats.boss.copy()
 	sim.hills = stats.hills
@@ -79,6 +84,7 @@ func step(dt: float) -> void:
 	balloons.after_step(sim, previous)
 	if space != null:
 		space.after_step(sim, previous, dt)
+		cloud.after_step(sim, previous)
 	if boss != null:
 		boss.after_step(sim, previous, stats.pickup_offset)
 	elapsed += dt
@@ -101,9 +107,10 @@ func is_finished() -> bool:
 
 
 func result() -> Dictionary:
-	var r := Scoring.compute(sim.distance(), tracker.stars_collected, sim.bounce_count, stats)
+	var r := Scoring.compute(sim.distance(), stars_collected(), sim.bounce_count, stats)
 	r["distance"] = sim.distance()
-	r["stars"] = tracker.stars_collected
+	r["stars"] = stars_collected()
+	r["cloud_stars"] = cloud.count
 	r["bounces"] = sim.bounce_count
 	r["max_height"] = sim.max_height
 	r["balloons"] = balloons.popped_count
@@ -117,6 +124,11 @@ func result() -> Dictionary:
 		r["boss_hp"] = boss.hp
 		r["boss_damage"] = boss.damage
 	return r
+
+
+## Stars collected this shot: the course's and the star cloud's.
+func stars_collected() -> int:
+	return tracker.stars_collected + cloud.count
 
 
 ## The boost key went up.
