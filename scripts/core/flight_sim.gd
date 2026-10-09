@@ -6,12 +6,16 @@ signal bounced(impact_speed: float)
 signal boosted
 ## The alien hit the brick wall behind the slingshot (Balance.WALL_X).
 signal wall_hit
+## The alien broke through the brick wall (hit at WALL_BREAK_SPEED or faster) into the secret behind it.
+signal wall_broken
 
 var position: Vector2 = Vector2.ZERO
 var velocity: Vector2 = Vector2.ZERO
 var gravity: float = Balance.GRAVITY
 var drag: float = Balance.BASE_DRAG
 var restitution: float = Balance.BASE_RESTITUTION
+## The brick wall is down for the rest of this shot.
+var wall_down: bool = false
 var boost_charges: int = 0
 ## Seconds of rocket left this flight: boost_charges tanks of Balance.BOOST_TANK_SECONDS, filled at launch.
 var boost_fuel: float = 0.0
@@ -104,11 +108,20 @@ func step(dt: float) -> void:
 			_touch_ground()
 	else:
 		_slide(dt)
-	if position.x < Balance.WALL_X:
-		position.x = Balance.WALL_X
+	if not wall_down and position.x < Balance.WALL_X:
+		if velocity.x <= -Balance.WALL_BREAK_SPEED:
+			wall_down = true
+			velocity.x *= 0.6
+			wall_broken.emit()
+		else:
+			position.x = Balance.WALL_X
+			if velocity.x < 0.0:
+				velocity.x = -velocity.x * restitution
+				wall_hit.emit()
+	if position.x < Balance.SECRET_END_X:
+		position.x = Balance.SECRET_END_X
 		if velocity.x < 0.0:
 			velocity.x = -velocity.x * restitution
-			wall_hit.emit()
 
 
 func simulate(dt: float, max_steps: int) -> int:

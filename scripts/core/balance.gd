@@ -39,3 +39,7 @@ const DIP_DEPTH: float = 0.75
 const DIP_SLOPE: float = 1.5
 ## A giant brick wall stands this far behind the slingshot (meters); the alien bounces off it.
 const WALL_X: float = -120.0
+## Hitting the wall at least this fast (m/s, sideways) breaks through it, into the secret behind it.
+const WALL_BREAK_SPEED: float = 50.0
+## Behind the wall the world ends for good (meters): the alien bounces off.
+const SECRET_END_X: float = -260.0

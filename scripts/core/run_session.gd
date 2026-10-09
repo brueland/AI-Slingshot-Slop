@@ -128,6 +128,8 @@ func result() -> Dictionary:
 	r["path"] = path
 	r["found"] = balloons.found_hats.duplicate()
 	r["found"].append_array(tracker.found_specials)
+	if sim.wall_down:
+		r["found"].append("secret_wall")
 	if boss != null:
 		r["boss_hp"] = boss.hp
 		r["boss_damage"] = boss.damage
