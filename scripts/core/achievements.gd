@@ -9,6 +9,7 @@ const LIST: Array = [
 	{"id": "high_flyer", "name": "High Flyer", "description": "Fly higher than 40 m"},
 	{"id": "far_out", "name": "Far Out", "description": "Fly 250 m in one run"},
 	{"id": "big_spender", "name": "Big Spender", "description": "Own 10 upgrade levels"},
+	{"id": "wall_breaker", "name": "Wall Breaker", "description": "Find the secret behind the brick wall"},
 ]
 
 
@@ -29,6 +30,8 @@ static func is_earned(id: String, result: Dictionary, progress: Progress) -> boo
 			for key in progress.levels:
 				owned += int(progress.levels[key])
 			return owned >= 10
+		"wall_breaker":
+			return Array(result.get("found", [])).has("secret_wall")
 	return false
 
 
