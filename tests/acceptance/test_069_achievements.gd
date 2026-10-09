@@ -31,7 +31,7 @@ func test_list() -> void:
 		return
 	var want := [["liftoff", "Liftoff"], ["bouncy", "Bouncy Castle"], ["star_catcher", "Star Catcher"],
 		["high_flyer", "High Flyer"], ["far_out", "Far Out"], ["big_spender", "Big Spender"]]
-	assert_eq(a.LIST.size(), 6)
+	assert_eq(a.LIST.size(), 7, "Wall Breaker since task 309")
 	for i in mini(a.LIST.size(), want.size()):
 		assert_eq(a.LIST[i]["id"], want[i][0])
 		assert_eq(a.LIST[i]["name"], want[i][1])

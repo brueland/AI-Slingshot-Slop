@@ -333,3 +333,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 41 Wrong way | 285–287, 288c | WRONG WAY signs behind the slingshot and a giant brick wall that bonks the alien back |
 | 42 Endless and smooth | 289–299, 300c | HUD box keeps its width; course, balloons, meadow, rocks and flags go on forever; only what is on screen is drawn; ground, night stars and flowers are one draw call each; Wardrobe fits; Menu on the perk screen; no useless upgrade levels |
 | 43 Space to play with | 301–303, 304c | meteors boost the alien, space stations bounce it, a thick star cloud from 600 m up |
+| 44 Trees and a secret | 305–309, 310c | trees to smash through or bounce off; break the brick wall to find a thank-you sign (Wall Breaker) |

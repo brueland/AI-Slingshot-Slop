@@ -45,7 +45,7 @@ func test_wrong_way_signs() -> void:
 	assert_not_null(signs, "WorldBuilder adds the signs and the wall")
 	assert_eq(signs.SIGNS_M, [-25.0, -55.0, -85.0])
 	assert_gt(signs.get_index(), main.world_view.get_index(), "in front of the ground")
-	assert_eq(WorldView.span_around(0.0).x, -175.0, "the ground reaches behind the wall")
+	assert_eq(WorldView.span_around(0.0).x, -280.0, "the ground reaches behind the wall and the secret (task 308)")
 	main.start_game()
 	main.camera.snap_to(WorldView.world_to_screen(Vector2(-110.0, 10.0)))
 	await wait_process_frames(3)

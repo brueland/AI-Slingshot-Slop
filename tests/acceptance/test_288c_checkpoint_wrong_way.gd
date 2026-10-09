@@ -39,7 +39,7 @@ func _on_screen(main, control: Control, what: String) -> void:
 func test_wrong_way_with_real_frames() -> void:
 	var main = _main()
 	await wait_process_frames(2)
-	main.progress.levels = {"power": 6}
+	main.progress.levels = {"power": 4}  # not hard enough to break through (task 307)
 	main.start_game()
 	watch_signals(main.feedback)
 	main.launch_with_pull(Vector2(110.0, 40.0))

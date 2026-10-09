@@ -37,8 +37,8 @@ func _on_screen(main, control: Control, what: String) -> void:
 
 
 
-## A low shot (10 degrees up) that stays well under anything in the sky.
-const LOW := Vector2(-118.176926, 20.837782)
+## A low shot (15 degrees up): under the meteors, and over most trees (task 305).
+const LOW := Vector2(-115.911095, 31.058285)
 
 
 func test_endless_with_real_frames() -> void:
@@ -53,12 +53,12 @@ func test_endless_with_real_frames() -> void:
 	s.launch_from_pull(LOW)
 	while not s.is_finished():
 		s.step(1.0 / 60.0)
-	assert_gt(s.sim.distance(), 2500.0, "a maxed shot goes past the first course")
+	assert_gt(s.sim.distance(), 2200.0, "a maxed shot goes past the first course (trees slow it a little)")
 	main.launch_with_pull(LOW)
 	var width: float = main.hud.distance_label.get_parent().size.x
 	for i in 120:
 		await wait_physics_frames(1)
-	while main.state_name() == "FLIGHT" and main.session.sim.position.x < 2600.0:
+	while main.state_name() == "FLIGHT" and main.session.sim.position.x < 2200.0:
 		main.advance(1.0 / 60.0)
 	await wait_process_frames(3)
 	assert_eq(main.hud.distance_label.get_parent().size.x, width, "the HUD box kept its width")
