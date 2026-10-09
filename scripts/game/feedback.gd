@@ -18,6 +18,8 @@ var shot: RunSession
 var flowers: Flowers
 var cows: Cows
 var boss_view: BossView
+## World views that follow every new shot: each has watch(session) (WorldBuilder adds them).
+var watchers: Array[Node] = []
 var star_value: int = Balance.BASE_STAR_VALUE
 var bounces_seen: int = 0
 var combo: int = 0
@@ -74,6 +76,8 @@ func watch(session: RunSession) -> void:
 	if session.balloons != null:
 		session.balloons.popped.connect(_on_balloon_popped)
 	session.extended.connect(_on_course_extended)
+	for watcher in watchers:
+		watcher.watch(session)
 	if boss_view != null:
 		boss_view.show_fight(session.boss)
 	if session.boss != null:

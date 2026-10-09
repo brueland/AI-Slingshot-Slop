@@ -42,6 +42,8 @@ static func build(main: Node) -> void:
 	main.add_child(main.course_view)
 	main.balloon_view = BalloonView.new()
 	main.add_child(main.balloon_view)
+	var space_view := SpaceThingsView.new()
+	main.add_child(space_view)
 	main.slingshot = Slingshot.new()
 	main.add_child(main.slingshot)
 	main.trajectory = TrajectoryPreview.new()
@@ -66,6 +68,7 @@ static func build(main: Node) -> void:
 	main.feedback.boss_view = boss_view
 	main.feedback.flowers = main.flowers
 	main.feedback.cows = main.cows
+	main.feedback.watchers.append(space_view)
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
 	main.weather_fx.windsock = sock
