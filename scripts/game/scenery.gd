@@ -14,6 +14,10 @@ const LENGTH: float = 8000.0
 var sprites: Array[Sprite2D] = []
 ## The terrain the sprites stand on (WorldView.terrain_version); they move when it changes.
 var seen_terrain: int = -1
+## Each sprite's x in the layout (meters); the layout repeats every LENGTH meters (see _process).
+var base_xs: Array[float] = []
+## The middle of the view (meters) when the sprites were last placed.
+var placed_near: float = 0.0
 
 
 static func layout(seed: int, length: float) -> Array:
@@ -36,6 +40,7 @@ func build(seed: int, length: float) -> void:
 			remove_child(sprite)
 			sprite.queue_free()
 	sprites.clear()
+	base_xs.clear()
 	
 	# Build new sprites from layout
 	var items := layout(seed, length)
@@ -52,12 +57,20 @@ func build(seed: int, length: float) -> void:
 		
 		add_child(sprite)
 		sprites.append(sprite)
+		base_xs.append(item_x)
 
 
-## Puts the rocks and plants on the current shot's hills when they change.
+## Puts the rocks and plants on the current shot's hills when they change, and moves each one to its copy nearest
+## the view (the layout repeats every LENGTH meters) whenever the view has moved 100 m.
 func _process(_delta: float) -> void:
-	if seen_terrain == WorldView.terrain_version:
+	var span := WorldView.visible_span(self, 0.0)
+	var middle := (span.x + span.y) / 2.0
+	var terrain_changed := seen_terrain != WorldView.terrain_version
+	if not terrain_changed and absf(middle - placed_near) < 100.0:
 		return
 	seen_terrain = WorldView.terrain_version
-	for sprite in sprites:
-		sprite.position.y = WorldView.ground_point(WorldView.screen_to_world(sprite.position).x).y
+	placed_near = middle
+	for i in sprites.size():
+		var x := WorldView.repeat_x(base_xs[i], LENGTH, middle)
+		if terrain_changed or not is_equal_approx(sprites[i].position.x, x * Balance.PIXELS_PER_METER):
+			sprites[i].position = WorldView.ground_point(x)

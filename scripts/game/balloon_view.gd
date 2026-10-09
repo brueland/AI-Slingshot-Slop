@@ -21,6 +21,15 @@ func build(balloons: Balloons) -> void:
 	queue_redraw()
 
 
+## The shot's balloons grew (a long shot): show the new ones too.
+func grow(balloons: Balloons) -> void:
+	for i in range(points.size(), balloons.points.size()):
+		points.append(balloons.points[i])
+		hats.append(balloons.hats[i] if i < balloons.hats.size() else "")
+		shown.append(true)
+	queue_redraw()
+
+
 func pop(index: int) -> void:
 	if index >= 0 and index < shown.size():
 		shown[index] = false
@@ -51,8 +60,10 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	# only the balloons on screen are drawn
+	var span := WorldView.visible_span(self, 4.0)
 	for i in points.size():
-		if not shown[i]:
+		if not shown[i] or points[i].x < span.x or points[i].x > span.y:
 			continue
 		var c := screen_position(i)
 		var color := COLORS[i % COLORS.size()]

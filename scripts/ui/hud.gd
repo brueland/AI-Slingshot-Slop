@@ -7,6 +7,9 @@ signal menu_pressed
 const HINT_AIM: String = "Drag the alien back, aim, and let go!"
 const HINT_BOOST: String = "Hold Space in the air to fire the rocket!"
 const HINT_REPEAT: String = "Press R to repeat your last shot"
+## The flight readouts' column is always this wide (pixels), so the top-left box keeps its size while the
+## numbers change (the font's digits have different widths).
+const LEFT_TEXT_WIDTH: float = 200.0
 
 var distance_label: Label
 var height_label: Label
@@ -45,6 +48,7 @@ func _ready() -> void:
 	left_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	left_panel.add_child(left_row)
 	var left_container := VBoxContainer.new()
+	left_container.custom_minimum_size = Vector2(LEFT_TEXT_WIDTH, 0.0)
 	left_row.add_child(left_container)
 	left_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	

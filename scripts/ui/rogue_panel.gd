@@ -5,6 +5,8 @@ extends PanelContainer
 signal perk_chosen(id: String)
 signal reroll_pressed
 signal size_chosen(id: String)
+## The Menu button: the pause menu (Resume, Options, Quit to title) in place of the perk screen.
+signal menu_pressed
 
 var title_label: Label
 var goal_label: Label
@@ -12,6 +14,7 @@ var round_label: Label
 var perk_buttons: Array[Button] = []
 var perk_ids: Array[String] = []
 var reroll_button: Button
+var menu_button: Button
 var size_label: Label
 var size_buttons: Dictionary = {}
 var current_run: RogueRun
@@ -72,6 +75,10 @@ func _ready() -> void:
 	reroll_button = Button.new()
 	reroll_button.pressed.connect(func(): reroll_pressed.emit())
 	box.add_child(reroll_button)
+	menu_button = Button.new()
+	menu_button.text = "Menu"
+	menu_button.pressed.connect(func(): menu_pressed.emit())
+	box.add_child(menu_button)
 	hide()
 
 

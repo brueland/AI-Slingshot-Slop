@@ -50,6 +50,19 @@ func carry_hats(course_seed: int) -> void:
 		hats.append(hat if rng.randi_range(1, 6) == 1 else "")
 
 
+## More balloons further along (the course grows during a long shot), with hats rolled from `hat_seed` the way
+## carry_hats rolls them.
+func add_points(more: Array[Vector2], hat_seed: int) -> void:
+	var choices: Array[String] = ["cowboy", "viking", "beanie"]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hat_seed * 7919 + 17
+	for p in more:
+		points.append(p)
+		used.append(false)
+		var hat: String = choices[rng.randi_range(0, 2)]
+		hats.append(hat if rng.randi_range(1, 6) == 1 else "")
+
+
 ## Pops every balloon the alien touched between `previous_position` and its current position.
 func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 	for i in points.size():

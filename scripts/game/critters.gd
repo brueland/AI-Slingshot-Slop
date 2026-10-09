@@ -13,6 +13,8 @@ const BLACK_WOOL := Color(0.18, 0.17, 0.2)
 var xs: Array[float] = []
 var hop_left: Array[float] = []
 var time: float = 0.0
+## The flock's layout repeats every `period` meters (the length it was built for), so the meadow never runs out.
+var period: float = Balance.COURSE_LENGTH
 
 
 ## Sheep x positions (meters) for a seed: one every 35-90 m, starting after 25 m.
@@ -31,6 +33,7 @@ static func layout(seed: int, length: float) -> Array[float]:
 
 func build(seed: int, length: float) -> void:
 	xs = layout(seed, length)
+	period = length
 	hop_left.clear()
 	for i in xs.size():
 		hop_left.append(0.0)
@@ -42,7 +45,7 @@ func react(world_x: float) -> int:
 	var best := -1
 	var best_distance := REACT_DISTANCE
 	for i in xs.size():
-		var d := absf(xs[i] - world_x)
+		var d := absf(WorldView.repeat_x(xs[i], period, world_x) - world_x)
 		if d <= best_distance:
 			best = i
 			best_distance = d
@@ -87,8 +90,14 @@ func advance(delta: float) -> void:
 
 
 func _draw() -> void:
+	# only the sheep on screen are drawn: the copy of each sheep nearest the middle of the view
+	var span := WorldView.visible_span(self, 3.0)
+	var middle := (span.x + span.y) / 2.0
 	for i in xs.size():
-		var p := sheep_position(i)
+		var x := WorldView.repeat_x(xs[i], period, middle)
+		if x < span.x or x > span.y:
+			continue
+		var p := WorldView.ground_point(x) - Vector2(0.0, hop_offset(i))
 		draw_line(p + Vector2(-6, -5), p + Vector2(-6, 0), FACE, 2.0)
 		draw_line(p + Vector2(6, -5), p + Vector2(6, 0), FACE, 2.0)
 		for o in [Vector2(-7, -11), Vector2(0, -14), Vector2(7, -11), Vector2(-3, -8), Vector2(4, -8)]:

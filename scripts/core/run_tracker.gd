@@ -34,6 +34,12 @@ func is_used(index: int) -> bool:
 	return _used[index]
 
 
+## The course grew (RunSession.extend_course): the new items are not used yet.
+func grow() -> void:
+	while _used.size() < items.size():
+		_used.append(false)
+
+
 func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 	for i in range(items.size()):
 		if _used[i]:
