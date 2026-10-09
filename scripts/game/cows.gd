@@ -10,6 +10,12 @@ const SPOTS := Color(0.15, 0.15, 0.15)
 var xs: Array[float] = []
 ## The terrain the cows were drawn on (WorldView.terrain_version).
 var seen_terrain: int = -1
+## Seconds since the start, for the cows' grazing.
+var time: float = 0.0
+## The cow's sprites (head up and grazing), drawn at SPRITE_SCALE with the feet at SPRITE_FEET_X of their width.
+var textures: Dictionary = {"up": load("res://assets/sprites/cow.png"), "graze": load("res://assets/sprites/cow_graze.png")}
+const SPRITE_SCALE: float = 0.4
+const SPRITE_FEET_X: float = 0.4
 
 
 ## Cow positions (meters) for a seed: one every 120-260 m, starting after 60 m.
@@ -47,10 +53,16 @@ func cow_position(index: int) -> Vector2:
 	return WorldView.ground_point(xs[index])
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	time += delta
 	seen_terrain = WorldView.terrain_version
 	# the view moves, so the cows on screen are redrawn every frame (only those: see _draw)
 	queue_redraw()
+
+
+## The sprite for cow `index` right now: now and then it lowers its head to graze.
+func cow_texture(index: int) -> Texture2D:
+	return textures["graze"] if sin(time * 0.4 + index * 2.1) > 0.3 else textures["up"]
 
 
 func _draw() -> void:
@@ -62,12 +74,6 @@ func _draw() -> void:
 		if x < span.x or x > span.y:
 			continue
 		var p := WorldView.ground_point(x)
-		for leg in [-12.0, -5.0, 6.0, 12.0]:
-			draw_line(p + Vector2(leg, -8), p + Vector2(leg, 0), SPOTS, 2.5)
-		draw_rect(Rect2(p + Vector2(-16, -24), Vector2(32, 16)), HIDE)
-		draw_circle(p + Vector2(-8, -18), 4.0, SPOTS)
-		draw_circle(p + Vector2(6, -14), 3.0, SPOTS)
-		draw_circle(p + Vector2(20, -24), 6.0, HIDE)
-		draw_circle(p + Vector2(23, -22), 3.0, Color(1.0, 0.75, 0.8))
-		draw_line(p + Vector2(17, -30), p + Vector2(15, -34), SPOTS, 2.0)
-		draw_line(p + Vector2(22, -30), p + Vector2(24, -34), SPOTS, 2.0)
+		var texture := cow_texture(i)
+		var size := texture.get_size() * SPRITE_SCALE
+		draw_texture_rect(texture, Rect2(p - Vector2(size.x * SPRITE_FEET_X, size.y - 6.0 * SPRITE_SCALE), size), false)
