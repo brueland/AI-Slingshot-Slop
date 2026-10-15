@@ -77,3 +77,14 @@ func _draw() -> void:
 		var texture := cow_texture(i)
 		var size := texture.get_size() * SPRITE_SCALE
 		draw_texture_rect(texture, Rect2(p - Vector2(size.x * SPRITE_FEET_X, size.y - 6.0 * SPRITE_SCALE), size), false)
+
+
+func watch(session: RunSession) -> void:
+	session.animals.cow_hit.connect(_on_cow_hit)
+
+
+func _on_cow_hit(x: float) -> void:
+	var moo := FloatingText.new()
+	moo.setup("Moo! Kick!", Color(1.0, 0.85, 0.75))
+	moo.position = WorldView.ground_point(x) + Vector2(-40.0, -70.0)
+	add_child(moo)

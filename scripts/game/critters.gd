@@ -118,3 +118,15 @@ func _draw() -> void:
 ## Every sheep whose index is 2 more than a multiple of 4 is a black sheep (a little grumpier).
 static func is_black(index: int) -> bool:
 	return index % 4 == 2
+
+
+func watch(session: RunSession) -> void:
+	session.animals.sheep_hit.connect(_on_sheep_hit)
+
+
+func _on_sheep_hit(x: float) -> void:
+	react(x)
+	var boing := FloatingText.new()
+	boing.setup("Boing!", Color(1.0, 1.0, 0.85))
+	boing.position = WorldView.ground_point(x) + Vector2(-24.0, -60.0)
+	add_child(boing)
