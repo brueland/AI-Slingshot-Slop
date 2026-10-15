@@ -74,6 +74,8 @@ static func build(main: Node) -> void:
 	main.feedback.watchers.append(space_view)
 	main.feedback.watchers.append(tree_view)
 	main.feedback.watchers.append(wrong_way)
+	main.feedback.watchers.append(main.critters)
+	main.feedback.watchers.append(main.cows)
 	main.weather_fx = WeatherFx.new()
 	main.add_child(main.weather_fx)
 	main.weather_fx.windsock = sock
