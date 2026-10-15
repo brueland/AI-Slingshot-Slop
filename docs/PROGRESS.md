@@ -47,4 +47,5 @@ Milestone 42: complete (endless and smooth: the HUD box keeps its width, the cou
 Milestone 43: complete (space to play with: meteors boost the alien, space stations bounce it, a thick star cloud from 600 m up)
 Milestone 44: complete (trees and a secret: smash through trees or bounce off them; break the brick wall to find a thank-you sign)
 Milestone 45: complete (hats that help: every hat gives a small boost, shown in the Wardrobe; new sheep and cow sprites)
+Milestone 46: complete (meadow fixes: no endless bonk against a tree; bounce off sheep, get kicked by cows)
 
