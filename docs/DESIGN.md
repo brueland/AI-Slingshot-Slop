@@ -335,3 +335,4 @@ across the milestone and records it in docs/PROGRESS.md. Tasks run in order; eac
 | 43 Space to play with | 301–303, 304c | meteors boost the alien, space stations bounce it, a thick star cloud from 600 m up |
 | 44 Trees and a secret | 305–309, 310c | trees to smash through or bounce off; break the brick wall to find a thank-you sign (Wall Breaker) |
 | 45 Hats that help, nicer animals | 311–315, 316c | every hat gives a small boost (shown in the Wardrobe); new sheep and cow sprites |
+| 46 The meadow fights back | 317–319, 320c | no endless bonk against a tree; bounce off sheep, get kicked back by cows |

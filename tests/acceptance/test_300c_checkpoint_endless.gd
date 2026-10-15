@@ -37,8 +37,9 @@ func _on_screen(main, control: Control, what: String) -> void:
 
 
 
-## A low shot (15 degrees up): under the meteors, and over most trees (task 305).
-const LOW := Vector2(-115.911095, 31.058285)
+## The low shots (5 to 25 degrees up) it tries: under the meteors (task 318 picks one that flies far, past the trees
+## and the cows).
+const ANGLES := [5.0, 8.0, 10.0, 12.0, 15.0, 18.0, 20.0, 25.0]
 
 
 func test_endless_with_real_frames() -> void:
@@ -49,10 +50,21 @@ func test_endless_with_real_frames() -> void:
 		levels[id] = 25
 	main.progress.levels = levels
 	main.start_game()
-	var s := RunSession.new(main.progress.stats(), main.progress.total_runs + 1)
-	s.launch_from_pull(LOW)
-	while not s.is_finished():
-		s.step(1.0 / 60.0)
+	var s: RunSession = null
+	var LOW := Vector2.ZERO
+	for angle in ANGLES:
+		var p: Vector2 = Vector2(-cos(deg_to_rad(angle)), sin(deg_to_rad(angle))) * 120.0
+		var t := RunSession.new(main.progress.stats(), main.progress.total_runs + 1)
+		t.launch_from_pull(p)
+		while not t.is_finished():
+			t.step(1.0 / 60.0)
+		if t.sim.distance() > 2200.0:
+			s = t
+			LOW = p
+			break
+	assert_not_null(s, "one of the low maxed shots flies far")
+	if s == null:
+		return
 	assert_gt(s.sim.distance(), 2200.0, "a maxed shot goes past the first course (trees slow it a little)")
 	main.launch_with_pull(LOW)
 	var width: float = main.hud.distance_label.get_parent().size.x
