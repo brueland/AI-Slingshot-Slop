@@ -11,6 +11,8 @@ const BREAK_SPEED: float = 18.0
 const KEEP_SPEED: float = 0.85
 ## A slower hit sends the alien back with this share of its speed.
 const BOUNCE: float = 0.4
+## Slower than this (m/s) against a trunk, the alien just comes to rest there (no bounce).
+const REST_SPEED: float = 2.0
 ## A tree reaches this far to each side of its trunk (meters): its crown.
 const HALF_WIDTH: float = 1.6
 const SEED_OFFSET: int = 1300
@@ -74,7 +76,17 @@ func after_step(sim: FlightSim, previous_position: Vector2) -> void:
 			sim.position.y = ground + heights[i] + body
 			sim.velocity = Vector2(side * 4.0, 3.0)
 		else:
-			sim.position.x = x - reach if previous_position.x < x else x + reach
+			var from_left := previous_position.x < x
+			# only a move toward the trunk is a hit (pushed back to its side, it is still within reach next step)
+			if (sim.velocity.x > 0.0) != from_left:
+				continue
+			sim.position.x = x - reach if from_left else x + reach
+			if absf(sim.velocity.x) < REST_SPEED:
+				sim.velocity.x = 0.0
+				if not sim.is_airborne():
+					sim.velocity = Vector2.ZERO
+					sim.stopped = true
+				continue
 			sim.velocity.x = -sim.velocity.x * BOUNCE
 		sim.stopped = false
 		tree_bounced.emit(i)
