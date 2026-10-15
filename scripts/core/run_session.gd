@@ -18,6 +18,8 @@ var space: SpaceThings = null
 var cloud: StarCloud
 ## Trees along the meadow (see Trees).
 var trees: Trees
+## The meadow's sheep and cows, to bounce off and be kicked by (see FarmAnimals).
+var animals: FarmAnimals
 ## A copy of stats.boss for this shot (null without a boss fight).
 var boss: BossFight = null
 var course: Array = []
@@ -64,6 +66,9 @@ func _init(player_stats: PlayerStats, course_seed: int) -> void:
 	trees = Trees.new()
 	trees.body = stats.pickup_offset
 	trees.add(Trees.layout(course_seed, Balance.COURSE_LENGTH), 0.0, sim.flat_spans)
+	animals = FarmAnimals.new()
+	animals.body = stats.pickup_offset
+	animals.keep_clear = sim.flat_spans
 
 
 func launch_from_pull(pull: Vector2) -> Vector2:
@@ -92,6 +97,7 @@ func step(dt: float) -> void:
 		space.after_step(sim, previous, dt)
 		cloud.after_step(sim, previous)
 	trees.after_step(sim, previous)
+	animals.after_step(sim, previous)
 	if boss != null:
 		boss.after_step(sim, previous, stats.pickup_offset)
 	elapsed += dt
@@ -124,6 +130,7 @@ func result() -> Dictionary:
 	if space != null:
 		r["meteors"] = space.meteor_used.count(true)
 	r["trees"] = trees.broken.count(true)
+	r["animals"] = animals.hit.size()
 	r["air_time"] = sim.air_time
 	r["path"] = path
 	r["found"] = balloons.found_hats.duplicate()
